@@ -1,0 +1,9 @@
+.ScaleLayer{
+   width: 100vw;
+   height: 100vh;
+   overflow: hidden;
+    .transform-layer{
+        transform-origin: left top;
+        will-change: transform;
+    }
+}

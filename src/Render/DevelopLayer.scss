@@ -1,0 +1,15 @@
+.DevelopLayer {
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(100, 100px);
+        grid-template-rows: repeat(50, 100px);
+        .grid-item {
+            border: 1px solid black;
+            height: 100px;
+            width: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+}
