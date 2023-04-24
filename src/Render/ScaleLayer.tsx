@@ -6,22 +6,40 @@ import {
   onMouseLeave,
   onMouseMove,
   onMouseUp,
+  onTouchEnd,
+  onTouchMove,
+  onTouchStart,
   onWheel,
 } from "../Grid/Scale";
 import "./ScaleLayer.scss";
 import { getCursor } from "../Style.ts/Cursor";
+import { Point } from "../DataStructure/Point";
 class ScaleLayerProp {
   editingMode!: Mode;
   setEditingMode!: React.Dispatch<React.SetStateAction<Mode>>;
 }
 function ScaleLayer({ editingMode, setEditingMode }: ScaleLayerProp) {
   const [translateX, setTranslateX] = useState(0);
-  const [translateY, settranslateY] = useState(0);
+  const [translateY, setTranslateY] = useState(0);
   const [scale, setScale] = useState(1);
+  // touchRefPoint
+  // 1. in touch move mode: this point record touch start point
+  // 2. in touch scale mode: this point record the center position of start touch
+  const [touchRefPoint, setTouchRefPoint] = useState(new Point());
+  // touchStartDistance
+  // record distance between two finger touch points for scaling operation
+  const [touchStartDistance, setTouchStartDistance] = useState(1);
+  // touchStartScale
+  // record the scale when touch start
+  // the finnal scale will be calculated by this value
+  const [touchStartScale, setTouchStartScale] = useState(1);
+  // touchStartTranslate
+  // record translate position when touch start
+  // translate should add this value when touch moving
+  const [touchStartTranslate, setTouchStartTranslate] = useState(new Point());
   const style = {
     transform: `translate(${translateX}px,${translateY}px) scale(${scale})`,
   };
-  console.log(editingMode, getCursor(editingMode));
 
   return (
     <div
@@ -34,15 +52,51 @@ function ScaleLayer({ editingMode, setEditingMode }: ScaleLayerProp) {
           translateX,
           translateY,
           setTranslateX,
-          settranslateY
+          setTranslateY
         )
       }
       onMouseDown={(event) => onMouseDown(event, setEditingMode)}
       onMouseUp={(event) => onMouseUp(event, setEditingMode)}
       onMouseLeave={(event) => onMouseLeave(event, setEditingMode)}
       onMouseMove={(event) =>
-        onMouseMove(event, translateX, translateY, setTranslateX, settranslateY, editingMode)
+        onMouseMove(
+          event,
+          translateX,
+          translateY,
+          setTranslateX,
+          setTranslateY,
+          editingMode
+        )
       }
+      onTouchStart={(event) =>
+        onTouchStart(
+          event,
+          setEditingMode,
+          setTouchRefPoint,
+          setTouchStartDistance,
+          setTouchStartScale,
+          scale,
+          setTouchStartTranslate,
+          translateX,
+          translateY,
+        )
+      }
+      onTouchMove={(event) =>
+        onTouchMove(
+          event,
+          editingMode,
+          touchRefPoint,
+          translateX,
+          translateY,
+          setTranslateX,
+          setTranslateY,
+          touchStartDistance,
+          touchStartScale,
+          setScale,
+          touchStartTranslate,
+        )
+      }
+      onTouchEnd={(event) => onTouchEnd(event, setEditingMode)}
       style={{ cursor: getCursor(editingMode) }}
     >
       <div className="transform-layer" style={style}>

@@ -4,6 +4,7 @@
    overflow: hidden;
     .transform-layer{
         transform-origin: left top;
-        will-change: transform;
+        // never use will-change here, it makes child elements blurry
+        // will-change: transform;
     }
 }
