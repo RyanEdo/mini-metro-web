@@ -52,7 +52,7 @@ export const onMouseDown = (
   setEditingMode: Dispatch<SetStateAction<Mode>>
 ) => {
   console.log(event);
-  setEditingMode(Mode.MOVING);
+  setEditingMode(Mode.moving);
 };
 
 export const onMouseMove = (
@@ -65,7 +65,7 @@ export const onMouseMove = (
 ) => {
   const { movementX, movementY } = event;
   switch (editingMode) {
-    case Mode.MOVING: {
+    case Mode.moving: {
       setTranslateX((translateX) => translateX + movementX);
       setTranslateY((translateY) => translateY + movementY);
       break;
@@ -78,7 +78,7 @@ export const onMouseUp = (
   setEditingMode: Dispatch<SetStateAction<Mode>>
 ) => {
   console.log(event);
-  setEditingMode(Mode.NORMAL);
+  setEditingMode(Mode.normal);
 };
 
 export const onMouseLeave = (
@@ -86,7 +86,7 @@ export const onMouseLeave = (
   setEditingMode: Dispatch<SetStateAction<Mode>>
 ) => {
   console.log(event);
-  setEditingMode(Mode.NORMAL);
+  setEditingMode(Mode.normal);
 };
 
 export const onTouchStart = (
@@ -109,7 +109,7 @@ export const onTouchStart = (
     case 1: {
       const touch = touches[0];
       setTouchRefPoint(Point.getPoint(touch));
-      setEditingMode(Mode.TOUCHMOVING);
+      setEditingMode(Mode.touchMoving);
       break;
     }
     //two finger
@@ -119,7 +119,7 @@ export const onTouchStart = (
       const pointA = Point.getPoint(touchA);
       const pointB = Point.getPoint(touchB);
       setTouchRefPoint(Point.getMidPoint(pointA, pointB));
-      setEditingMode(Mode.TOUCHSCALING);
+      setEditingMode(Mode.touchScaling);
       //start touch distance
       const distance = pointA.distanceTo(pointB);
       setTouchStartDistance(distance);
@@ -147,7 +147,7 @@ export const onTouchMove = (
   switch (touches.length) {
     //one finger
     case 1: {
-      if (editingMode === Mode.TOUCHMOVING) {
+      if (editingMode === Mode.touchMoving) {
         const touch = touches[0];
         const point = Point.getPoint(touch);
         console.log(touchRefPoint);
@@ -159,7 +159,7 @@ export const onTouchMove = (
     }
     //two finger
     case 2: {
-      if (editingMode === Mode.TOUCHSCALING) {
+      if (editingMode === Mode.touchScaling) {
         const touchA = touches[0];
         const touchB = touches[1];
         const pointA = Point.getPoint(touchA);
@@ -193,7 +193,7 @@ export const onTouchEnd = (
   event: TouchEvent<HTMLDivElement>,
   setEditingMode: Dispatch<SetStateAction<Mode>>
 ) => {
-  const { touches } = event;
+  // const { touches } = event;
   // console.log(event);
-  setEditingMode(Mode.NORMAL);
+  setEditingMode(Mode.normal);
 };

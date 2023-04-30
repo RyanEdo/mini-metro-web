@@ -4,7 +4,7 @@ export const getCursor = (mode: Mode)=>{
     let cursor;
     //chrome has bug here, the cursor won't change sometimes while DOM already updated.
     switch(mode){
-        case Mode.MOVING:{
+        case Mode.moving:{
             cursor = 'grabbing';
             break;
         }

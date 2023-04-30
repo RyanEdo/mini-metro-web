@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 
 
 function App() {
-  const [editingMode, setEditingMode] = useState(Mode.NORMAL);
+  const [editingMode, setEditingMode] = useState(Mode.normal);
   return (
     <div className="App"
     >

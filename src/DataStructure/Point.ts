@@ -1,11 +1,14 @@
 import { Touch } from "react";
+import { StraightLine } from "./StraightLine";
 
 export class Point {
   x: number;
   y: number;
-  constructor(x: number = 0, y: number = 0) {
+  yReversed: boolean;
+  constructor(x: number = 0, y: number = 0 , yReversed: boolean = false) {
     this.x = x;
     this.y = y;
+    this.yReversed = yReversed;
   }
 
   displacementTo(A: Point) {
@@ -16,6 +19,14 @@ export class Point {
     return Math.sqrt(
       Math.pow(this.x - A.x, 2) + Math.pow(this.y - A.y, 2)
     );
+  }
+
+  determineLine(A: Point){
+    return new StraightLine(this, A);
+  }
+  
+  reverseY(){
+    return new Point(this.x, -this.y, !this.yReversed);
   }
 
   static getPoint(A: Touch) {
@@ -31,3 +42,4 @@ export class Point {
 
   
 }
+

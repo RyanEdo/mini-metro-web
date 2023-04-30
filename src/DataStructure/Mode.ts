@@ -1,6 +1,6 @@
 export enum Mode {
-    NORMAL,
-    MOVING,
-    TOUCHMOVING,
-    TOUCHSCALING
+    normal,
+    moving,
+    touchMoving,
+    touchScaling
   }
