@@ -39,10 +39,22 @@ export class Station {
     return this.tracks[direction.direct];
   }
 
-  // find the end of the Line
+  getRail(direction: Direction, index: number){
+    return this.getTrack(direction).getRail(index);
+  }
+
+
+  getBestRail(direction: Direction){
+    return this.getTrack(direction).getBestRail();
+  }
+
+  // find the start or end of the Line
   // if no records find, this station must be the departure station
+  // if both start and end exist, this station is the loop line joint
   getJoint(line: Line){
-    return this.lineRecords.get(line)?.find(lineRecord=>!lineRecord.lastLineRecord);
+    const terminal = this.lineRecords.get(line)?.find(lineRecord=>!lineRecord.lastLineRecord);
+    const departure = this.lineRecords.get(line)?.find(lineRecord=>!lineRecord.nextLineRecord);
+    return departure || terminal;
   }
 
 
@@ -51,11 +63,12 @@ export class Station {
   // find empty rail pair
   // in given direction (this direction is B out direction)
   // to C station
-
+  // only used in straight connect
   getAvailableRailPairsTo(C: Station, direction: Direction){
     const bEmptyRails = this.getTrack(direction).getEmptyRails();
     const cEmptyRails = C.getTrack(direction.opposite()).getEmptyRails();
     const availableRailPairs = Rail.getStraightConnectRailPair(bEmptyRails, cEmptyRails);
     return availableRailPairs;
   }
+
 }

@@ -10,7 +10,6 @@ export class Vector extends Direction {
     this.end = end;
   }
 
-
   static getDirection(start: Point, end: Point) {
     const A = start.reverseY();
     const B = end.reverseY();
@@ -20,15 +19,21 @@ export class Vector extends Direction {
     const deltaX = B.x - A.x;
     const deltaY = B.y - A.y;
     if (deltaX > 0 && deltaY > 0)
-      return deltaX === deltaY ? Direct.upRight : Direct.almostUpRight;
+      if (deltaX === deltaY) return Direct.upRight;
+      else if (deltaX < deltaY) return Direct.upRightA;
+      else return Direct.upRightB;
     if (deltaX > 0 && deltaY < 0)
-      return deltaX === -deltaY
-        ? Direct.rightDown
-        : Direct.almostRightDown;
+      if (deltaX === -deltaY) return Direct.rightDown;
+      else if (deltaX > -deltaY) return Direct.rightDownA;
+      else return Direct.rightDownB;
     if (deltaX < 0 && deltaY < 0)
-      return deltaX === deltaY ? Direct.downLeft : Direct.almostDownLeft;
+      if(-deltaX === -deltaY) return Direct.downLeft;
+      else if(-deltaX < -deltaY) return Direct.downLeftA;
+      else return Direct.downLeftB;
     if (deltaX < 0 && deltaY > 0)
-      return deltaX === -deltaY ? Direct.leftUp : Direct.almostLeftUp;
-    return Direct.error;
+    if(-deltaX === deltaY) return Direct.leftUp;
+    else if(-deltaX > deltaY) return Direct.leftUpA;
+    else return Direct.leftUpB;
+    throw Error('error happend when getting direction');
   }
 }

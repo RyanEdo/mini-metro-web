@@ -1,17 +1,40 @@
 import { Direction } from "./Direction";
-import { Rail } from "./Rail";
+import { ExtraRail, Rail } from "./Rail";
 import { Station } from "./Station";
 
-export class Track{
-    station:Station;
-    direction: Direction;
-    rails: Rail[];
-    constructor(station: Station,direction: Direction){
-        this.station = station;
-        this.direction = direction;
-        this.rails = new Array(3).fill(true).map((x,index)=>new Rail(this, index));
-    }
-    getEmptyRails(){
-        return this.rails.filter(rail=>rail.line.empty);
-    }
+export class Track {
+  station: Station;
+  direction: Direction;
+  rails: Rail[];
+  // extra rail won't occupy the space of rail
+  // extraRails save extraRail by index, every index has an array
+  extraRails: ExtraRail[][];
+  constructor(station: Station, direction: Direction) {
+    this.station = station;
+    this.direction = direction;
+    this.rails = new Array(3)
+      .fill(true)
+      .map((x, index) => new Rail(this, index));
+    this.extraRails = new Array(3).fill(true).map((x, index) => new Array());
+  }
+  // to-do: to be delete
+  // getEmptyRails() {
+  //   return this.rails.filter((rail) => rail.line.empty);
+  // }
+  // getBestRail() {
+  //   const bestRail = Rail.getBestRail(this.getEmptyRails());
+  //   return bestRail ? bestRail : this.applyExtraRail(1);
+  // }
+  getRail(index: number) {
+    return this.rails[index];
+  }
+  applyExtraRail(index: number) {
+    const extraRail = new ExtraRail(this, index);
+    this.extraRails[index].push(extraRail);
+    return extraRail;
+  }
+  getAvailableRail(index: number){
+    const rail = this.getRail(index);
+    return rail.line.empty? rail: this.applyExtraRail(index);
+  }
 }

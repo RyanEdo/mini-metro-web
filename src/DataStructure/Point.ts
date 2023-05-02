@@ -1,5 +1,5 @@
 import { Touch } from "react";
-import { StraightLine } from "./StraightLine";
+import { Straight } from "./Straight";
 
 export class Point {
   x: number;
@@ -22,7 +22,7 @@ export class Point {
   }
 
   determineLine(A: Point){
-    return new StraightLine(this, A);
+    return new Straight(this, A);
   }
   
   reverseY(){

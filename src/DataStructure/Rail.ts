@@ -6,10 +6,12 @@ export class Rail {
   track: Track;
   index: number;
   line: Line;
+  extra: boolean;
   constructor(track: Track, index: number) {
     this.track = track;
     this.index = index;
     this.line = new EmptyLine();
+    this.extra = false;
   }
 
   oppositeIndex(){
@@ -29,11 +31,22 @@ export class Rail {
     });
     return railPairs;
   }
-
-  static getBestRailPair(railPairs: RailPair[]) {
-    // found center empty rail pair
-    return railPairs.find(railPair => railPair.center) || railPairs[0];
+  
+  static getBestRail(rails: Rail[]){
+    return rails.find(rail=>rail.index === 1) || rails[0];
   }
+
+  static getRailByIndex(rails: Rail[], index: number){
+    return rails.find(rail=>rail.index === index);
+  }
+
+}
+
+export class ExtraRail extends Rail{
+    constructor(track: Track, index: number){
+      super(track, index);
+      this.extra = true;
+    }
 }
 
 

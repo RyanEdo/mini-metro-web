@@ -11,8 +11,6 @@ export class LineRecord {
   nextLineRecord: LineRecord | undefined;
   lastRail: Rail | undefined;
   nextRail: Rail | undefined;
-  lastConnectType: ConnectType | undefined;
-  nextConnectType: ConnectType | undefined;
 
   constructor(station: Station, line?: Line) {
     this.station = station;
@@ -35,12 +33,9 @@ export class LineRecord {
     ARecord: LineRecord,
     BRecord: LineRecord,
     railPair: RailPair,
-    connectType: ConnectType
   ) {
     const { departureRail, arrivalRail } = railPair;
     ARecord.nextRail = departureRail;
     BRecord.lastRail = arrivalRail;
-    ARecord.nextConnectType = connectType;
-    BRecord.lastConnectType = connectType;
   }
 }
