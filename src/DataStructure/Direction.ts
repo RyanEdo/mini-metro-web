@@ -49,14 +49,14 @@ export class Direction {
     return this.direct === direction.direct;
   }
 
-  // this direction at given direction's which side
-  // 1 2 3 means clockwise poistion
+  // how many rotation should this direction do to coincide to given direction
+  // 1 2 3 means clockwise rotate 1 2 3 times
   // -1 -2 -3 means counterclockwise
-  // 0 means same direction
+  // 0 means no need rotate
   // 4 means opposite direction
-  sideTo(direction: Direction){
+  rotationTo(direction: Direction){
     if(this.oppositeTo(direction)) return 4;
-    const side = this.direct - direction.direct;
+    const side = direction.direct - this.direct;
     if(side < -4) return side + 8;
     if(side > 4) return side -8;
     return side;

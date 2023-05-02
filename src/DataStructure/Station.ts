@@ -44,9 +44,9 @@ export class Station {
   }
 
 
-  getBestRail(direction: Direction){
-    return this.getTrack(direction).getBestRail();
-  }
+  // getBestRail(direction: Direction){
+  //   return this.getTrack(direction).getBestRail();
+  // }
 
   // find the start or end of the Line
   // if no records find, this station must be the departure station
@@ -64,11 +64,11 @@ export class Station {
   // in given direction (this direction is B out direction)
   // to C station
   // only used in straight connect
-  getAvailableRailPairsTo(C: Station, direction: Direction){
-    const bEmptyRails = this.getTrack(direction).getEmptyRails();
-    const cEmptyRails = C.getTrack(direction.opposite()).getEmptyRails();
-    const availableRailPairs = Rail.getStraightConnectRailPair(bEmptyRails, cEmptyRails);
-    return availableRailPairs;
-  }
+  // getAvailableRailPairsTo(C: Station, direction: Direction){
+  //   const bEmptyRails = this.getTrack(direction).getEmptyRails();
+  //   const cEmptyRails = C.getTrack(direction.opposite()).getEmptyRails();
+  //   const availableRailPairs = Rail.getStraightConnectRailPair(bEmptyRails, cEmptyRails);
+  //   return availableRailPairs;
+  // }
 
 }

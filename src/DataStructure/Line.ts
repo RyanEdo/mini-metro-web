@@ -32,7 +32,7 @@ export class Line {
     LineRecord.updateLineRecords(bLineRecord, cLineRecord, railPair);
   }
 
-  chooseBestRailPair(B: Station, C: Station) {
+  chooseBestRailPair(B: Station, C: Station, bendFirst: boolean) {
     const direction = new Vector(B.position,C.position);
     if(direction.standard){
       // round 1: 
@@ -54,7 +54,11 @@ export class Line {
       const round4Index = Straight.round4(B,C,this);
       return RailPair.getRailPairByIndex(B,C,round4Index,direction);
     }else{
-
+      const [bOutDirection, cInDirectionOpposite] = direction.getBendSteps(bendFirst);
+      const bTrack = B.getTrack(bOutDirection);
+      const cTrack = C.getTrack(cInDirectionOpposite.opposite());
+      const bLastRail = B.getJoint(this)?.lastRail;
+      const cNextRail = C.getJoint(this)?.nextRail;
     }
   }
 }

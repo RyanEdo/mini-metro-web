@@ -108,12 +108,12 @@ export class Straight {
     let zeroRailScore = 0;
     let secondRailScore = 0;
     if (bLineRecord?.lastRail)
-      if (bLineRecord.lastRail.track.direction.opposite().sideTo(direction) < 0)
+      if (bLineRecord.lastRail.track.direction.rotationTo(direction) > 0)
         zeroRailScore++;
       else secondRailScore++;
 
     if (cLineRecord?.nextRail)
-      if (cLineRecord.nextRail.track.direction.sideTo(direction) > 0)
+      if (cLineRecord.nextRail.track.direction.rotationTo(direction) > 0)
         zeroRailScore++;
       else secondRailScore++;
 

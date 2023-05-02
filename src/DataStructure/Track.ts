@@ -17,10 +17,11 @@ export class Track {
       .map((x, index) => new Rail(this, index));
     this.extraRails = new Array(3).fill(true).map((x, index) => new Array());
   }
+
+  getEmptyRails() {
+    return this.rails.filter((rail) => rail.line.empty);
+  }
   // to-do: to be delete
-  // getEmptyRails() {
-  //   return this.rails.filter((rail) => rail.line.empty);
-  // }
   // getBestRail() {
   //   const bestRail = Rail.getBestRail(this.getEmptyRails());
   //   return bestRail ? bestRail : this.applyExtraRail(1);

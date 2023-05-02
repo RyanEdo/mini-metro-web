@@ -21,9 +21,6 @@ export class Point {
     );
   }
 
-  determineLine(A: Point){
-    return new Straight(this, A);
-  }
   
   reverseY(){
     return new Point(this.x, -this.y, !this.yReversed);
