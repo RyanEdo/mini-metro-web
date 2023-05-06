@@ -18,6 +18,10 @@ export class Rail {
     return 2 - this.index;
   }
 
+  setLine(line: Line){
+    this.line = line;
+  }
+
   static getStraightConnectRailPair(aEmptyRails: Rail[], bEmptyRails: Rail[]) {
     if (aEmptyRails.length === 0 || bEmptyRails.length === 0) return;
     const railPairs: RailPair[] = [];
@@ -38,6 +42,10 @@ export class Rail {
 
   static getRailByIndex(rails: Rail[], index: number){
     return rails.find(rail=>rail.index === index);
+  }
+
+  static oppositeIndex(index: number){
+    return 2 - index;
   }
 
 }

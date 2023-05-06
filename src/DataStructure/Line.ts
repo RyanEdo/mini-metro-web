@@ -1,5 +1,7 @@
+import { Bend } from "./Bend";
 import { ConnectType } from "./ConnectType";
 import { LineRecord } from "./LineRecord";
+import { Rail } from "./Rail";
 import { RailPair } from "./RailPair";
 import { Station } from "./Station";
 import { Straight } from "./Straight";
@@ -7,18 +9,30 @@ import { Vector } from "./Vector";
 export class Line {
   empty: boolean;
   departureStation: LineRecord | undefined;
+  _dev_tag: string | undefined;
   constructor() {
     this.empty = false;
   }
 
+  linkAll(stations: Station[]){
+    stations.reduce((pre,cur)=>{
+      this.link(pre,cur);
+      return cur;
+    });
+  }
+
+
   // connect B station and C station
-  link(B: Station, C: Station, railPair: RailPair) {
+  link(B: Station, C: Station, bendFirst: boolean = true) {
+    const railPair = this.applyBestRailPair(B,C,bendFirst);
+    railPair.setLine(this);
     let bLineRecord = B.getJoint(this);
     if (!bLineRecord) {
       //if record not exist, add one
       bLineRecord = new LineRecord(B, this);
       // register cLineRecord in C station
       B.addLineRecord(bLineRecord);
+      this.departureStation = bLineRecord;
     }
     let cLineRecord = C.getJoint(this);
     if (!cLineRecord) {
@@ -32,33 +46,29 @@ export class Line {
     LineRecord.updateLineRecords(bLineRecord, cLineRecord, railPair);
   }
 
-  chooseBestRailPair(B: Station, C: Station, bendFirst: boolean) {
-    const direction = new Vector(B.position,C.position);
-    if(direction.standard){
-      // round 1: 
-      const round1Indexes = Straight.round1(B,C);
-      if(round1Indexes.length === 1){
-        return RailPair.getRailPairByIndex(B,C,round1Indexes[0].index,direction);
-      }
-      // round 2:
-      const round2Indexes = Straight.round2(B,C,round1Indexes, this);
-      if(round2Indexes.length === 1){
-        return RailPair.getRailPairByIndex(B,C,round2Indexes[0].index,direction);
-      }
-      // round 3:
-      const round3Indexes = Straight.round3(B,C,round2Indexes);
-      if(round3Indexes.length === 1){
-        return RailPair.getRailPairByIndex(B,C,round3Indexes[0].index,direction);
-      }
-      // round 4:
-      const round4Index = Straight.round4(B,C,this);
-      return RailPair.getRailPairByIndex(B,C,round4Index,direction);
-    }else{
-      const [bOutDirection, cInDirectionOpposite] = direction.getBendSteps(bendFirst);
+  applyBestRailPair(B: Station, C: Station, bendFirst: boolean) {
+    const direction = new Vector(B.position, C.position);
+    if (direction.standard) {
+      const bOutIndex = Straight.getBestRailIndex(B, C, this);
+      const cInIndex = Rail.oppositeIndex(bOutIndex);
+      const bTrack = B.getTrack(direction);
+      const cTrack = C.getTrack(direction.opposite());
+      const bRail = bTrack.getAvailableRail(bOutIndex);
+      const cRail = cTrack.getAvailableRail(cInIndex);
+      return new RailPair(bRail, cRail);
+    } else {
+      const [bOutDirection, cInDirectionOpposite] =
+        direction.getBendSteps(bendFirst);
+      const cInDirection = cInDirectionOpposite.opposite();
       const bTrack = B.getTrack(bOutDirection);
-      const cTrack = C.getTrack(cInDirectionOpposite.opposite());
+      const cTrack = C.getTrack(cInDirection);
       const bLastRail = B.getJoint(this)?.lastRail;
       const cNextRail = C.getJoint(this)?.nextRail;
+      const bOutIndex = Bend.getBestRailIndex(bTrack, bLastRail);
+      const cInIndex = Bend.getBestRailIndex(cTrack, cNextRail);
+      const bRail = bTrack.getAvailableRail(bOutIndex);
+      const cRail = cTrack.getAvailableRail(cInIndex);
+      return new RailPair(bRail, cRail);
     }
   }
 }

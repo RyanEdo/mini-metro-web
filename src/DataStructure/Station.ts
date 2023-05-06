@@ -9,6 +9,7 @@ export class Station {
   position: Point;
   tracks: Track[];
   lineRecords: Map<Line, LineRecord[]>;
+  _dev_tag: string | undefined;
   constructor(position: Point) {
     this.position = position;
     this.tracks = new Array(8)
@@ -28,10 +29,11 @@ export class Station {
       throw new Error('you are adding a line record which not belongs to this station');
     }
     // this lineRecords is the array saving linerecords
-    const lineRecords = this.lineRecords.get(line) || [lineRecord];
+    const lineRecordsArr = this.lineRecords.get(line) || [];
+    lineRecordsArr.push(lineRecord)
     // this.lineRecords is the map Line=>Line
     // containing all the information of the lines go through this station
-    this.lineRecords.set(line,lineRecords);
+    this.lineRecords.set(line,lineRecordsArr);
   }
 
 
@@ -57,18 +59,5 @@ export class Station {
     return departure || terminal;
   }
 
-
-  // assume this station is B
-  // given station is C
-  // find empty rail pair
-  // in given direction (this direction is B out direction)
-  // to C station
-  // only used in straight connect
-  // getAvailableRailPairsTo(C: Station, direction: Direction){
-  //   const bEmptyRails = this.getTrack(direction).getEmptyRails();
-  //   const cEmptyRails = C.getTrack(direction.opposite()).getEmptyRails();
-  //   const availableRailPairs = Rail.getStraightConnectRailPair(bEmptyRails, cEmptyRails);
-  //   return availableRailPairs;
-  // }
 
 }

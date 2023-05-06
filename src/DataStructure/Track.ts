@@ -21,21 +21,19 @@ export class Track {
   getEmptyRails() {
     return this.rails.filter((rail) => rail.line.empty);
   }
-  // to-do: to be delete
-  // getBestRail() {
-  //   const bestRail = Rail.getBestRail(this.getEmptyRails());
-  //   return bestRail ? bestRail : this.applyExtraRail(1);
-  // }
+
   getRail(index: number) {
     return this.rails[index];
   }
+
   applyExtraRail(index: number) {
     const extraRail = new ExtraRail(this, index);
     this.extraRails[index].push(extraRail);
     return extraRail;
   }
-  getAvailableRail(index: number){
+
+  getAvailableRail(index: number) {
     const rail = this.getRail(index);
-    return rail.line.empty? rail: this.applyExtraRail(index);
+    return rail.line.empty ? rail : this.applyExtraRail(index);
   }
 }
