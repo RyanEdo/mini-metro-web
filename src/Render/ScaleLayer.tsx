@@ -22,6 +22,14 @@ function ScaleLayer({ editingMode, setEditingMode }: ScaleLayerProp) {
   const [translateX, setTranslateX] = useState(0);
   const [translateY, setTranslateY] = useState(0);
   const [scale, setScale] = useState(1);
+  // mouseRefPoint
+  // in mouse drag mode: this point record mouse start point
+  const [mouseRefPoint, setMouseRefPoint] = useState(new Point());
+  // mouseStartTranslate
+  // record translate position when mouse start
+  // translate should add this value when mouse moving
+  const [mouseStartTranslate, setMouseStartTranslate] = useState(new Point());
+
   // touchRefPoint
   // 1. in touch move mode: this point record touch start point
   // 2. in touch scale mode: this point record the center position of start touch
@@ -55,7 +63,16 @@ function ScaleLayer({ editingMode, setEditingMode }: ScaleLayerProp) {
           setTranslateY
         )
       }
-      onMouseDown={(event) => onMouseDown(event, setEditingMode)}
+      onMouseDown={(event) =>
+        onMouseDown(
+          event,
+          translateX,
+          translateY,
+          setEditingMode,
+          setMouseRefPoint,
+          setMouseStartTranslate
+        )
+      }
       onMouseUp={(event) => onMouseUp(event, setEditingMode)}
       onMouseLeave={(event) => onMouseLeave(event, setEditingMode)}
       onMouseMove={(event) =>
@@ -65,7 +82,9 @@ function ScaleLayer({ editingMode, setEditingMode }: ScaleLayerProp) {
           translateY,
           setTranslateX,
           setTranslateY,
-          editingMode
+          editingMode,
+          mouseRefPoint,
+          mouseStartTranslate
         )
       }
       onTouchStart={(event) =>
@@ -78,7 +97,7 @@ function ScaleLayer({ editingMode, setEditingMode }: ScaleLayerProp) {
           scale,
           setTouchStartTranslate,
           translateX,
-          translateY,
+          translateY
         )
       }
       onTouchMove={(event) =>
@@ -93,7 +112,7 @@ function ScaleLayer({ editingMode, setEditingMode }: ScaleLayerProp) {
           touchStartDistance,
           touchStartScale,
           setScale,
-          touchStartTranslate,
+          touchStartTranslate
         )
       }
       onTouchEnd={(event) => onTouchEnd(event, setEditingMode)}

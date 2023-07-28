@@ -33,8 +33,8 @@ function DevelopLayer() {
   line8.linkAll([E,B,C,D]);
 
 
-  console.log(line1,line3,line8);
-  console.log(A,B,C,D,E,F);
+  // console.log(line1,line3,line8);
+  // console.log(A,B,C,D,E,F);
 
 
 

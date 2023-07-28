@@ -1,4 +1,4 @@
-import { Touch } from "react";
+import { MouseEvent, Touch } from "react";
 import { Straight } from "./Straight";
 
 export class Point {
@@ -26,9 +26,14 @@ export class Point {
     return new Point(this.x, -this.y, !this.yReversed);
   }
 
-  static getPoint(A: Touch) {
+  static getPointFromTouch(A: Touch) {
     return new Point(A.clientX, A.clientY);
   }
+
+  static getPointFromMouse(A: MouseEvent) {
+    return new Point(A.clientX, A.clientY);
+  }
+
   static getMidPoint(A: Point, B: Point) {
     return new Point((A.x + B.x) / 2, (A.y + B.y) / 2);
   }

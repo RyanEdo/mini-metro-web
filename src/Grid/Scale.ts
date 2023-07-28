@@ -14,11 +14,12 @@ const scaleByPointer = (
   scaleRatio: number,
   translateX: number,
   translateY: number,
-  refPoint: Point,
-) => new Point(
-  (refPoint.x - scaleRatio * (refPoint.x - translateX)),
-  (refPoint.y - scaleRatio * (refPoint.y - translateY))
-);
+  refPoint: Point
+) =>
+  new Point(
+    refPoint.x - scaleRatio * (refPoint.x - translateX),
+    refPoint.y - scaleRatio * (refPoint.y - translateY)
+  );
 
 export const onWheel = (
   event: WheelEvent<HTMLDivElement>,
@@ -33,13 +34,13 @@ export const onWheel = (
 
   const nextScale = deltaY * sensitivity + preScale;
   const scaleRatio = nextScale / preScale;
-  const refPoint = new Point(clientX,clientY);
+  const refPoint = new Point(clientX, clientY);
   if (nextScale > 0.1) {
     const transform = scaleByPointer(
       scaleRatio,
       translateX,
       translateY,
-      refPoint,
+      refPoint
     );
     setTranslateX(transform.x);
     setTranslateY(transform.y);
@@ -49,10 +50,16 @@ export const onWheel = (
 
 export const onMouseDown = (
   event: MouseEvent<HTMLDivElement>,
-  setEditingMode: Dispatch<SetStateAction<Mode>>
+  translateX: number,
+  translateY: number,
+  setEditingMode: Dispatch<SetStateAction<Mode>>,
+  setMouseRefPoint: Dispatch<SetStateAction<Point>>,
+  setMouseStartTranslate: Dispatch<React.SetStateAction<Point>>
 ) => {
-  console.log(event);
+  const point = Point.getPointFromMouse(event);
+  setMouseRefPoint(point);
   setEditingMode(Mode.moving);
+  setMouseStartTranslate(new Point(translateX, translateY));
 };
 
 export const onMouseMove = (
@@ -61,13 +68,17 @@ export const onMouseMove = (
   translateY: number,
   setTranslateX: Dispatch<SetStateAction<number>>,
   setTranslateY: Dispatch<SetStateAction<number>>,
-  editingMode: Mode
+  editingMode: Mode,
+  mouseRefPoint: Point,
+  mouseStartTranslate: Point
 ) => {
-  const { movementX, movementY } = event;
   switch (editingMode) {
     case Mode.moving: {
-      setTranslateX((translateX) => translateX + movementX);
-      setTranslateY((translateY) => translateY + movementY);
+      console.log(event);
+      const point = Point.getPointFromMouse(event);
+      const displacement = point.displacementTo(mouseRefPoint);
+      setTranslateX(mouseStartTranslate.x + displacement.x);
+      setTranslateY(mouseStartTranslate.y + displacement.y);
       break;
     }
   }
@@ -98,17 +109,17 @@ export const onTouchStart = (
   scale: number,
   setTouchStartTranslate: Dispatch<SetStateAction<Point>>,
   translateX: number,
-  translateY: number,
+  translateY: number
 ) => {
   const { touches } = event;
   // record touch start translate position
-  setTouchStartTranslate(new Point(translateX,translateY));
+  setTouchStartTranslate(new Point(translateX, translateY));
 
   switch (touches.length) {
     //one finger
     case 1: {
       const touch = touches[0];
-      setTouchRefPoint(Point.getPoint(touch));
+      setTouchRefPoint(Point.getPointFromTouch(touch));
       setEditingMode(Mode.touchMoving);
       break;
     }
@@ -116,14 +127,14 @@ export const onTouchStart = (
     case 2: {
       const touchA = touches[0];
       const touchB = touches[1];
-      const pointA = Point.getPoint(touchA);
-      const pointB = Point.getPoint(touchB);
+      const pointA = Point.getPointFromTouch(touchA);
+      const pointB = Point.getPointFromTouch(touchB);
       setTouchRefPoint(Point.getMidPoint(pointA, pointB));
       setEditingMode(Mode.touchScaling);
       //start touch distance
       const distance = pointA.distanceTo(pointB);
       setTouchStartDistance(distance);
-      setTouchStartScale(scale)
+      setTouchStartScale(scale);
       break;
     }
   }
@@ -149,7 +160,7 @@ export const onTouchMove = (
     case 1: {
       if (editingMode === Mode.touchMoving) {
         const touch = touches[0];
-        const point = Point.getPoint(touch);
+        const point = Point.getPointFromTouch(touch);
         console.log(touchRefPoint);
         const displacement = point.displacementTo(touchRefPoint);
         setTranslateX(displacement.x + touchStartTranslate.x);
@@ -162,8 +173,8 @@ export const onTouchMove = (
       if (editingMode === Mode.touchScaling) {
         const touchA = touches[0];
         const touchB = touches[1];
-        const pointA = Point.getPoint(touchA);
-        const pointB = Point.getPoint(touchB);
+        const pointA = Point.getPointFromTouch(touchA);
+        const pointB = Point.getPointFromTouch(touchB);
 
         // for scale
         const distance = pointA.distanceTo(pointB);
@@ -177,7 +188,7 @@ export const onTouchMove = (
           scaleRatio,
           touchStartTranslate.x,
           touchStartTranslate.y,
-          touchRefPoint,
+          touchRefPoint
         );
         //displacement between preMidPoint and midPoint
         const displacement = midPoint.displacementTo(touchRefPoint);
