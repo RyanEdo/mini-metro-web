@@ -1,5 +1,5 @@
 import { Mode } from '../DataStructure/Mode';
-import ScaleLayer from '../Render/ScaleLayer';
+import ScaleLayer from '../Render/Layer/ScaleLayer';
 import './App.scss';
 import React, { useState } from 'react';
 

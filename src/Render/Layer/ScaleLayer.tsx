@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Mode } from "../DataStructure/Mode";
+import { Mode } from "../../DataStructure/Mode";
 import RenderLayer from "./RenderLayer";
 import {
   onMouseDown,
@@ -10,10 +10,10 @@ import {
   onTouchMove,
   onTouchStart,
   onWheel,
-} from "../Grid/Scale";
+} from "../../Grid/Scale";
 import "./ScaleLayer.scss";
-import { getCursor } from "../Style.ts/Cursor";
-import { Point } from "../DataStructure/Point";
+import { getCursor } from "../../Style.ts/Cursor";
+import { Point } from "../../DataStructure/Point";
 class ScaleLayerProp {
   editingMode!: Mode;
   setEditingMode!: React.Dispatch<React.SetStateAction<Mode>>;

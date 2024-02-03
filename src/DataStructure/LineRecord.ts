@@ -19,6 +19,13 @@ export class LineRecord {
     }
   }
 
+  getInDirection(){
+    return this.lastRail?.track.direction;
+  }
+
+  getOutDirection(){
+    return this.nextRail?.track.direction;
+  }
   establishConnectionTo(BRecord: LineRecord) {
     LineRecord.establishConnection(this, BRecord);
   }
