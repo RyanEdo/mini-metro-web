@@ -14,6 +14,7 @@ function DevelopLayer() {
   const pointD = new Point(800, 300);
   const pointE = new Point(200, 400);
   const pointF = new Point(800, 200);
+  const pointG = new Point(500, 500);
 
   const A = new Station(pointA);
   const B = new Station(pointB);
@@ -22,23 +23,25 @@ function DevelopLayer() {
   const D = new Station(pointD);
   const E = new Station(pointE);
   const F = new Station(pointF);
+  const G = new Station(pointG);
 
   const line1 = new Line();
   const line3 = new Line();
   const line8 = new Line();
-  line8._dev_tag = "line8";
+  const line9 = new Line();
 
   line1.linkAll([A, B, C, D]);
   line3.linkAll([E, B, C, D, F, E]);
+  line3._dev_tag='line3';
   line8.linkAll([E, B, C, D]);
+  line9.linkAll([A, E, G,D,F]);
 
   // console.log(line1, line3, line8);
   // console.log(A, B, C, D, E, F);
   console.log(C);
 
-
-  const allStationsList = [A, B, C, D, E, F];
-  const allLinesList = [line1, line3, line8];
+  const allStationsList = [A, B, C, D, E, F, G];
+  const allLinesList = [line1, line3, line8, line9];
 
   const renderStations = (allStationsList: Station[]) => {
     return (
@@ -51,20 +54,24 @@ function DevelopLayer() {
               top: station.position.y,
             }}
           >
-            {String.fromCharCode('A'.charCodeAt(0)+index)}
+            {String.fromCharCode("A".charCodeAt(0) + index)}
           </div>
         ))}
       </div>
     );
   };
 
-  const renderLines = (allLinesList: Line[])=>{
-    return <div>
-      {allLinesList.map(line=>{
-        return(<LineRender line={line}/>)
-      })}
-    </div>
-  }
+  const renderLines = (allLinesList: Line[]) => {
+    return (
+      <div>
+        {allLinesList.map((line) => {
+          return <LineRender line={line} />;
+        })}
+      </div>
+    );
+  };
+
+
   return (
     <div className="DevelopLayer">
       {/* <div className="grid">
@@ -74,6 +81,7 @@ function DevelopLayer() {
       </div> */}
       {renderStations(allStationsList)}
       {renderLines(allLinesList)}
+
     </div>
   );
 }

@@ -10,6 +10,33 @@ export class Vector extends Direction {
     this.end = end;
   }
 
+  normalize(k: number = 1) {
+    const deltaX = this.end.x-this.start.x;
+    const deltaY = this.end.y-this.start.y;
+    const module = Math.sqrt(
+      Math.pow(deltaX, 2) +
+        Math.pow(deltaY - this.end.y, 2)
+    );
+    return new Vector(new Point(0,0), new Point(k*deltaX/module, k*deltaY/module))
+  }
+
+  passesThroughPoint(A: Point) {
+    return (
+      (A.x - this.start.x) * (A.y - this.end.y) ===
+      (A.y - this.start.y) * (A.x - this.end.x)
+    );
+  }
+
+  round(){
+    return new Vector(this.start.round(),this.end.round());
+  }
+
+  passesThroughPointRound(point: Point){
+    const A = point.round();
+    const vector = this.round();
+    return this.passesThroughPoint.bind(vector)(A);
+  }
+
   getCrossPointTo(b: Vector) {
     const a = this;
     const A = a.start,
@@ -21,11 +48,11 @@ export class Vector extends Direction {
     const n = (C.x - D.x) / (C.y - D.y);
     // if(!Number.isFinite(m)) return new Point(A.x, (A.x - C.x) / n + C.y);
     // if(!Number.isFinite(n)) return new Point(C.x, (C.x - A.x) / m + A.y);
-    if(!Number.isFinite(m)) return new Point(n*(A.y-C.y)+C.x, A.y);
-    if(!Number.isFinite(n)) return new Point(m*(C.y-A.y)+A.x, C.y);
-    const y = (C.x - A.x + m*A.y - n*C.y)/(m-n);
-    const x = n*(y-C.y)+ C.x;
-    return new Point(x,y);
+    if (!Number.isFinite(m)) return new Point(n * (A.y - C.y) + C.x, A.y);
+    if (!Number.isFinite(n)) return new Point(m * (C.y - A.y) + A.x, C.y);
+    const y = (C.x - A.x + m * A.y - n * C.y) / (m - n);
+    const x = n * (y - C.y) + C.x;
+    return new Point(x, y);
   }
 
   static getVectorByPointAndDirection(A: Point, direction: Direction) {

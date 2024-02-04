@@ -1,2 +1,3 @@
 const gauge = 10;
-export {gauge};
+const line_radius = 10;
+export {gauge, line_radius};
