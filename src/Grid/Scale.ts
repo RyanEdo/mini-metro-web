@@ -74,7 +74,7 @@ export const onMouseMove = (
 ) => {
   switch (editingMode) {
     case Mode.moving: {
-      console.log(event);
+      // console.log(event);
       const point = Point.getPointFromMouse(event);
       const displacement = point.displacementTo(mouseRefPoint);
       setTranslateX(mouseStartTranslate.x + displacement.x);
@@ -88,7 +88,7 @@ export const onMouseUp = (
   event: MouseEvent<HTMLDivElement>,
   setEditingMode: Dispatch<SetStateAction<Mode>>
 ) => {
-  console.log(event);
+  // console.log(event);
   setEditingMode(Mode.normal);
 };
 
@@ -96,7 +96,7 @@ export const onMouseLeave = (
   event: MouseEvent<HTMLDivElement>,
   setEditingMode: Dispatch<SetStateAction<Mode>>
 ) => {
-  console.log(event);
+  // console.log(event);
   setEditingMode(Mode.normal);
 };
 

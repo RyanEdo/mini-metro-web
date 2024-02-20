@@ -22,3 +22,14 @@ test('renders learn react link', () => {
 
   expect(linkElement).toBeDefined();
 });
+
+
+test('vector cross pointer',()=>{
+  const a = new Vector(new Point(0,0), new Point(1,1));
+  const b = new Vector(new Point(0,5), new Point(5,0));
+  const abCrossPoint = a.getCrossPointTo(b);
+  console.log(abCrossPoint);
+  expect(abCrossPoint.x).toEqual(2.5);
+  expect(abCrossPoint.y).toEqual(2.5);
+
+})

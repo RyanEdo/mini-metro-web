@@ -27,25 +27,28 @@ export enum Direct {
 export class Direction {
   direct: Direct;
   standard: boolean;
+  lean: boolean;
   constructor(direct: Direct) {
     this.direct = direct;
     this.standard = direct < 8;
+    this.lean = direct % 2 === 1;
   }
 
   opposite() {
     if (this.direct < 8) return new Direction((this.direct + 4) % 8);
     if (this.direct >= 8 && this.direct < 12)
-      return new Direction(this.direct+4);
-    if(this.direct >= 12 && this.direct <16)
-      return new Direction(this.direct-4);
+      return new Direction(this.direct + 4);
+    if (this.direct >= 12 && this.direct < 16)
+      return new Direction(this.direct - 4);
     return new Direction(this.direct);
   }
 
-  oppositeTo(direction: Direction){
-    return direction.opposite().direct === this.direct;
+  oppositeTo(direction: Direction | undefined) {
+    if (direction) return direction.opposite().direct === this.direct;
+    throw new Error("no direction!");
   }
 
-  sameTo(direction: Direction){
+  sameTo(direction: Direction) {
     return this.direct === direction.direct;
   }
 
@@ -54,21 +57,32 @@ export class Direction {
   // -1 -2 -3 means counterclockwise
   // 0 means no need rotate
   // 4 means opposite direction
-  rotationTo(direction: Direction){
-    if(this.oppositeTo(direction)) return 4;
+  rotationTo(direction: Direction) {
+    if (this.oppositeTo(direction)) return 4;
     const side = direction.direct - this.direct;
-    if(side < -4) return side + 8;
-    if(side > 4) return side -8;
+    if (side < -4) return side + 8;
+    if (side > 4) return side - 8;
     return side;
-
   }
-  getBendSteps(bendFirst: boolean){
-    if(this.direct<8||this.direct>15){
-      throw new Error('this is not bend direction');
+  getBendSteps(bendFirst: boolean) {
+    if (this.direct < 8 || this.direct > 15) {
+      throw new Error("this is not bend direction");
     }
-    const firstStep = new Direction(this.direct - 7 - this.direct%2);
-    const secondStep = new Direction((this.direct - 8 + this.direct%2)%8);
-    return bendFirst ? [firstStep,secondStep]: [secondStep,firstStep];
+    const firstStep = new Direction(this.direct - 7 - (this.direct % 2));
+    const secondStep = new Direction((this.direct - 8 + (this.direct % 2)) % 8);
+    return bendFirst ? [firstStep, secondStep] : [secondStep, firstStep];
   }
-
 }
+
+export const DirectionVictor = [
+  [0, 1],
+  [1, 1],
+  [1, 0],
+  [1, -1],
+  [0, -1],
+  [-1, -1],
+  [-1, 0],
+  [-1, 1],
+];
+
+export const DirectionVictorReverseY = DirectionVictor.map(([x,y])=>[x,-y]);
