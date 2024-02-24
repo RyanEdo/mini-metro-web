@@ -8,10 +8,18 @@ import { Straight } from "./Straight";
 import { Vector } from "./Vector";
 export class Line {
   empty: boolean;
-  departureStation: LineRecord | undefined;
+  departureRecord: LineRecord | undefined;
   _dev_tag: string | undefined;
   constructor() {
     this.empty = false;
+  }
+
+  getTerminalRecord(){
+    let p = this.departureRecord;
+    while(p?.nextLineRecord){
+      if(p.nextLineRecord === this.departureRecord || !p.nextLineRecord) return p;
+      p=p.nextLineRecord;
+    }
   }
 
   linkAll(stations: Station[]){
@@ -32,7 +40,7 @@ export class Line {
       bLineRecord = new LineRecord(B, this);
       // register cLineRecord in C station
       B.addLineRecord(bLineRecord);
-      this.departureStation = bLineRecord;
+      this.departureRecord = bLineRecord;
     }
     let cLineRecord = C.getJoint(this);
     if (!cLineRecord) {

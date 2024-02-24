@@ -12,7 +12,7 @@ import {
   onWheel,
 } from "../../Grid/Scale";
 import "./ScaleLayer.scss";
-import { getCursor } from "../../Style.ts/Cursor";
+import { getCursor } from "../../Style/Cursor";
 import { Point } from "../../DataStructure/Point";
 class ScaleLayerProp {
   editingMode!: Mode;
