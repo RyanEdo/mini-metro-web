@@ -1,5 +1,5 @@
 import { Station } from './../DataStructure/Station';
-import { Direction, DirectionVictorReverseY } from "../DataStructure/Direction";
+import { Direct, Direction, DirectionVictorReverseY } from "../DataStructure/Direction";
 import { Line } from "../DataStructure/Line";
 import { LineRecord } from "../DataStructure/LineRecord";
 import { Point } from "../DataStructure/Point";
@@ -26,15 +26,12 @@ const getDepartureGoStraightHandeCommand = (A: Point,B: Point) =>{
     const C = BA.prolong(handleLength);
     const BC = new Vector(B,C);
     const [D,E] = BC.verticalProlong(handleWidth);
-    console.log(A,B)
-
     return `M ${D.x} ${D.y} L ${E.x} ${E.y} M ${C.x} ${C.y}`;
 }
-const addHandleForStation = (station: Station, line: Line, direction: Direction) =>{
-    station.handlers[direction.opposite().direct] = line;
+const addHandleForStation = (station: Station, line: Line, direct: Direct) =>{
+    station.handlers[direct] = line;
 }
 const getBestDirectionForHandle = (station: Station, direction: Direction)=>{
-
     let min = Infinity, bestChoice;
     for(let i=0; i< station.handlers.length;i++){
         const handle = station.handlers[i];
@@ -56,14 +53,15 @@ const getDepartureBestChoiceHandeCommand = (A: Point,B: Point, pathStartPoint: P
     const [D,E] = BC.verticalProlong(handleWidth);
     return `M ${D.x} ${D.y} L ${E.x} ${E.y} M ${C.x} ${C.y} L ${A.x} ${A.y} L ${F.x} ${F.y}`;
 }
-const getBestChoiceHandleCommand = (station: Station, direction: Direction, pathStartPoint: Point)=>{
+const getBestChoiceHandleCommand = (station: Station, direction: Direction, pathStartPoint: Point, line:Line)=>{
     const handleDirect = getBestDirectionForHandle(station, direction);
     if(handleDirect === undefined){
         return ` M  ${pathStartPoint.x} ${pathStartPoint.y}`;
     }else{
         const A = station.position;
         const [x,y] = DirectionVictorReverseY[handleDirect]
-        const B = new Point(A.x+x,A.y+y)
+        const B = new Point(A.x+x,A.y+y);
+        addHandleForStation(station, line!, handleDirect);
         return getDepartureBestChoiceHandeCommand(A,B, pathStartPoint);
     }
 }
@@ -74,16 +72,55 @@ const getStartHandleCommand = (A: Point,B: Point, departureRecord: LineRecord)=>
     const ifHandeCanGoStraight = checkifHandeCanGoStraight(outDirection!, station);
     if(ifHandeCanGoStraight){
         command = getDepartureGoStraightHandeCommand(A,B);
-        addHandleForStation(station, line!, outDirection!);
+        addHandleForStation(station, line!, outDirection!.opposite().direct);
     }else{
-        command = getBestChoiceHandleCommand(station, outDirection!, A);
+        command = getBestChoiceHandleCommand(station, outDirection!, A, line!);
     }
-    console.log(ifHandeCanGoStraight)
     return command;
 }
 
-const getEndHandleCommand = (C: Point,D: Point,terminalRecord: LineRecord | undefined)=>{
-    return '';
+const getTerminalGoStraightHandeCommand = (C: Point,D: Point) =>{
+    const CD = new Vector(C,D);
+    const E = CD.prolong(handleLength);
+    const CE = new Vector(C,E);
+    const [F,G] = CE.verticalProlong(handleWidth);
+    return ` L ${E.x} ${E.y} M ${F.x} ${F.y} L ${G.x} ${G.y}`;
+}
+
+const getDepartureBestChoiceTerminalHandeCommand = (A: Point,B: Point, pathEndPoint: Point) =>{
+    const F = pathEndPoint;
+    const AB = new Vector(A,B);
+    const C = AB.prolong(handleLength-1);
+    const BC = new Vector(B,C);
+    const [D,E] = BC.verticalProlong(handleWidth);
+    return `L ${F.x} ${F.y} L ${A.x} ${A.y} L ${C.x} ${C.y}   M ${D.x} ${D.y} L ${E.x} ${E.y} `;
+}
+
+const getBestChoiceTerminalHandleCommand = (station: Station, direction: Direction, pathStartPoint: Point, line:Line)=>{
+    const handleDirect = getBestDirectionForHandle(station, direction);
+    if(handleDirect === undefined){
+        return ` L  ${pathStartPoint.x} ${pathStartPoint.y}`;
+    }else{
+        const A = station.position;
+        const [x,y] = DirectionVictorReverseY[handleDirect]
+        const B = new Point(A.x+x,A.y+y);
+        addHandleForStation(station, line!, handleDirect);
+        return getDepartureBestChoiceTerminalHandeCommand(A,B, pathStartPoint);
+    }
+}
+
+const getEndHandleCommand = (C: Point,D: Point,terminalRecord: LineRecord)=>{
+    let command = '';
+    const inDirection = terminalRecord?.getInDirection();
+    const {station, line} = terminalRecord;
+    const ifHandeCanGoStraight = checkifHandeCanGoStraight(inDirection!, station);
+    if(ifHandeCanGoStraight){
+        command = getTerminalGoStraightHandeCommand(C,D);
+        addHandleForStation(station, line!, inDirection!.opposite().direct);
+    }else{
+        command = getBestChoiceTerminalHandleCommand(station, inDirection!, D, line!);
+    }
+    return command;
 }
 const getHandleCommand = (line: Line, allKeyPoints: Point[])=>{
     const [A,B] = allKeyPoints;
@@ -91,7 +128,7 @@ const getHandleCommand = (line: Line, allKeyPoints: Point[])=>{
     const { departureRecord } = line;
     const terminalRecord = line.getTerminalRecord();
     const startHandleCommand = getStartHandleCommand(A,B,departureRecord!);
-    const endHandleCommand = getEndHandleCommand(C,D,terminalRecord);
+    const endHandleCommand = getEndHandleCommand(C,D,terminalRecord!);
     const LQLPoints = getLPLPoints(allKeyPoints);
     return {startHandleCommand, LQLPoints, endHandleCommand}
 }

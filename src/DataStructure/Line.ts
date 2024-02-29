@@ -20,6 +20,7 @@ export class Line {
       if(p.nextLineRecord === this.departureRecord || !p.nextLineRecord) return p;
       p=p.nextLineRecord;
     }
+    return p;
   }
 
   linkAll(stations: Station[]){
