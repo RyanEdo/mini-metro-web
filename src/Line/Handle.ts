@@ -48,22 +48,23 @@ const getBestDirectionForHandle = (station: Station, direction: Direction)=>{
     }
     return bestChoice;
 }
-const getDepartureBestChoiceHandeCommand = (A: Point,B: Point) =>{
+const getDepartureBestChoiceHandeCommand = (A: Point,B: Point, pathStartPoint: Point) =>{
+    const F = pathStartPoint;
     const AB = new Vector(A,B);
     const C = AB.prolong(handleLength-1);
     const BC = new Vector(B,C);
     const [D,E] = BC.verticalProlong(handleWidth);
-    return `M ${D.x} ${D.y} L ${E.x} ${E.y} M ${C.x} ${C.y} L ${A.x} ${A.y}`;
+    return `M ${D.x} ${D.y} L ${E.x} ${E.y} M ${C.x} ${C.y} L ${A.x} ${A.y} L ${F.x} ${F.y}`;
 }
-const getBestChoiceHandleCommand = (station: Station, direction: Direction)=>{
+const getBestChoiceHandleCommand = (station: Station, direction: Direction, pathStartPoint: Point)=>{
     const handleDirect = getBestDirectionForHandle(station, direction);
     if(handleDirect === undefined){
-        return ' M ';
+        return ` M  ${pathStartPoint.x} ${pathStartPoint.y}`;
     }else{
         const A = station.position;
         const [x,y] = DirectionVictorReverseY[handleDirect]
         const B = new Point(A.x+x,A.y+y)
-        return getDepartureBestChoiceHandeCommand(A,B);
+        return getDepartureBestChoiceHandeCommand(A,B, pathStartPoint);
     }
 }
 const getStartHandleCommand = (A: Point,B: Point, departureRecord: LineRecord)=>{
@@ -75,7 +76,7 @@ const getStartHandleCommand = (A: Point,B: Point, departureRecord: LineRecord)=>
         command = getDepartureGoStraightHandeCommand(A,B);
         addHandleForStation(station, line!, outDirection!);
     }else{
-        command = getBestChoiceHandleCommand(station, outDirection!);
+        command = getBestChoiceHandleCommand(station, outDirection!, A);
     }
     console.log(ifHandeCanGoStraight)
     return command;
