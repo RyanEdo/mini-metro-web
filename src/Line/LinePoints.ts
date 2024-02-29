@@ -23,15 +23,16 @@ const getTurningPoint = (
     direction: Direction,
     rail: Rail
   ) => {
+    const SQRT1_2 = 1;
     const directionOffset = [
       [0, -1],
-      [Math.SQRT1_2, -Math.SQRT1_2],
+      [SQRT1_2, -SQRT1_2],
       [1, 0],
-      [Math.SQRT1_2, Math.SQRT1_2],
+      [SQRT1_2, SQRT1_2],
       [0, 1],
-      [-Math.SQRT1_2, Math.SQRT1_2],
+      [-SQRT1_2, SQRT1_2],
       [-1, 0],
-      [-Math.SQRT1_2, -Math.SQRT1_2],
+      [-SQRT1_2, -SQRT1_2],
     ];
     const offsetIndex = (direction.direct + rail.index - 1 + 8) % 8;
     const offset = directionOffset[offsetIndex];
@@ -208,7 +209,7 @@ const getTurningPoint = (
     }
     const start = LQLPoints[0],
       end = LQLPoints[LQLPoints.length - 1];
-    const MCommand = ` M ${start.x} ${start.y} `;
+    const MCommand = ``;
     const EndCommand = ` L ${end.x} ${end.y} `;
     let path = "";
     for (let i = 1; i < LQLPoints.length - 1; i++) {

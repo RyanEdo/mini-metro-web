@@ -32,7 +32,7 @@ function DevelopLayer() {
 
   line1.linkAll([A, B, C, D]);
   line3.linkAll([E, B, C, D, F, E]);
-  line3._dev_tag='line3';
+  line8._dev_tag='line8';
   line8.linkAll([E, B, C, D]);
   line9.linkAll([A, E, G,D,F]);
 

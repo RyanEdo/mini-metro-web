@@ -10,14 +10,52 @@ export class Vector extends Direction {
     this.end = end;
   }
 
+  verticalProlong(length: number) {
+    const A = this.start,
+      B = this.end;
+    if (A.x === B.x)
+      return [new Point(B.x + length, B.y), new Point(B.x - length, B.y)];
+    const diffSign = (A.x<B.x && A.y<B.y) || (A.x>B.x&&A.y>B.y);
+    const tan = (B.y - A.y) / (B.x - A.x);
+    const alpha = Math.abs(Math.atan(tan));
+    const sin = Math.sin(alpha);
+    const cos = Math.cos(alpha);
+
+    if(diffSign)
+    return [
+      new Point(B.x - sin * length, B.y + cos * length),
+      new Point(B.x + sin * length, B.y - cos * length),
+    ];
+    return [
+      new Point(B.x - sin * length, B.y - cos * length),
+      new Point(B.x + sin * length, B.y + cos * length),
+    ];
+    
+  }
+
+  prolong(length: number) {
+    const A = this.start,
+      B = this.end;
+    const kX = A.x < B.x ? 1 : -1;
+    const kY = A.y < B.y ? 1 : -1;
+    if (A.x === B.x) return new Point(A.x, B.y + kY * length);
+    const tan = (B.y - A.y) / (B.x - A.x);
+    const alpha = Math.abs(Math.atan(tan));
+    const sin = Math.sin(alpha);
+    const cos = Math.cos(alpha);
+    return new Point(B.x + kX * cos * length, B.y + kY * sin * length);
+  }
+
   normalize(k: number = 1) {
-    const deltaX = this.end.x-this.start.x;
-    const deltaY = this.end.y-this.start.y;
+    const deltaX = this.end.x - this.start.x;
+    const deltaY = this.end.y - this.start.y;
     const module = Math.sqrt(
-      Math.pow(deltaX, 2) +
-        Math.pow(deltaY - this.end.y, 2)
+      Math.pow(deltaX, 2) + Math.pow(deltaY - this.end.y, 2)
     );
-    return new Vector(new Point(0,0), new Point(k*deltaX/module, k*deltaY/module))
+    return new Vector(
+      new Point(0, 0),
+      new Point((k * deltaX) / module, (k * deltaY) / module)
+    );
   }
 
   passesThroughPoint(A: Point) {
@@ -27,11 +65,11 @@ export class Vector extends Direction {
     );
   }
 
-  round(){
-    return new Vector(this.start.round(),this.end.round());
+  round() {
+    return new Vector(this.start.round(), this.end.round());
   }
 
-  passesThroughPointRound(point: Point){
+  passesThroughPointRound(point: Point) {
     const A = point.round();
     const vector = this.round();
     return this.passesThroughPoint.bind(vector)(A);

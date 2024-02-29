@@ -10,12 +10,14 @@ export class Station {
   tracks: Track[];
   lineRecords: Map<Line, LineRecord[]>;
   _dev_tag: string | undefined;
+  handlers: (Line|undefined|null)[];
   constructor(position: Point) {
     this.position = position;
     this.tracks = new Array(8)
       .fill(true)
       .map((x, direct: Direct) => new Track(this, new Direction(direct)));
     this.lineRecords = new Map();
+    this.handlers = [];
   }
 
 

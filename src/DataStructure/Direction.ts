@@ -34,6 +34,11 @@ export class Direction {
     this.lean = direct % 2 === 1;
   }
 
+  delta(direct: Direct){
+    const diff = Math.abs(direct - this.direct);
+    return Math.min(diff, 8-diff);
+  }
+
   opposite() {
     if (this.direct < 8) return new Direction((this.direct + 4) % 8);
     if (this.direct >= 8 && this.direct < 12)
