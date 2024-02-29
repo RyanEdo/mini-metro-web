@@ -17,8 +17,8 @@ export class Line {
   getTerminalRecord(){
     let p = this.departureRecord;
     while(p?.nextLineRecord){
-      if(p.nextLineRecord === this.departureRecord || !p.nextLineRecord) return p;
-      p=p.nextLineRecord;
+      p = p.nextLineRecord;
+      if(p === this.departureRecord || !p.nextLineRecord) return p;
     }
     return p;
   }

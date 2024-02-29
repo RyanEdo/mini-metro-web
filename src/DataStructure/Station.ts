@@ -17,7 +17,7 @@ export class Station {
       .fill(true)
       .map((x, direct: Direct) => new Track(this, new Direction(direct)));
     this.lineRecords = new Map();
-    this.handlers = [];
+    this.handlers = new Array(8);
   }
 
 
