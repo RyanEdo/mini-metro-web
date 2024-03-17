@@ -1,0 +1,119 @@
+.line-card {
+    width: 455px;
+    height: 250px;
+    border-radius: 23px;
+    box-shadow: 0 4px 59px 7px rgba(0, 0, 0, 0.25);
+    display: flow-root;
+    // zoom: 0.8;
+    --margin-left: 33px;
+    background-color: rgba(255, 255, 255, 0.863);
+    backdrop-filter: blur(15px);
+    position: relative;
+    transition: 0.3s ease-in-out width;
+    overflow-x: hidden;
+    .tools {
+        position: absolute;
+        right: 0;
+        .expend {
+            height: 34px;
+            width: 34px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 14.5px;
+            background-color: #d9d9d9;
+            border-radius: 7.25px;
+            .expend-icon {
+                height: 15px;
+                width: 15px;
+            }
+        }
+    }
+
+    .line-name {
+        font-size: 18px;
+        font-weight: 500;
+        margin: 23px 0 0 var(--margin-left);
+    }
+    .stations-count {
+        font-size: 24px;
+        font-weight: 500;
+        margin: 2px 0 0 var(--margin-left);
+    }
+    .from-to {
+        font-size: 18px;
+        font-weight: 500;
+        margin: 5px 0 0 var(--margin-left);
+        color: #ababab;
+    }
+    .station-bar {
+        margin: 30px 0 0 0;
+        white-space: nowrap;
+        width: 455px;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        transition: 0.3s ease-in-out width;
+
+        &::-webkit-scrollbar {
+            display: none;
+            // width: 0.01px;
+        }
+        .add-first {
+            width: var(--margin-left);
+            display: inline-block;
+        }
+        .station-block {
+            display: inline-block;
+            width: 161px;
+            height: 78.22px;
+            border-left: 1px solid #cccccc;
+            position: relative;
+            .track {
+                display: flex;
+                background-color: #f0f0f0;
+                width: 161px;
+                height: 48.3px;
+                .sleeper {
+                    border-left: 1px solid #cccccc;
+                    width: 53.6px;
+                    &:first-child {
+                        border: none;
+                    }
+                }
+            }
+            .bend-first {
+                position: absolute;
+                top: 7.215px;
+                left: 9.5px;
+                height: 33.87px;
+                width: 133.8px;
+                background-color: #d9d9d9;
+                border-radius: 4px;
+                display: flex;
+                align-items: center;
+                .bend-icon {
+                    width: 16px;
+                    height: 16px;
+                    display: inline-block;
+                    margin: 0 13px 0 18.5px;
+
+                    &.bend {
+                        transform: rotate(-45deg);
+                    }
+                }
+                .bend-des {
+                    display: inline-block;
+                    font-size: 14.25px;
+                    font-weight: 500;
+                    color: rgb(0, 0, 0, 0.5);
+                }
+            }
+            .station-name {
+                font-size: 18px;
+                font-weight: 500;
+                margin: 8px;
+                color: #ea0b2a;
+            }
+        }
+    }
+}
