@@ -30,14 +30,14 @@ function DevelopLayer() {
   const line8 = new Line();
   const line9 = new Line();
 
-  // line1.linkAll([A, B, C, D]);
-  line3.linkAll([E, B, C, D, F, E]);
+  line1.linkAll([A, B, C, D]);
+  // line3.linkAll([E, B, C, D, F, E]);
   line8._dev_tag='line8';
-  // line8.linkAll([E, B, C, D]);
-  // line9.linkAll([A, E, G,D,F]);
+  line8.linkAll([E, B, C, D]);
+  line9.linkAll([A, E, G,D,F]);
 
   // console.log(line1, line3, line8);
-  // console.log(A, B, C, D, E, F);
+  console.log(A, B, C, D, E, F);
 
 
   const allStationsList = [A, B, C, D, E, F, G];
