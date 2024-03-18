@@ -14,18 +14,23 @@
     .tools {
         position: absolute;
         right: 0;
-        .expend {
+        .tool-item {
+            vertical-align: top;
             height: 34px;
             width: 34px;
-            display: flex;
+            display: inline-flex;
             justify-content: center;
             align-items: center;
-            margin: 14.5px;
+            margin: 14.5px 11.3px 0 0;
             background-color: #d9d9d9;
             border-radius: 7.25px;
             .expend-icon {
                 height: 15px;
                 width: 15px;
+            }
+            .edit-icon {
+                height: 17.74px;
+                width: 17.74px;
             }
         }
     }
@@ -113,6 +118,77 @@
                 font-weight: 500;
                 margin: 8px;
                 color: #ea0b2a;
+            }
+        }
+    }
+    .edit-panel {
+        &.edit {
+            right: 0;
+        }
+        width: 200.8px;
+        background-color: #f2f2f2;
+        position: absolute;
+        right: -200.8px;
+        top: 0;
+        height: 250px;
+        transition: 0.3s ease-in-out right;
+        .edit-tools {
+            width: 200.8px;
+            height: 250px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            .edit-tool {
+                &:first-child{
+                    margin: 21.7px 21.7px 2px 21.7px;
+                }
+                &:last-child{
+                    margin: 2px 21.7px 21.7px 21.7px;
+                }
+                cursor: pointer;
+                margin: 2px 21.7px 2px 21.7px;
+                width: 158px;
+                height: 75px;
+                border-radius: 11.3px;
+                font-weight: 500;
+                display: flow-root;
+                &.selected,&:hover{
+                    background-color: #d9d9d9;
+
+                }
+                .title {
+                    font-size: 18px;
+                    margin: 12.1px 0 0 20.2px;
+                }
+                .value {
+                    font-size: 11.25px;
+                    margin: 4.83px 0 0 20.2px;
+                }
+            }
+        }
+
+        .done {
+            background-color: #2196f3;
+            border-radius: 25px;
+            width: 74px;
+            height: 28.2px;
+            position: absolute;
+            bottom: 23.4px;
+            right: 23.4px;
+            display: flex;
+            align-items: center;
+            .done-icon {
+                height: 17.74px;
+                width: 17.74px;
+                margin: 0 6.5px 0 11.3px;
+                path {
+                    fill: #ffffff;
+                    fill-opacity: 1;
+                }
+            }
+            .done-des {
+                font-size: 12px;
+                font-weight: 500;
+                color: white;
             }
         }
     }
