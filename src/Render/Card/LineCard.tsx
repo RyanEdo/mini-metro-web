@@ -25,61 +25,34 @@ export function LineCard() {
       ["星落湖", true],
       ["望风山地", true],
       ["达达乌帕谷", true],
-      ["蒙德站", true],
-      ["风起地站", false],
-      ["鹰翔海滩", true],
-      ["星落湖", true],
-      ["望风山地", true],
-      ["达达乌帕谷", true],
-      ["蒙德站", true],
-      ["风起地站", false],
-      ["鹰翔海滩", true],
-      ["星落湖", true],
-      ["望风山地", true],
-      ["达达乌帕谷", true],
     ].map(
       ([stationName, bendFirst]) =>
         new DisplayStation(stationName.toString(), !!bendFirst)
     ),
-    expendHorizental: true,
   };
-  const { lineName, stations, expendHorizental } = mock;
+  const { lineName, stations } = mock;
   const firstStation = stations[0];
   const lastStation = stations[stations.length - 1];
   const [expend, setExpend] = useState(false);
+  const [expendWidth, setExpendWidth] = useState(455);
   const getExpendWidth = () => {
-    const expected = 33 + 162 * stations.length;
+    const expected = 33 + 161 * stations.length;
     const width =
       expected > window.innerWidth ? window.innerWidth - 100 : expected;
-    return width;
+      console.log(width)
+    setExpendWidth(width);
   };
-  const getExpendHeight = () => {
-    const expected = 250 + 80.8 * Math.floor(stations.length / 3);
-    const height =
-      expected > window.innerHeight ? window.innerHeight - 100 : expected;
-    return height;
-  };
-  const [expendWidth, setExpendWidth] = useState(getExpendWidth);
-  const [expendHeight, setExpendHeight] = useState(getExpendHeight);
   useEffect(() => {
-    const resize = () => {
-      setExpendWidth(getExpendWidth());
-      setExpendHeight(getExpendHeight());
-    };
-    window.addEventListener("resize", resize);
-    return () => window.removeEventListener("resize", resize);
+    window.addEventListener("resize", getExpendWidth);
+    return ()=>window.removeEventListener("resize", getExpendWidth);
   }, [stations]);
-  console.log(expendHeight);
+  useEffect(() => {
+    getExpendWidth();
+  }, [expend]);
   return (
     <div
       className={classNames({ "line-card": 1, "expend-card": expend })}
-      style={
-        expend
-          ? expendHorizental
-            ? { width: 33 + 162 * 3, height: expendHeight }
-            : { width: expendWidth }
-          : {}
-      }
+      style={expend ? { width: expendWidth } : {}}
     >
       <div className="tools">
         <div className="edit"></div>
@@ -95,53 +68,28 @@ export function LineCard() {
       <div className="from-to">
         从{firstStation.stationName}开往{lastStation.stationName}
       </div>
-      <div
-        className={classNames({
-            "station-bar": 1,
-            "expend-horizental": expendHorizental && expend,
-          })}
-        style={
-          expend
-            ? expendHorizental
-              ? { width: 33 + 3 * 162 }
-              : { width: expendWidth }
-            : {}
-        }
-      >
+      <div className="station-bar" style={expend ? { width: expendWidth} : {}}>
         <div className="add-first"></div>
-        {stations.map((station, index) => {
+        {stations.map((station) => {
           const { stationName, bendFirst } = station;
           return (
-            <>
-              {expendHorizental && expend && index % 3 === 0 && index !== 0 ? (
-                <div className="extra-sleeper"></div>
-              ) : (
-                <></>
-              )}
-              <div
-                className={classNames({
-                  "station-block": 1,
-            "expend-horizental": expendHorizental,
-
-                })}
-              >
-                <div className="track">
-                  <div className="sleeper"></div>
-                  <div className="sleeper"></div>
-                  <div className="sleeper"></div>
-                </div>
-                <div className="bend-first">
-                  <img
-                    src={arrowIcon}
-                    className={classNames({ "bend-icon": 1, bend: bendFirst })}
-                  ></img>
-                  <div className="bend-des">
-                    {bendFirst ? "斜向优先" : "直线优先"}
-                  </div>
-                </div>
-                <div className="station-name">{stationName}</div>
+            <div className="station-block">
+              <div className="track">
+                <div className="sleeper"></div>
+                <div className="sleeper"></div>
+                <div className="sleeper"></div>
               </div>
-            </>
+              <div className="bend-first">
+                <img
+                  src={arrowIcon}
+                  className={classNames({ "bend-icon": 1, bend: bendFirst })}
+                ></img>
+                <div className="bend-des">
+                  {bendFirst ? "斜向优先" : "直线优先"}
+                </div>
+              </div>
+              <div className="station-name">{stationName}</div>
+            </div>
           );
         })}
       </div>

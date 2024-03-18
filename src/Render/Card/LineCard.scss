@@ -9,8 +9,8 @@
     background-color: rgba(255, 255, 255, 0.863);
     backdrop-filter: blur(15px);
     position: relative;
-    transition: 0.3s ease-in-out width, 0.3s ease-in-out height;
-    overflow: hidden;
+    transition: 0.3s ease-in-out width;
+    overflow-x: hidden;
     .tools {
         position: absolute;
         right: 0;
@@ -53,10 +53,7 @@
         overflow-x: scroll;
         overflow-y: hidden;
         transition: 0.3s ease-in-out width;
-        &.expend-horizental{
-            white-space: wrap;
-            transition: none;
-        }
+
         &::-webkit-scrollbar {
             display: none;
             // width: 0.01px;
@@ -65,22 +62,12 @@
             width: var(--margin-left);
             display: inline-block;
         }
-        .extra-sleeper{
-            width: 33px;
-            height: 48.3px;
-            background-color: #f0f0f0;
-            display: inline-block;
-            vertical-align: top;
-        }
         .station-block {
             display: inline-block;
             width: 161px;
             height: 78.22px;
             border-left: 1px solid #cccccc;
             position: relative;
-            &.expend-horizental{
-                margin-bottom: 22.58px;
-            }
             .track {
                 display: flex;
                 background-color: #f0f0f0;
