@@ -121,7 +121,7 @@
             }
             .custom-color{
                 margin: 0 32.25px;
-                border-top: 1px solid black;
+                border-top: 1px dashed black;
                 width: 197px;
                 box-sizing: border-box;
                 padding-top: 15px;
@@ -129,18 +129,19 @@
                 .selected-color-preview{
                     .color-input{
                         // width: 19.5px;
-                        height: 19.5px;
+                        // height: 19.5px;
                         // border-radius: 50%;  
                         display: inline-block;
                     }
                     .color-value{
                         display: inline-block;
                         margin-left: 15px;
-                        font-size: 11.25px;
+                        font-size: 15.25px;
                         font-weight: 500;
+                        width: 100px;
                         text-decoration: underline;
-                        // vertical-align: top;
-                        // margin-top: 5px;
+                        vertical-align: top;
+                        margin-top: 1px;
                         border: none;
                     }
                 }
