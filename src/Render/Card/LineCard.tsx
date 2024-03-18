@@ -52,6 +52,72 @@ export function LineCard() {
   useEffect(() => {
     getExpendWidth();
   }, [expend]);
+  const editTools = (tab: string) => {
+    switch (tab) {
+      case "name": {
+        return (
+          <div className="name-detail">
+            <div className="name-item sign">
+              <div className="title">标识</div>
+              <input className="sign-input" value={1}></input>
+            </div>
+            <div className="name-item line-name-item">
+              <div className="title">名称</div>
+              <input className="line-name-input" value={lineName}></input>
+            </div>
+            <div className="name-item order">
+              <div className="title">排序</div>
+              <input className="order-input" value={1} type="number"></input>
+            </div>
+          </div>
+        );
+      }
+      case "color": {
+        return (
+          <div className="color-detail">
+            <div className="color-detail-choosing">
+              {new Array(10).fill(1).map((x) => {
+                const randomColor = () => {
+                  const r = Math.floor(Math.random() * 255);
+                  const g = Math.floor(Math.random() * 255);
+                  const b = Math.floor(Math.random() * 255);
+                  return "rgba(" + r + "," + g + "," + b + ",1)";
+                };
+                const color = randomColor();
+                return (
+                  <div
+                    className={classNames({
+                      "color-preview": 1,
+                      "color-selected": 1,
+                    })}
+                    style={{ borderColor: color }}
+                  >
+                    <div
+                      className="color-preview-inner"
+                      style={{ backgroundColor: color }}
+                    ></div>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="custom-color">
+              <div className="selected-color-preview">
+                <input className="color-input" type="color" />
+                <input className="color-value" value={"E54242"}></input>
+              </div>
+            </div>
+          </div>
+        );
+      }
+      case "operation": {
+        return (
+          <div className="operation-detail">
+            <div className="operation-item delete">删除线路...</div>
+          </div>
+        );
+      }
+    }
+  };
   return (
     <div
       className={classNames({ "line-card": 1, "expend-card": expend })}
@@ -61,7 +127,13 @@ export function LineCard() {
         {expend || edit ? (
           <></>
         ) : (
-          <div className="edit tool-item" onClick={() => setEdit(true)}>
+          <div
+            className="edit tool-item"
+            onClick={() => {
+              setEdit(true);
+              setTab("name");
+            }}
+          >
             <EditIcon className="edit-icon"></EditIcon>
           </div>
         )}
@@ -78,34 +150,47 @@ export function LineCard() {
       </div>
       <div className="line-name">{lineName}</div>
       <div className="stations-count">{stations.length}个站点</div>
-      <div className="from-to">
-        从{firstStation.stationName}开往{lastStation.stationName}
-      </div>
-      <div className="station-bar" style={expend ? { width: expendWidth } : {}}>
-        <div className="add-first"></div>
-        {stations.map((station) => {
-          const { stationName, bendFirst } = station;
-          return (
-            <div className="station-block">
-              <div className="track">
-                <div className="sleeper"></div>
-                <div className="sleeper"></div>
-                <div className="sleeper"></div>
-              </div>
-              <div className="bend-first">
-                <img
-                  src={arrowIcon}
-                  className={classNames({ "bend-icon": 1, bend: bendFirst })}
-                ></img>
-                <div className="bend-des">
-                  {bendFirst ? "斜向优先" : "直线优先"}
+      {edit ? (
+        <div className="edit-detail">{editTools(tab)}</div>
+      ) : (
+        <>
+          <div className="from-to">
+            从{firstStation.stationName}开往{lastStation.stationName}
+          </div>
+          <div
+            className="station-bar"
+            style={expend ? { width: expendWidth } : {}}
+          >
+            <div className="add-first"></div>
+            {stations.map((station) => {
+              const { stationName, bendFirst } = station;
+              return (
+                <div className="station-block">
+                  <div className="track">
+                    <div className="sleeper"></div>
+                    <div className="sleeper"></div>
+                    <div className="sleeper"></div>
+                  </div>
+                  <div className="bend-first">
+                    <img
+                      src={arrowIcon}
+                      className={classNames({
+                        "bend-icon": 1,
+                        bend: bendFirst,
+                      })}
+                    ></img>
+                    <div className="bend-des">
+                      {bendFirst ? "斜向优先" : "直线优先"}
+                    </div>
+                  </div>
+                  <div className="station-name">{stationName}</div>
                 </div>
-              </div>
-              <div className="station-name">{stationName}</div>
-            </div>
-          );
-        })}
-      </div>
+              );
+            })}
+          </div>
+        </>
+      )}
+
       {
         <div className={classNames({ "edit-panel": 1, edit })}>
           <div
@@ -118,7 +203,7 @@ export function LineCard() {
                 "edit-tool name": 1,
                 selected: tab === "name",
               })}
-              onClick={()=>setTab("name")}
+              onClick={() => setTab("name")}
             >
               <div className="title">名称</div>
               <div className="value">1号线</div>
@@ -128,8 +213,7 @@ export function LineCard() {
                 "edit-tool color": 1,
                 selected: tab === "color",
               })}
-              onClick={()=>setTab("color")}
-
+              onClick={() => setTab("color")}
             >
               <div className="title">颜色</div>
               <div className="value">品红</div>
@@ -139,8 +223,7 @@ export function LineCard() {
                 "edit-tool operation": 1,
                 selected: tab === "operation",
               })}
-              onClick={()=>setTab("operation")}
-
+              onClick={() => setTab("operation")}
             >
               <div className="title">操作</div>
               <div className="value">删除</div>
