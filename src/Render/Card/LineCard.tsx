@@ -160,6 +160,10 @@ export function LineCard() {
           <div
             className="station-bar"
             style={expend ? { width: expendWidth } : {}}
+            onWheel={(event)=>{
+              const {currentTarget, deltaY} = event;
+              currentTarget.scrollBy({top: 0, left: deltaY, behavior: 'auto'});
+            }}
           >
             <div className="add-first"></div>
             {stations.map((station) => {

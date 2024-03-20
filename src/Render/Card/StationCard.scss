@@ -1,4 +1,4 @@
-.line-card {
+.station-card {
     width: 455px;
     height: 250px;
     border-radius: 23px;
@@ -36,12 +36,14 @@
         }
     }
 
-    .line-name {
+    .station-name {
         font-size: 18px;
         font-weight: 500;
         margin: 23px 0 0 var(--margin-left);
+        border: none;
+        padding: 0;
     }
-    .stations-count {
+    .line-count {
         font-size: 24px;
         font-weight: 500;
         margin: 2px 0 0 var(--margin-left);
@@ -60,6 +62,7 @@
                 display: inline-block;
                 margin-right: 24.2px;
                 vertical-align: top;
+                position: relative;
                 &:first-child {
                     margin-left: 32.25px;
                 }
@@ -72,69 +75,81 @@
                     margin-top: 21.77px;
                     padding: 0;
                 }
-                .sign-input {
-                    width: 35.5px;
-                    height: 35.5px;
-                    border: none;
-                    border-radius: 8.87px;
-                    background-color: #ea0b2a;
-                    font-size: 23.25px;
-                    color: white;
-                    text-align: center;
-                }
-                .line-name-input,
-                .order-input {
+                .auto-growth-span {
                     font-size: 36px;
                     border: none;
                     font-weight: 500;
                     width: 100px;
                     margin-top: 14px;
+                    opacity: 0;
                 }
-                .order-input {
-                    width: 30px;
+                .auto-growth-input {
+                    font-size: 36px;
+                    border: none;
+                    font-weight: 500;
+                    width: calc(100% + 18px);
+                    margin-top: 14px;
+                    position: absolute;
+                    left: 0;
                 }
             }
         }
         .color-detail {
             .color-detail-choosing {
                 box-sizing: border-box;
-                padding: 21px 32.25px;
+                padding: 10px 32.25px;
                 width: 255px;
                 display: grid;
-                grid-template-columns: repeat(5, 20%);
-                grid-template-rows: repeat(2, 50%);
-                grid-row-gap: 9px;
-                grid-column-gap: 6px;
-                .color-preview {
-                    width: 19.5px;
-                    height: 19.5px;
-                    border-radius: 50%;
-                    border: 2px solid;
+                border: white 1px solid;
+                grid-template-columns: repeat(4, 25%);
+                grid-template-rows: repeat(3, 33.33%);
+                // grid-row-gap: 9px;
+                // grid-column-gap: 6px;
+                .shape-container {
+                    height: 46.13px;
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    .color-preview-inner {
-                        width: 16.9px;
-                        height: 16.9px;
+                    border-left: 1px black dotted;
+                    border-bottom: 1px black solid;
+                    transform: translate(-1px, 1px);
+                    &.left{
+                        border-left: none;
+                    }
+                    &.bottom{
+                        border-bottom: none;
+                    }
+                    .color-preview {
+                        width: 19.5px;
+                        height: 19.5px;
                         border-radius: 50%;
+                        border: 2px solid;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        .color-preview-inner {
+                            width: 16.9px;
+                            height: 16.9px;
+                            border-radius: 50%;
+                        }
                     }
                 }
             }
-            .custom-color{
+            .custom-color {
                 margin: 0 32.25px;
                 border-top: 1px dashed black;
                 width: 197px;
                 box-sizing: border-box;
                 padding-top: 15px;
                 // padding-left: 10px;
-                .selected-color-preview{
-                    .color-input{
+                .selected-color-preview {
+                    .color-input {
                         // width: 19.5px;
                         // height: 19.5px;
-                        // border-radius: 50%;  
+                        // border-radius: 50%;
                         display: inline-block;
                     }
-                    .color-value{
+                    .color-value {
                         display: inline-block;
                         margin-left: 15px;
                         font-size: 15.25px;
@@ -147,15 +162,13 @@
                     }
                 }
             }
-
         }
-        .operation-detail{
-            .operation-item{
-                &:first-child{
-                margin-top: 15px;
-
+        .operation-detail {
+            .operation-item {
+                &:first-child {
+                    margin-top: 15px;
                 }
-                &:last-child{
+                &:last-child {
                     margin-bottom: 15px;
                 }
                 margin-left: 32.25px;
@@ -165,7 +178,7 @@
                 font-size: 18px;
                 font-weight: 500;
                 cursor: pointer;
-                &.delete{
+                &.delete {
                     color: #ea0b2a;
                 }
             }
@@ -285,9 +298,11 @@
                 .value {
                     font-size: 11.25px;
                     margin: 4.83px 0 0 20.2px;
-                }
-                &.color > .value {
-                    color: #ea0b2a;
+                    .position {
+                        color: #5e5e5e;
+                        margin: 0 5px;
+                        text-decoration: underline;
+                    }
                 }
             }
         }
