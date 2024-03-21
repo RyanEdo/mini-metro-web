@@ -1,20 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 
-import './StationCard.scss';
+import "./StationCard.scss";
 import classNames from "classnames";
 import { Point } from "../../DataStructure/Point";
-export function StationCard() {
-  const mock = {
-    stationName: '风起地站',
-    lineCount: 2,
-    position: new Point(200,300),
-    shape: '圆形',
-  };
-  const { stationName, lineCount,position,shape } = mock;
-
-  const{y} = position;
+import { StationProps, UserDataType, useData } from "../../Data/UserData";
+import shapes from "../../Resource/Shape/shape";
+import { Shape } from "../../Data/Shape";
+import { AutoGrowthInput } from "../../Common/AutoGrowthInput";
+export function StationCard({
+  station,
+  setData,
+}: {
+  station: StationProps;
+  setData: Dispatch<SetStateAction<UserDataType>>;
+}) {
+  const {
+    stationName,
+    lineIds,
+    position,
+    shape: shapeSelected,
+    stationId,
+  } = station;
+  const { setStationName, setStationPosition, setStationShape } = useData(
+    stationId,
+    setData
+  );
+  const [x, y] = position;
+  const setX = (x: number) => setStationPosition(x, y);
+  const setY = (y: number) => setStationPosition(x, y);
+  const lineCount = lineIds.length;
   const [tab, setTab] = useState("name");
-  const [x, setX] = useState(200);
 
   const editTools = (tab: string) => {
     switch (tab) {
@@ -23,57 +38,70 @@ export function StationCard() {
           <div className="name-detail">
             <div className="name-item sign">
               <div className="title">横坐标</div>
-              <span className="auto-growth-span">{x}</span>
-
-              <input className="auto-growth-input" value={x} onInput={x=>setX(parseInt(x.currentTarget.value))} type="number"></input>
-
+              <AutoGrowthInput
+                value={x}
+                onInput={(x) => setX(parseInt(x.currentTarget.value))}
+                type="number"
+              />
             </div>
             <div className="name-item order">
               <div className="title">纵坐标</div>
-              <span className="auto-growth-span">{y}</span>
+              <AutoGrowthInput
+                value={y}
+                onInput={(y) => setY(parseInt(y.currentTarget.value))}
+                type="number"
+              />
+              {/* <span className="auto-growth-span">{y}</span>
 
-              <input className="auto-growth-input" value={y} type="number"></input>
-            
+              <input
+                className="auto-growth-input"
+                value={y}
+                type="number"
+                onInput={(y) => setY(parseInt(y.currentTarget.value))}
+              ></input> */}
             </div>
           </div>
         );
       }
       case "color": {
         const column = 4;
-        const row =3;
+        const row = 3;
+        const grid = new Array(column * row).fill(0);
+        Object.keys(shapes).forEach((shape, index) => (grid[index] = shape));
         return (
           <div className="color-detail">
             <div className="color-detail-choosing">
-              {new Array(column*row).fill(1).map((x,index, arr) => {
-                
-                const left = index%column ===0;
-                const bottom = Math.floor(index/column) === row-1
-                const randomColor = () => {
-                  const r = Math.floor(Math.random() * 255);
-                  const g = Math.floor(Math.random() * 255);
-                  const b = Math.floor(Math.random() * 255);
-                  return "rgba(" + r + "," + g + "," + b + ",1)";
-                };
-                const color = randomColor();
+              {grid.map((shape, index) => {
+                const left = index % column === 0;
+                const bottom = Math.floor(index / column) === row - 1;
+                console.log({ shape });
                 return (
-                  <div className={classNames({"shape-container":1,left,bottom})}>
                   <div
                     className={classNames({
-                      "color-preview": 1,
-                      "color-selected": 1,
+                      "shape-container": 1,
+                      left,
+                      bottom,
                     })}
-                    style={{ borderColor: color }}
+                    onClick={() => {
+                      if (shape) setStationShape(shape);
+                    }}
                   >
                     <div
-                      className="color-preview-inner"
-                      style={{ backgroundColor: color }}
-                    ></div>
-                  </div>
+                      className={classNames({
+                        "shape-preview": 1,
+                        "shape-selected": shape === shapeSelected,
+                        [shape]: 1,
+                      })}
+                    >
+                      {
+                        //@ts-ignore
+                        shapes[shape]
+                      }
+                    </div>
                   </div>
                 );
               })}
             </div>
-
           </div>
         );
       }
@@ -87,16 +115,17 @@ export function StationCard() {
     }
   };
   return (
-    <div
-      className={classNames({ "station-card": 1,  })}
-    >
-
-      <input className="station-name" value={stationName}></input>
+    <div className={classNames({ "station-card": 1 })}>
       <div className="line-count">{lineCount}条线路</div>
+      <AutoGrowthInput
+        onInput={(e) => setStationName(e.currentTarget.value)}
+        className="station-name"
+        value={stationName}
+      />
       <div className="edit-detail">{editTools(tab)}</div>
 
       {
-        <div className={classNames({ "edit-panel": 1, "edit": 1 })}>
+        <div className={classNames({ "edit-panel": 1, edit: 1 })}>
           <div
             className={classNames({
               "edit-tools": 1,
@@ -111,9 +140,7 @@ export function StationCard() {
             >
               <div className="title">位置</div>
               <div className="value">
-                X
-                <span className="position">{x}</span>
-                Y
+                X<span className="position">{x}</span>Y
                 <span className="position">{y}</span>
               </div>
             </div>
@@ -125,7 +152,12 @@ export function StationCard() {
               onClick={() => setTab("color")}
             >
               <div className="title">形状</div>
-              <div className="value">{shape}</div>
+              <div className="value">
+                {
+                  //@ts-ignore
+                  Shape[shapeSelected]
+                }
+              </div>
             </div>
             <div
               className={classNames({
@@ -138,8 +170,6 @@ export function StationCard() {
               <div className="value">删除</div>
             </div>
           </div>
-
-
         </div>
       }
     </div>

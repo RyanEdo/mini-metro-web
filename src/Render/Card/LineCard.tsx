@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Line } from "../../DataStructure/Line";
 import { Station } from "../../DataStructure/Station";
 import { DisplayStation } from "../../DataStructure/Display";
@@ -9,10 +9,11 @@ import shrinkIcon from "../../Resource/Icon/shrink-icon.svg";
 import EditIcon from "../../Resource/Icon/edit.svg";
 
 import classNames from "classnames";
-export function LineCard() {
+import { LineProps, UserDataType } from "../../Data/UserData";
+export function LineCard({line, setData}:{line: LineProps, setData:Dispatch<SetStateAction<UserDataType>>}) {
   const mock = {
     lineId: 1,
-    lineName: "1号线",
+    lineName: "机场联络线",
     stations: [
       ["蒙德站", true],
       ["风起地站", false],
@@ -148,8 +149,8 @@ export function LineCard() {
           </div>
         )}
       </div>
-      <div className="line-name">{lineName}</div>
       <div className="stations-count">{stations.length}个站点</div>
+      <div className="line-name">{lineName}</div>
       {edit ? (
         <div className="edit-detail">{editTools(tab)}</div>
       ) : (

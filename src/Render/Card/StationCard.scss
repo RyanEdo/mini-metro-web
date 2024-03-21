@@ -5,6 +5,8 @@
     box-shadow: 0 4px 59px 7px rgba(0, 0, 0, 0.25);
     display: inline-block;
     margin-left: 50px;
+    margin-bottom: 50px;
+
     // zoom: 0.8;
     --margin-left: 33px;
     background-color: rgba(255, 255, 255, 0.863);
@@ -35,19 +37,20 @@
             }
         }
     }
-
-    .station-name {
+    .line-count {
         font-size: 18px;
         font-weight: 500;
         margin: 23px 0 0 var(--margin-left);
-        border: none;
-        padding: 0;
     }
-    .line-count {
-        font-size: 24px;
-        font-weight: 500;
+    .station-name {
+        & > * {
+            font-size: 25px;
+            font-weight: 500;
+        }
         margin: 2px 0 0 var(--margin-left);
+
     }
+
     .from-to {
         font-size: 18px;
         font-weight: 500;
@@ -113,52 +116,44 @@
                     border-left: 1px black dotted;
                     border-bottom: 1px black solid;
                     transform: translate(-1px, 1px);
-                    &.left{
+                    cursor: pointer;
+
+                    &.left {
                         border-left: none;
                     }
-                    &.bottom{
+                    &.bottom {
                         border-bottom: none;
                     }
-                    .color-preview {
+                    .shape-preview {
                         width: 19.5px;
                         height: 19.5px;
-                        border-radius: 50%;
-                        border: 2px solid;
+                        // border-radius: 50%;
+                        // border: 2px solid;
                         display: flex;
                         justify-content: center;
                         align-items: center;
-                        .color-preview-inner {
-                            width: 16.9px;
-                            height: 16.9px;
-                            border-radius: 50%;
+                        &.shape-selected {
+                            svg {
+                                * {
+                                    stroke: #ea0b2a;
+                                }
+                            }
                         }
-                    }
-                }
-            }
-            .custom-color {
-                margin: 0 32.25px;
-                border-top: 1px dashed black;
-                width: 197px;
-                box-sizing: border-box;
-                padding-top: 15px;
-                // padding-left: 10px;
-                .selected-color-preview {
-                    .color-input {
-                        // width: 19.5px;
-                        // height: 19.5px;
-                        // border-radius: 50%;
-                        display: inline-block;
-                    }
-                    .color-value {
-                        display: inline-block;
-                        margin-left: 15px;
-                        font-size: 15.25px;
-                        font-weight: 500;
-                        width: 100px;
-                        text-decoration: underline;
-                        vertical-align: top;
-                        margin-top: 1px;
-                        border: none;
+                        &.square {
+                            zoom: 0.9;
+                        }
+                        &.triangle {
+                            zoom: 1.05;
+                        }
+                        &.start {
+                            zoom: 1.15;
+                        }
+                        &.hexagon {
+                            zoom: 0.9;
+                        }
+                        &.pentagon {
+                            zoom: 1.1;
+                        }
                     }
                 }
             }

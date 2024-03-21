@@ -1,0 +1,22 @@
+.auto-growth-container {
+    position: relative;
+    width: fit-content;
+    .auto-growth-span {
+        // font-size: 36px;
+        border: none;
+        // font-weight: 500;
+        width: 100px;
+        // margin-top: 14px;
+        opacity: 0;
+    }
+    .auto-growth-input {
+        // font-size: 36px;
+        border: none;
+        // font-weight: 500;
+        width: calc(100% + 18px);
+        // margin-top: 14px;
+        position: absolute;
+        left: 0;
+        padding: 0;
+    }
+}
