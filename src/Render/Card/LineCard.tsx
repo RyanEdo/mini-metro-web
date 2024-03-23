@@ -9,38 +9,30 @@ import shrinkIcon from "../../Resource/Icon/shrink-icon.svg";
 import EditIcon from "../../Resource/Icon/edit.svg";
 
 import classNames from "classnames";
-import { LineProps, UserDataType } from "../../Data/UserData";
-export function LineCard({line, setData}:{line: LineProps, setData:Dispatch<SetStateAction<UserDataType>>}) {
-  const mock = {
-    lineId: 1,
-    lineName: "机场联络线",
-    stations: [
-      ["蒙德站", true],
-      ["风起地站", false],
-      ["鹰翔海滩", true],
-      ["星落湖", true],
-      ["望风山地", true],
-      ["达达乌帕谷", true],
-      ["蒙德站", true],
-      ["风起地站", false],
-      ["鹰翔海滩", true],
-      ["星落湖", true],
-      ["望风山地", true],
-      ["达达乌帕谷", true],
-    ].map(
-      ([stationName, bendFirst]) =>
-        new DisplayStation(stationName.toString(), !!bendFirst)
-    ),
-  };
-  const { lineName, stations } = mock;
-  const firstStation = stations[0];
-  const lastStation = stations[stations.length - 1];
+import { LineProps, UserDataType, useData } from "../../Data/UserData";
+export function LineCard({
+  line,
+  setData,
+  data,
+}: {
+  line: LineProps;
+  setData: Dispatch<SetStateAction<UserDataType>>;
+  data: UserDataType
+}) {
+  const { lineId, lineName, stationIds } = line;
+  const { getStationById, getStationsInThisLine } = useData(
+    lineId,
+    setData,
+    data
+  );
+  const firstStation = getStationById(stationIds[0]);
+  const lastStation = getStationById(stationIds[stationIds.length - 1]);
   const [expend, setExpend] = useState(false);
   const [edit, setEdit] = useState(false);
   const [expendWidth, setExpendWidth] = useState(455);
   const [tab, setTab] = useState("name");
   const getExpendWidth = () => {
-    const expected = 33 + 161 * stations.length;
+    const expected = 33 + 161 * stationIds.length;
     const width =
       expected > window.innerWidth ? window.innerWidth - 100 : expected;
     console.log(width);
@@ -49,7 +41,7 @@ export function LineCard({line, setData}:{line: LineProps, setData:Dispatch<SetS
   useEffect(() => {
     window.addEventListener("resize", getExpendWidth);
     return () => window.removeEventListener("resize", getExpendWidth);
-  }, [stations]);
+  }, [stationIds]);
   useEffect(() => {
     getExpendWidth();
   }, [expend]);
@@ -149,26 +141,30 @@ export function LineCard({line, setData}:{line: LineProps, setData:Dispatch<SetS
           </div>
         )}
       </div>
-      <div className="stations-count">{stations.length}个站点</div>
+      <div className="stations-count">{stationIds.length}个站点</div>
       <div className="line-name">{lineName}</div>
       {edit ? (
         <div className="edit-detail">{editTools(tab)}</div>
       ) : (
         <>
           <div className="from-to">
-            从{firstStation.stationName}开往{lastStation.stationName}
+            从{firstStation!.stationName}开往{lastStation!.stationName}
           </div>
           <div
             className="station-bar"
             style={expend ? { width: expendWidth } : {}}
-            onWheel={(event)=>{
-              const {currentTarget, deltaY} = event;
-              currentTarget.scrollBy({top: 0, left: deltaY, behavior: 'auto'});
+            onWheel={(event) => {
+              const { currentTarget, deltaY } = event;
+              currentTarget.scrollBy({
+                top: 0,
+                left: deltaY,
+                behavior: "auto",
+              });
             }}
           >
             <div className="add-first"></div>
-            {stations.map((station) => {
-              const { stationName, bendFirst } = station;
+            {getStationsInThisLine().map((station) => {
+              const { stationName, bendFirst } = station!;
               return (
                 <div className="station-block">
                   <div className="track">

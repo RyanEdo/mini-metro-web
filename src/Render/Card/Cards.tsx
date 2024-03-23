@@ -6,6 +6,7 @@ import { LineCard } from "./LineCard";
 import "./Cards.scss";
 import { StationCard } from "./StationCard";
 import { UserDataType } from "../../Data/UserData";
+import { mapToArr } from "../../Common/util";
 
 export function Cards({
   data,
@@ -17,17 +18,19 @@ export function Cards({
   const { lines, stations } = data;
   return (
     <div className="cards">
-      {lines.map((line) => (
+      {mapToArr(lines).map((line) => (
         <LineCard
           setData={setData}
           line={line}
+          data={data}
           key={"line-card-" + line.lineId}
         />
       ))}
-      {stations.map((station) => (
+      {mapToArr(stations).map((station) => (
         <StationCard
           setData={setData}
           station={station}
+          data={data}
           key={"station-card-" + station.stationId}
         />
       ))}

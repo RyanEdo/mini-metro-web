@@ -10,9 +10,11 @@ import { AutoGrowthInput } from "../../Common/AutoGrowthInput";
 export function StationCard({
   station,
   setData,
+  data,
 }: {
   station: StationProps;
   setData: Dispatch<SetStateAction<UserDataType>>;
+  data: UserDataType
 }) {
   const {
     stationName,
@@ -23,7 +25,8 @@ export function StationCard({
   } = station;
   const { setStationName, setStationPosition, setStationShape } = useData(
     stationId,
-    setData
+    setData,
+    data
   );
   const [x, y] = position;
   const setX = (x: number) => setStationPosition(x, y);

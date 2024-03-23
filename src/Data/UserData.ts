@@ -5,6 +5,7 @@ export class StationProps {
   position!: number[];
   shape!: string;
   lineIds!: number[];
+  bendFirst!: boolean;
 }
 export class LineProps {
   lineId!: number;
@@ -13,8 +14,8 @@ export class LineProps {
   stationIds!: number[];
 }
 export class UserDataType {
-  stations!: StationProps[];
-  lines!: LineProps[];
+  stations!: Map<number | string, StationProps>;
+  lines!: Map<number | string, LineProps>;
 }
 const initDataMock: UserDataType = {
   stations: [
@@ -24,6 +25,7 @@ const initDataMock: UserDataType = {
       position: [200, 300],
       shape: "cicle",
       lineIds: [1, 2],
+      bendFirst: true,
     },
     {
       stationId: 2,
@@ -31,6 +33,8 @@ const initDataMock: UserDataType = {
       position: [300, 500],
       shape: "square",
       lineIds: [1],
+      bendFirst: false,
+
     },
     {
       stationId: 3,
@@ -38,6 +42,7 @@ const initDataMock: UserDataType = {
       position: [500, 600],
       shape: "square",
       lineIds: [2],
+      bendFirst: false,
     },
     {
       stationId: 4,
@@ -45,8 +50,12 @@ const initDataMock: UserDataType = {
       position: [400, 300],
       shape: "square",
       lineIds: [2],
+      bendFirst: true,
     },
-  ],
+  ].reduce((map, cur) => {
+    map.set(cur.stationId, cur);
+    return map;
+  }, new Map()),
   lines: [
     {
       lineId: 1,
@@ -60,7 +69,10 @@ const initDataMock: UserDataType = {
       color: "94D40B",
       stationIds: [1, 3, 4],
     },
-  ],
+  ].reduce((map, cur) => {
+    map.set(cur.lineId, cur);
+    return map;
+  }, new Map()),
 };
 
 export const initData = {
@@ -69,31 +81,39 @@ export const initData = {
   ...initDataMock,
 };
 
-export const useData = (id: number, setData: Dispatch<SetStateAction<UserDataType>>) => {
+export const useData = (
+  id: number,
+  setData: Dispatch<SetStateAction<UserDataType>>,
+  state: UserDataType,
+) => {
+    const {stations, lines} = state;
   return {
     setStationName: (name: string) => {
       setData((state) => {
-        const { stations } = state;
-        const station = stations.find((x) => (x.stationId === id));
+        const station = stations.get(id);
         station!.stationName = name;
         return { ...state };
       });
     },
     setStationPosition: (x: number, y: number) => {
-        setData((state) => {
-          const { stations } = state;
-          const station = stations.find((x) => (x.stationId === id));
-          station!.position = [x,y];
-          return { ...state };
-        });
-      },
-      setStationShape: (shape: string) => {
-        setData((state) => {
-          const { stations } = state;
-          const station = stations.find((x) => (x.stationId === id));
-          station!.shape = shape;
-          return { ...state };
-        });
-      },
+      setData((state) => {
+        const station = stations.get(id);
+        station!.position = [x, y];
+        return { ...state };
+      });
+    },
+    setStationShape: (shape: string) => {
+      setData((state) => {
+        const station = stations.get(id);
+        station!.shape = shape;
+        return { ...state };
+      });
+    },
+    getStationById:(stationId: string|number)=>{
+        return stations.get(stationId);
+    },
+    getStationsInThisLine:()=>{
+        return lines.get(id)!.stationIds.map(x=>stations.get(x));
+    }
   };
 };
