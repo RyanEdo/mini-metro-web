@@ -5,7 +5,6 @@ export class StationProps {
   position!: number[];
   shape!: string;
   lineIds!: number[];
-  bendFirst!: boolean;
 }
 export class LineProps {
   lineId!: number;
@@ -14,6 +13,7 @@ export class LineProps {
   stationIds!: number[];
   sign!: string;
   order!: number;
+  bendFirst!: Set<number>;
 }
 export class UserDataType {
   stations!: Map<number | string, StationProps>;
@@ -27,7 +27,6 @@ const initDataMock: UserDataType = {
       position: [200, 300],
       shape: "cicle",
       lineIds: [1, 2],
-      bendFirst: true,
     },
     {
       stationId: 2,
@@ -35,7 +34,6 @@ const initDataMock: UserDataType = {
       position: [300, 500],
       shape: "square",
       lineIds: [1],
-      bendFirst: false,
     },
     {
       stationId: 3,
@@ -43,7 +41,6 @@ const initDataMock: UserDataType = {
       position: [500, 600],
       shape: "square",
       lineIds: [2],
-      bendFirst: false,
     },
     {
       stationId: 4,
@@ -51,7 +48,6 @@ const initDataMock: UserDataType = {
       position: [400, 300],
       shape: "square",
       lineIds: [2],
-      bendFirst: true,
     },
   ].reduce((map, cur) => {
     map.set(cur.stationId, cur);
@@ -65,6 +61,7 @@ const initDataMock: UserDataType = {
       stationIds: [1, 2],
       sign: "1",
       order: 1,
+      bendFirst: [1],
     },
     {
       lineId: 2,
@@ -73,8 +70,11 @@ const initDataMock: UserDataType = {
       stationIds: [1, 3, 4],
       sign: "2",
       order: 2,
+      bendFirst: [1, 3],
     },
   ].reduce((map, cur) => {
+    //@ts-ignore
+    cur.bendFirst = new Set(cur.bendFirst);
     map.set(cur.lineId, cur);
     return map;
   }, new Map()),
@@ -135,18 +135,30 @@ export const useData = (
       });
     },
     setOrder: (order: number) => {
-        setData((state) => {
-          const line = lines.get(id);
-          line!.order = order;
-          return { ...state };
-        });
-      },
-      setColor: (color: string) => {
-        setData((state) => {
-          const line = lines.get(id);
-          line!.color = color;
-          return { ...state };
-        });
-      },
+      setData((state) => {
+        const line = lines.get(id);
+        line!.order = order;
+        return { ...state };
+      });
+    },
+    setColor: (color: string) => {
+      setData((state) => {
+        const line = lines.get(id);
+        line!.color = color;
+        return { ...state };
+      });
+    },
+    getBendFirst: (stationId: number) => {
+      const line = lines.get(id);
+      return line?.bendFirst.has(stationId);
+    },
+    setBendFirst: (stationId: number, bendFirst: boolean) => {
+      setData((state) => {
+        const line = lines.get(id);
+        if (bendFirst) line!.bendFirst.add(stationId);
+        else line!.bendFirst.delete(stationId);
+        return { ...state };
+      });
+    },
   };
 };

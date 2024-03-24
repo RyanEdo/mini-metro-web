@@ -37,6 +37,8 @@ export function LineCard({
     setSign,
     setOrder,
     setColor,
+    getBendFirst,
+    setBendFirst
   } = useData(lineId, setData, data);
   const colorName = colorSHMap.get(colorSelected)?.color_name || colorSelected;
   const firstStation = getStationById(stationIds[0]);
@@ -220,7 +222,8 @@ export function LineCard({
           >
             <div className="add-first"></div>
             {getStationsInThisLine().map((station) => {
-              const { stationName, bendFirst } = station!;
+              const { stationName, stationId } = station!;
+              const bendFirst = getBendFirst(stationId);
               return (
                 <div className="station-block">
                   <div className="track">
@@ -228,7 +231,7 @@ export function LineCard({
                     <div className="sleeper"></div>
                     <div className="sleeper"></div>
                   </div>
-                  <div className="bend-first">
+                  <div className="bend-first" onClick={()=>setBendFirst(stationId, !bendFirst)}>
                     <img
                       src={arrowIcon}
                       className={classNames({
