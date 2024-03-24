@@ -10,7 +10,9 @@ import EditIcon from "../../Resource/Icon/edit.svg";
 
 import classNames from "classnames";
 import { LineProps, UserDataType, useData } from "../../Data/UserData";
-import { scrollOptimize } from "../../Common/util";
+import { mapToArr, scrollOptimize } from "../../Common/util";
+import { AutoGrowthInput } from "../../Common/AutoGrowthInput";
+import { colorSH, colorSHMap } from "../../Common/color";
 export function LineCard({
   line,
   setData,
@@ -18,14 +20,25 @@ export function LineCard({
 }: {
   line: LineProps;
   setData: Dispatch<SetStateAction<UserDataType>>;
-  data: UserDataType
+  data: UserDataType;
 }) {
-  const { lineId, lineName, stationIds } = line;
-  const { getStationById, getStationsInThisLine } = useData(
+  const {
     lineId,
-    setData,
-    data
-  );
+    lineName,
+    stationIds,
+    sign,
+    order,
+    color: colorSelected,
+  } = line;
+  const {
+    getStationById,
+    getStationsInThisLine,
+    setLineName,
+    setSign,
+    setOrder,
+    setColor,
+  } = useData(lineId, setData, data);
+  const colorName = colorSHMap.get(colorSelected)?.color_name || colorSelected;
   const firstStation = getStationById(stationIds[0]);
   const lastStation = getStationById(stationIds[stationIds.length - 1]);
   const [expend, setExpend] = useState(false);
@@ -50,18 +63,43 @@ export function LineCard({
     switch (tab) {
       case "name": {
         return (
-          <div className="name-detail">
+          <div
+            className="name-detail"
+            onWheel={(event) => {
+              const { currentTarget, deltaY } = event;
+              currentTarget.scrollBy({
+                top: 0,
+                left: deltaY,
+                behavior: "auto",
+              });
+            }}
+          >
             <div className="name-item sign">
               <div className="title">标识</div>
-              <input className="sign-input" value={1}></input>
+
+              <AutoGrowthInput
+                className="sign-input"
+                value={sign}
+                onInput={(e) => setSign(e.currentTarget.value)}
+              />
             </div>
             <div className="name-item line-name-item">
               <div className="title">名称</div>
-              <input className="line-name-input" value={lineName}></input>
+              <AutoGrowthInput
+                onInput={(e) => setLineName(e.currentTarget.value)}
+                className="line-name-input"
+                value={lineName}
+              />
             </div>
             <div className="name-item order">
               <div className="title">排序</div>
-              <input className="order-input" value={1} type="number"></input>
+
+              <AutoGrowthInput
+                className="order-input"
+                value={order}
+                type="number"
+                onInput={(e) => setOrder(parseInt(e.currentTarget.value))}
+              />
             </div>
           </div>
         );
@@ -70,21 +108,21 @@ export function LineCard({
         return (
           <div className="color-detail">
             <div className="color-detail-choosing">
-              {new Array(10).fill(1).map((x) => {
-                const randomColor = () => {
-                  const r = Math.floor(Math.random() * 255);
-                  const g = Math.floor(Math.random() * 255);
-                  const b = Math.floor(Math.random() * 255);
-                  return "rgba(" + r + "," + g + "," + b + ",1)";
-                };
-                const color = randomColor();
+              {new Array(10).fill(1).map((x, index) => {
+                const { color } = colorSH[index];
+                const choosed = color === colorSelected;
+
                 return (
                   <div
                     className={classNames({
                       "color-preview": 1,
-                      "color-selected": 1,
+                      "color-selected": choosed,
                     })}
-                    style={{ borderColor: color }}
+                    style={{
+                      borderColor: color,
+                      backgroundColor: choosed ? "inherit" : color,
+                    }}
+                    onClick={() => setColor(color)}
                   >
                     <div
                       className="color-preview-inner"
@@ -96,8 +134,18 @@ export function LineCard({
             </div>
             <div className="custom-color">
               <div className="selected-color-preview">
-                <input className="color-input" type="color" />
-                <input className="color-value" value={"E54242"}></input>
+                <input className="color-input" type="color" 
+              
+                value={colorSelected}
+                onInput={(e) => setColor(e.currentTarget.value)}
+
+                
+                />
+                <input
+                  className="color-value"
+                  value={colorSelected}
+                  onInput={(e) => setColor(e.currentTarget.value)}
+                ></input>
               </div>
             </div>
           </div>
@@ -125,7 +173,7 @@ export function LineCard({
             className="edit tool-item"
             onClick={() => {
               setEdit(true);
-              setTab("name");
+              // setTab("name");
             }}
           >
             <EditIcon className="edit-icon"></EditIcon>
@@ -143,7 +191,13 @@ export function LineCard({
         )}
       </div>
       <div className="stations-count">{stationIds.length}个站点</div>
-      <div className="line-name">{lineName}</div>
+
+      <AutoGrowthInput
+        onInput={(e) => setLineName(e.currentTarget.value)}
+        className="line-name"
+        value={lineName}
+        disabled
+      />
       {edit ? (
         <div className="edit-detail">{editTools(tab)}</div>
       ) : (
@@ -185,7 +239,12 @@ export function LineCard({
                       {bendFirst ? "斜向优先" : "直线优先"}
                     </div>
                   </div>
-                  <div className="station-name">{stationName}</div>
+                  <div
+                    className="station-name"
+                    style={{ color: colorSelected }}
+                  >
+                    {stationName}
+                  </div>
                 </div>
               );
             })}
@@ -224,7 +283,9 @@ export function LineCard({
               }}
             >
               <div className="title">颜色</div>
-              <div className="value">品红</div>
+              <div className="value" style={{ color: colorSelected }}>
+                {colorName}
+              </div>
             </div>
             <div
               className={classNames({

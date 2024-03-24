@@ -19,4 +19,14 @@
         left: 0;
         padding: 0;
     }
+
+    &.disabled{
+        .auto-growth-span{
+            opacity: 1;
+        }
+        .auto-growth-input{
+            // opacity: 0;
+            display: none;
+        }
+    }
 }

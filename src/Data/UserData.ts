@@ -12,6 +12,8 @@ export class LineProps {
   lineName!: string;
   color!: string;
   stationIds!: number[];
+  sign!: string;
+  order!: number;
 }
 export class UserDataType {
   stations!: Map<number | string, StationProps>;
@@ -34,7 +36,6 @@ const initDataMock: UserDataType = {
       shape: "square",
       lineIds: [1],
       bendFirst: false,
-
     },
     {
       stationId: 3,
@@ -60,14 +61,18 @@ const initDataMock: UserDataType = {
     {
       lineId: 1,
       lineName: "1号线",
-      color: "EA0B2A",
+      color: "#EA0B2A",
       stationIds: [1, 2],
+      sign: "1",
+      order: 1,
     },
     {
       lineId: 2,
       lineName: "2号线",
-      color: "94D40B",
+      color: "#94D40B",
       stationIds: [1, 3, 4],
+      sign: "2",
+      order: 2,
     },
   ].reduce((map, cur) => {
     map.set(cur.lineId, cur);
@@ -84,9 +89,9 @@ export const initData = {
 export const useData = (
   id: number,
   setData: Dispatch<SetStateAction<UserDataType>>,
-  state: UserDataType,
+  state: UserDataType
 ) => {
-    const {stations, lines} = state;
+  const { stations, lines } = state;
   return {
     setStationName: (name: string) => {
       setData((state) => {
@@ -109,11 +114,39 @@ export const useData = (
         return { ...state };
       });
     },
-    getStationById:(stationId: string|number)=>{
-        return stations.get(stationId);
+    getStationById: (stationId: string | number) => {
+      return stations.get(stationId);
     },
-    getStationsInThisLine:()=>{
-        return lines.get(id)!.stationIds.map(x=>stations.get(x));
-    }
+    getStationsInThisLine: () => {
+      return lines.get(id)!.stationIds.map((x) => stations.get(x));
+    },
+    setLineName: (name: string) => {
+      setData((state) => {
+        const line = lines.get(id);
+        line!.lineName = name;
+        return { ...state };
+      });
+    },
+    setSign: (sign: string) => {
+      setData((state) => {
+        const line = lines.get(id);
+        line!.sign = sign;
+        return { ...state };
+      });
+    },
+    setOrder: (order: number) => {
+        setData((state) => {
+          const line = lines.get(id);
+          line!.order = order;
+          return { ...state };
+        });
+      },
+      setColor: (color: string) => {
+        setData((state) => {
+          const line = lines.get(id);
+          line!.color = color;
+          return { ...state };
+        });
+      },
   };
 };

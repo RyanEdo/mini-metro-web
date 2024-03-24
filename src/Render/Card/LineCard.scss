@@ -39,11 +39,15 @@
     .stations-count {
         font-size: 18px;
         font-weight: 500;
+
         margin: 23px 0 0 var(--margin-left);
     }
     .line-name {
-        font-size: 24px;
-        font-weight: 500;
+        & > * {
+            font-size: 24px;
+            font-weight: 500;
+        }
+
         margin: 2px 0 0 var(--margin-left);
     }
 
@@ -57,6 +61,14 @@
         .name-detail {
             margin-top: 22.58px;
             white-space: nowrap;
+            width: 254.2px;
+            overflow-y: visible;
+            overflow-x: scroll;
+            height: 100px;
+            &::-webkit-scrollbar {
+                display: none;
+                // width: 0.01px;
+            }
             .name-item {
                 display: inline-block;
                 margin-right: 24.2px;
@@ -74,22 +86,27 @@
                     padding: 0;
                 }
                 .sign-input {
-                    width: 35.5px;
-                    height: 35.5px;
-                    border: none;
-                    border-radius: 8.87px;
-                    background-color: #ea0b2a;
-                    font-size: 23.25px;
-                    color: white;
-                    text-align: center;
+                    // width: 35.5px;
+                    * {
+                        min-width: 35.5px;
+                        height: 35.5px;
+                        border: none;
+                        border-radius: 8.87px;
+                        background-color: #ea0b2a;
+                        font-size: 23.25px;
+                        color: white;
+                        text-align: center;
+                    }
                 }
                 .line-name-input,
                 .order-input {
-                    font-size: 36px;
-                    border: none;
-                    font-weight: 500;
-                    width: 100px;
-                    margin-top: 14px;
+                    * {
+                        font-size: 36px;
+                        border: none;
+                        font-weight: 500;
+                        // width: 100px;
+                        margin-top: 14px;
+                    }
                 }
                 .order-input {
                     width: 30px;
@@ -107,6 +124,7 @@
                 grid-row-gap: 9px;
                 grid-column-gap: 6px;
                 .color-preview {
+                    cursor: pointer;
                     width: 19.5px;
                     height: 19.5px;
                     border-radius: 50%;
@@ -121,21 +139,21 @@
                     }
                 }
             }
-            .custom-color{
+            .custom-color {
                 margin: 0 32.25px;
                 border-top: 1px dashed black;
                 width: 197px;
                 box-sizing: border-box;
                 padding-top: 15px;
                 // padding-left: 10px;
-                .selected-color-preview{
-                    .color-input{
+                .selected-color-preview {
+                    .color-input {
                         // width: 19.5px;
                         // height: 19.5px;
-                        // border-radius: 50%;  
+                        // border-radius: 50%;
                         display: inline-block;
                     }
-                    .color-value{
+                    .color-value {
                         display: inline-block;
                         margin-left: 15px;
                         font-size: 15.25px;
@@ -148,15 +166,13 @@
                     }
                 }
             }
-
         }
-        .operation-detail{
-            .operation-item{
-                &:first-child{
-                margin-top: 15px;
-
+        .operation-detail {
+            .operation-item {
+                &:first-child {
+                    margin-top: 15px;
                 }
-                &:last-child{
+                &:last-child {
                     margin-bottom: 15px;
                 }
                 margin-left: 32.25px;
@@ -166,7 +182,7 @@
                 font-size: 18px;
                 font-weight: 500;
                 cursor: pointer;
-                &.delete{
+                &.delete {
                     color: #ea0b2a;
                 }
             }
