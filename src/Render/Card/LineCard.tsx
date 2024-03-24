@@ -81,6 +81,7 @@ export function LineCard({
                 className="sign-input"
                 value={sign}
                 onInput={(e) => setSign(e.currentTarget.value)}
+                style={{backgroundColor: colorSelected}}
               />
             </div>
             <div className="name-item line-name-item">
