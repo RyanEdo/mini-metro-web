@@ -10,6 +10,7 @@ import EditIcon from "../../Resource/Icon/edit.svg";
 
 import classNames from "classnames";
 import { LineProps, UserDataType, useData } from "../../Data/UserData";
+import { scrollOptimize } from "../../Common/util";
 export function LineCard({
   line,
   setData,
@@ -204,7 +205,10 @@ export function LineCard({
                 "edit-tool name": 1,
                 selected: tab === "name",
               })}
-              onClick={() => setTab("name")}
+              onClick={(e) => {
+                scrollOptimize(e);
+                setTab("name");
+              }}
             >
               <div className="title">名称</div>
               <div className="value">1号线</div>
@@ -214,7 +218,10 @@ export function LineCard({
                 "edit-tool color": 1,
                 selected: tab === "color",
               })}
-              onClick={() => setTab("color")}
+              onClick={(e) => {
+                scrollOptimize(e);
+                setTab("color");
+              }}
             >
               <div className="title">颜色</div>
               <div className="value">品红</div>
@@ -224,7 +231,10 @@ export function LineCard({
                 "edit-tool operation": 1,
                 selected: tab === "operation",
               })}
-              onClick={() => setTab("operation")}
+              onClick={(e) => {
+                scrollOptimize(e);
+                setTab("operation");
+              }}
             >
               <div className="title">操作</div>
               <div className="value">删除</div>

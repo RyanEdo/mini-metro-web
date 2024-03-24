@@ -7,6 +7,7 @@ import { StationProps, UserDataType, useData } from "../../Data/UserData";
 import shapes from "../../Resource/Shape/shape";
 import { Shape } from "../../Data/Shape";
 import { AutoGrowthInput } from "../../Common/AutoGrowthInput";
+import { scrollOptimize } from "../../Common/util";
 export function StationCard({
   station,
   setData,
@@ -139,7 +140,10 @@ export function StationCard({
                 "edit-tool name": 1,
                 selected: tab === "name",
               })}
-              onClick={() => setTab("name")}
+              onClick={(e) => {
+                scrollOptimize(e);
+                setTab("name");
+              }}
             >
               <div className="title">位置</div>
               <div className="value">
@@ -152,7 +156,10 @@ export function StationCard({
                 "edit-tool color": 1,
                 selected: tab === "color",
               })}
-              onClick={() => setTab("color")}
+              onClick={(e) => {
+                scrollOptimize(e);
+                setTab("color");
+              }}
             >
               <div className="title">形状</div>
               <div className="value">
@@ -167,7 +174,10 @@ export function StationCard({
                 "edit-tool operation": 1,
                 selected: tab === "operation",
               })}
-              onClick={() => setTab("operation")}
+              onClick={(e) => {
+                scrollOptimize(e);
+                setTab("operation");
+              }}
             >
               <div className="title">操作</div>
               <div className="value">删除</div>
