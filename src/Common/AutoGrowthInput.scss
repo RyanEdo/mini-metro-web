@@ -5,9 +5,11 @@
         // font-size: 36px;
         border: none;
         // font-weight: 500;
-        width: 100px;
+        // width: 100px;
+        // display: inline-block;
         // margin-top: 14px;
         opacity: 0;
+        background-color: transparent;
     }
     .auto-growth-input {
         // font-size: 36px;
@@ -18,6 +20,11 @@
         position: absolute;
         left: 0;
         padding: 0;
+        background-color: transparent;
+        &:disabled{
+            appearance: none;
+            color: inherit;
+        }
     }
 
     &.disabled{

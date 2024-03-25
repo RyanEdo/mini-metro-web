@@ -17,7 +17,7 @@ export function AutoGrowthInput({
   style = {},
 }: {
   value: number | string;
-  onInput: (x: any) => void;
+  onInput?: (x: any) => void;
   className?: string;
   type?: string;
   disabled?: boolean;
@@ -28,7 +28,7 @@ export function AutoGrowthInput({
       className={classNames({
         "auto-growth-container": 1,
         [className]: className,
-        disabled,
+        // disabled,
       })}
     >
       <span className="auto-growth-span" style={style}>
@@ -40,6 +40,7 @@ export function AutoGrowthInput({
         value={value}
         onInput={onInput}
         type={type}
+        disabled={disabled}
       ></input>
     </div>
   );

@@ -7,13 +7,16 @@ import "./Cards.scss";
 import { StationCard } from "./StationCard";
 import { UserDataType } from "../../Data/UserData";
 import { mapToArr } from "../../Common/util";
+import { showConfirmationInterface } from "../Delete/DeleteConfirmation";
 
 export function Cards({
   data,
   setData,
+  showConfirmation,
 }: {
   data: UserDataType;
   setData: Dispatch<SetStateAction<UserDataType>>;
+  showConfirmation?: showConfirmationInterface;
 }) {
   const { lines, stations } = data;
   return (
@@ -24,6 +27,7 @@ export function Cards({
           line={line}
           data={data}
           key={"line-card-" + line.lineId}
+          showConfirmation={showConfirmation}
         />
       ))}
       {mapToArr(stations).map((station) => (
@@ -32,6 +36,7 @@ export function Cards({
           station={station}
           data={data}
           key={"station-card-" + station.stationId}
+          showConfirmation={showConfirmation}
         />
       ))}
     </div>

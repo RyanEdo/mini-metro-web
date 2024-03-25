@@ -13,14 +13,17 @@ import { LineProps, UserDataType, useData } from "../../Data/UserData";
 import { mapToArr, scrollOptimize } from "../../Common/util";
 import { AutoGrowthInput } from "../../Common/AutoGrowthInput";
 import { colorSH, colorSHMap } from "../../Common/color";
+import { showConfirmationInterface } from "../Delete/DeleteConfirmation";
 export function LineCard({
   line,
   setData,
   data,
+  showConfirmation,
 }: {
   line: LineProps;
   setData: Dispatch<SetStateAction<UserDataType>>;
   data: UserDataType;
+  showConfirmation?: showConfirmationInterface;
 }) {
   const {
     lineId,
@@ -38,7 +41,7 @@ export function LineCard({
     setOrder,
     setColor,
     getBendFirst,
-    setBendFirst
+    setBendFirst,
   } = useData(lineId, setData, data);
   const colorName = colorSHMap.get(colorSelected)?.color_name || colorSelected;
   const firstStation = getStationById(stationIds[0]);
@@ -83,7 +86,7 @@ export function LineCard({
                 className="sign-input"
                 value={sign}
                 onInput={(e) => setSign(e.currentTarget.value)}
-                style={{backgroundColor: colorSelected}}
+                style={{ backgroundColor: colorSelected }}
               />
             </div>
             <div className="name-item line-name-item">
@@ -137,12 +140,11 @@ export function LineCard({
             </div>
             <div className="custom-color">
               <div className="selected-color-preview">
-                <input className="color-input" type="color" 
-              
-                value={colorSelected}
-                onInput={(e) => setColor(e.currentTarget.value)}
-
-                
+                <input
+                  className="color-input"
+                  type="color"
+                  value={colorSelected}
+                  onInput={(e) => setColor(e.currentTarget.value)}
                 />
                 <input
                   className="color-value"
@@ -157,7 +159,14 @@ export function LineCard({
       case "operation": {
         return (
           <div className="operation-detail">
-            <div className="operation-item delete">删除线路...</div>
+            <div
+              className="operation-item delete"
+              onClick={() => {
+                showConfirmation!({ line });
+              }}
+            >
+              删除线路...
+            </div>
           </div>
         );
       }
@@ -231,7 +240,10 @@ export function LineCard({
                     <div className="sleeper"></div>
                     <div className="sleeper"></div>
                   </div>
-                  <div className="bend-first" onClick={()=>setBendFirst(stationId, !bendFirst)}>
+                  <div
+                    className="bend-first"
+                    onClick={() => setBendFirst(stationId, !bendFirst)}
+                  >
                     <img
                       src={arrowIcon}
                       className={classNames({

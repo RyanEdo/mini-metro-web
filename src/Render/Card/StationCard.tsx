@@ -8,14 +8,18 @@ import shapes from "../../Resource/Shape/shape";
 import { Shape } from "../../Data/Shape";
 import { AutoGrowthInput } from "../../Common/AutoGrowthInput";
 import { scrollOptimize } from "../../Common/util";
+import { showConfirmationInterface } from "../Delete/DeleteConfirmation";
 export function StationCard({
   station,
   setData,
   data,
+  showConfirmation
 }: {
   station: StationProps;
   setData: Dispatch<SetStateAction<UserDataType>>;
-  data: UserDataType
+  data: UserDataType;
+  showConfirmation?: showConfirmationInterface
+
 }) {
   const {
     stationName,
@@ -24,11 +28,8 @@ export function StationCard({
     shape: shapeSelected,
     stationId,
   } = station;
-  const { setStationName, setStationPosition, setStationShape } = useData(
-    stationId,
-    setData,
-    data
-  );
+  const { setStationName, setStationPosition, setStationShape, getLineById } =
+    useData(stationId, setData, data);
   const [x, y] = position;
   const setX = (x: number) => setStationPosition(x, y);
   const setY = (y: number) => setStationPosition(x, y);
@@ -112,7 +113,18 @@ export function StationCard({
       case "operation": {
         return (
           <div className="operation-detail">
-            <div className="operation-item delete">删除线路...</div>
+            <div className="operation-item">以此为起点新建线路...</div>
+            {lineIds.map((lineId) => {
+              const line = getLineById(lineId);
+              const index = line?.stationIds.findIndex(x=>x===stationId);
+              const {lineName} = line!;
+              return <div className="operation-item delete" onClick={()=>{
+                showConfirmation!({line,station});
+              }} >从{lineName}的第{index!+1}站移除...</div>;
+            })}
+            <div className="operation-item delete" onClick={()=>{
+                showConfirmation!({station});
+            }}>删除站点...</div>
           </div>
         );
       }

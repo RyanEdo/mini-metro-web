@@ -26,14 +26,14 @@ const initDataMock: UserDataType = {
       stationName: "风起地站",
       position: [200, 300],
       shape: "cicle",
-      lineIds: [1, 2],
+      lineIds: [1, 2, 3],
     },
     {
       stationId: 2,
       stationName: "蒙德站",
       position: [300, 500],
       shape: "square",
-      lineIds: [1],
+      lineIds: [1, 3],
     },
     {
       stationId: 3,
@@ -47,7 +47,7 @@ const initDataMock: UserDataType = {
       stationName: "望风山地",
       position: [400, 300],
       shape: "square",
-      lineIds: [2],
+      lineIds: [2, 3],
     },
   ].reduce((map, cur) => {
     map.set(cur.stationId, cur);
@@ -71,6 +71,15 @@ const initDataMock: UserDataType = {
       sign: "2",
       order: 2,
       bendFirst: [1, 3],
+    },
+    {
+      lineId: 3,
+      lineName: "3号线",
+      color: "#F8D000",
+      stationIds: [1, 4, 2],
+      sign: "3",
+      order: 3,
+      bendFirst: [1, 2],
     },
   ].reduce((map, cur) => {
     //@ts-ignore
@@ -116,6 +125,9 @@ export const useData = (
     },
     getStationById: (stationId: string | number) => {
       return stations.get(stationId);
+    },
+    getLineById: (lineId: string | number) => {
+      return lines.get(lineId);
     },
     getStationsInThisLine: () => {
       return lines.get(id)!.stationIds.map((x) => stations.get(x));
