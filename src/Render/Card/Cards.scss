@@ -3,4 +3,21 @@
     bottom: 0;
     // left: -65px;
     // zoom: 0.85
+    width: 100vw;
+    height: 370px;
+    overflow-x: scroll;
+    overflow-y: visible;
+    white-space: nowrap;
+    padding-top: 70px;
+    box-sizing: border-box;
+    &::-webkit-scrollbar {
+        display: none;
+        // width: 0.01px;
+    }
+    &>div{
+        margin-left: 50px;
+        &:last-child{
+            margin-right: 50px;
+        }
+    }
 }

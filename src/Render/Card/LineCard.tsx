@@ -10,7 +10,7 @@ import EditIcon from "../../Resource/Icon/edit.svg";
 
 import classNames from "classnames";
 import { LineProps, UserDataType, useData } from "../../Data/UserData";
-import { mapToArr, scrollOptimize } from "../../Common/util";
+import { mapToArr, onWheelX, onWheelY, scrollOptimize } from "../../Common/util";
 import { AutoGrowthInput } from "../../Common/AutoGrowthInput";
 import { colorSH, colorSHMap } from "../../Common/color";
 import { showConfirmationInterface } from "../Delete/DeleteConfirmation";
@@ -70,14 +70,7 @@ export function LineCard({
         return (
           <div
             className="name-detail"
-            onWheel={(event) => {
-              const { currentTarget, deltaY } = event;
-              currentTarget.scrollBy({
-                top: 0,
-                left: deltaY,
-                behavior: "auto",
-              });
-            }}
+            onWheel={onWheelX}
           >
             <div className="name-item sign">
               <div className="title">标识</div>
@@ -220,14 +213,7 @@ export function LineCard({
           <div
             className="station-bar"
             style={expend ? { width: expendWidth } : {}}
-            onWheel={(event) => {
-              const { currentTarget, deltaY } = event;
-              currentTarget.scrollBy({
-                top: 0,
-                left: deltaY,
-                behavior: "auto",
-              });
-            }}
+            onWheel={onWheelY}
           >
             <div className="add-first"></div>
             {getStationsInThisLine().map((station) => {
@@ -274,6 +260,7 @@ export function LineCard({
             className={classNames({
               "edit-tools": 1,
             })}
+            onWheel={onWheelY}
           >
             <div
               className={classNames({

@@ -54,7 +54,7 @@ export const DeleteConfirmation = forwardRef(function (
     Array.isArray(stationIds) && stationIds.findIndex((x) => x === stationId)+1;
   const subTitle = `不再作为${lineName}的第${index}站`;
     return (
-      <div className={classNames({"delete-confirmation-container":1, show})}>
+      <div className={classNames({"delete-confirmation-container":1, show})} onClick={() => setShow(false)}>
         <div className="delete-confirmation">
           <div className="title">{title}</div>
           {remove ? <div className="sub-title">{subTitle}</div> : <></>}

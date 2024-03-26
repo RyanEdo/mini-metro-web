@@ -7,19 +7,18 @@ import { StationProps, UserDataType, useData } from "../../Data/UserData";
 import shapes from "../../Resource/Shape/shape";
 import { Shape } from "../../Data/Shape";
 import { AutoGrowthInput } from "../../Common/AutoGrowthInput";
-import { scrollOptimize } from "../../Common/util";
+import { onWheelY, scrollOptimize } from "../../Common/util";
 import { showConfirmationInterface } from "../Delete/DeleteConfirmation";
 export function StationCard({
   station,
   setData,
   data,
-  showConfirmation
+  showConfirmation,
 }: {
   station: StationProps;
   setData: Dispatch<SetStateAction<UserDataType>>;
   data: UserDataType;
-  showConfirmation?: showConfirmationInterface
-
+  showConfirmation?: showConfirmationInterface;
 }) {
   const {
     stationName,
@@ -112,19 +111,31 @@ export function StationCard({
       }
       case "operation": {
         return (
-          <div className="operation-detail">
+          <div className="operation-detail" onWheel={onWheelY}>
             <div className="operation-item">以此为起点新建线路...</div>
             {lineIds.map((lineId) => {
               const line = getLineById(lineId);
-              const index = line?.stationIds.findIndex(x=>x===stationId);
-              const {lineName} = line!;
-              return <div className="operation-item delete" onClick={()=>{
-                showConfirmation!({line,station});
-              }} >从{lineName}的第{index!+1}站移除...</div>;
+              const index = line?.stationIds.findIndex((x) => x === stationId);
+              const { lineName } = line!;
+              return (
+                <div
+                  className="operation-item delete"
+                  onClick={() => {
+                    showConfirmation!({ line, station });
+                  }}
+                >
+                  从{lineName}的第{index! + 1}站移除...
+                </div>
+              );
             })}
-            <div className="operation-item delete" onClick={()=>{
-                showConfirmation!({station});
-            }}>删除站点...</div>
+            <div
+              className="operation-item delete"
+              onClick={() => {
+                showConfirmation!({ station });
+              }}
+            >
+              删除站点...
+            </div>
           </div>
         );
       }
@@ -146,6 +157,7 @@ export function StationCard({
             className={classNames({
               "edit-tools": 1,
             })}
+            onWheel={onWheelY}
           >
             <div
               className={classNames({

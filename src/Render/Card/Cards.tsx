@@ -6,7 +6,7 @@ import { LineCard } from "./LineCard";
 import "./Cards.scss";
 import { StationCard } from "./StationCard";
 import { UserDataType } from "../../Data/UserData";
-import { mapToArr } from "../../Common/util";
+import { mapToArr, onWheelX, onWheelY } from "../../Common/util";
 import { showConfirmationInterface } from "../Delete/DeleteConfirmation";
 
 export function Cards({
@@ -20,7 +20,10 @@ export function Cards({
 }) {
   const { lines, stations } = data;
   return (
-    <div className="cards">
+    <div
+      className="cards"
+      onWheel={onWheelX}
+    >
       {mapToArr(lines).map((line) => (
         <LineCard
           setData={setData}
