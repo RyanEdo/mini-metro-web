@@ -7,7 +7,7 @@ import { StationProps, UserDataType, useData } from "../../Data/UserData";
 import shapes from "../../Resource/Shape/shape";
 import { Shape } from "../../Data/Shape";
 import { AutoGrowthInput } from "../../Common/AutoGrowthInput";
-import { onWheelY, scrollOptimize } from "../../Common/util";
+import { onWheelX, onWheelY, scrollOptimize } from "../../Common/util";
 import { showConfirmationInterface } from "../Delete/DeleteConfirmation";
 export function StationCard({
   station,

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { Mode } from "../../DataStructure/Mode";
 import RenderLayer from "./RenderLayer";
 import {
@@ -14,11 +14,19 @@ import {
 import "./ScaleLayer.scss";
 import { getCursor } from "../../Style/Cursor";
 import { Point } from "../../DataStructure/Point";
+import { UserDataType } from "../../Data/UserData";
 class ScaleLayerProp {
   editingMode!: Mode;
   setEditingMode!: React.Dispatch<React.SetStateAction<Mode>>;
+  data!: UserDataType;
+  setData!: Dispatch<SetStateAction<UserDataType>>;
 }
-function ScaleLayer({ editingMode, setEditingMode }: ScaleLayerProp) {
+function ScaleLayer({
+  editingMode,
+  setEditingMode,
+  data,
+  setData,
+}: ScaleLayerProp) {
   const [translateX, setTranslateX] = useState(0);
   const [translateY, setTranslateY] = useState(0);
   const [scale, setScale] = useState(1);
@@ -119,7 +127,7 @@ function ScaleLayer({ editingMode, setEditingMode }: ScaleLayerProp) {
       style={{ cursor: getCursor(editingMode) }}
     >
       <div className="transform-layer" style={style}>
-        <RenderLayer />
+        <RenderLayer data={data} setData={setData} />
       </div>
     </div>
   );

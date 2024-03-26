@@ -122,6 +122,7 @@ export class Vector extends Direction {
       if (-deltaX === deltaY) return Direct.leftUp;
       else if (-deltaX > deltaY) return Direct.leftUpA;
       else return Direct.leftUpB;
+    // debugger
     throw Error("error happend when getting direction");
   }
 }

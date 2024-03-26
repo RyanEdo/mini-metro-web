@@ -1,7 +1,7 @@
 import { MouseEvent, WheelEventHandler } from "react";
 
-export const mapToArr = (map: Map<any, any>) => {
-  const arr: any[] = [];
+export const mapToArr = <K,V>(map: Map<K, V>) => {
+  const arr: V[] = [];
   map.forEach((x) => arr.push(x));
   return arr;
 };

@@ -16,12 +16,17 @@ function App() {
   const [showConfirmation, setShowConfirmation] =
     useState<showConfirmationInterface>();
   useEffect(() => {
-    setShowConfirmation(()=>ref.current?.showConfirmation);
+    setShowConfirmation(() => ref.current?.showConfirmation);
   }, [ref.current?.showConfirmation]);
   return (
     <div className="App">
       <DeleteConfirmation ref={ref} />
-      <ScaleLayer editingMode={editingMode} setEditingMode={setEditingMode} />
+      <ScaleLayer
+        editingMode={editingMode}
+        setEditingMode={setEditingMode}
+        data={data}
+        setData={setData}
+      />
       <Cards
         data={data}
         setData={setData}

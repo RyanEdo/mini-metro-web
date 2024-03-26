@@ -41,6 +41,9 @@ export function AutoGrowthInput({
         onInput={onInput}
         type={type}
         disabled={disabled}
+        onWheel={e=>{
+          e.stopPropagation();
+        }}
       ></input>
     </div>
   );
