@@ -1,0 +1,34 @@
+.station-render {
+
+    .station-shape {
+        height: 30px;
+        width: 30px;
+        // transform: translate(-50%,-50%);
+        display: inline-block;
+        svg {
+            fill: white;
+            &.square {
+                zoom: 0.9;
+              }
+              &.triangle {
+                zoom: 1.05;
+              }
+              &.start {
+                zoom: 1.15;
+              }
+              &.hexagon {
+                zoom: 0.9;
+              }
+              &.pentagon {
+                zoom: 1.1;
+              }
+        }
+    }
+    .station-name {
+        display: inline-block;
+        font-size: 18px;
+        font-weight: 500;
+        vertical-align: top;
+        margin-left: 5px;
+    }
+}

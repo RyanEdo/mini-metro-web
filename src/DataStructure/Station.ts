@@ -1,3 +1,4 @@
+import { StationProps } from "../Data/UserData";
 import { Direct, Direction } from "./Direction";
 import { Line } from "./Line";
 import { LineRecord } from "./LineRecord";
@@ -11,6 +12,7 @@ export class Station {
   lineRecords: Map<Line, LineRecord[]>;
   _dev_tag: string | undefined;
   handlers: (Line|undefined|null)[];
+  displayStation?: StationProps;
   constructor(position: Point) {
     this.position = position;
     this.tracks = new Array(8)

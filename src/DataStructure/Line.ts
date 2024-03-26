@@ -1,3 +1,4 @@
+import { LineProps } from "../Data/UserData";
 import { Bend } from "./Bend";
 import { ConnectType } from "./ConnectType";
 import { LineRecord } from "./LineRecord";
@@ -10,6 +11,7 @@ export class Line {
   empty: boolean;
   departureRecord: LineRecord | undefined;
   _dev_tag: string | undefined;
+  displayLine?: LineProps;
   constructor() {
     this.empty = false;
   }
