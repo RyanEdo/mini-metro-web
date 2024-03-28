@@ -98,7 +98,7 @@ function RenderLayer({ data, setData }: RenderProps) {
     <div className="RenderLayer">
       {renderLines(allLinesList)}
 
-      {renderStations(allStationsList)}
+      {/* {renderStations(allStationsList)} */}
       {/* <DevelopLayer /> */}
     </div>
   );

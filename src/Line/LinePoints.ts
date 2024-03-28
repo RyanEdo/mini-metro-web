@@ -22,20 +22,35 @@ const getOffsetPointFromDirectionAndRail = (
   direction: Direction,
   rail: Rail
 ) => {
-  const SQRT1_2 = 1;
+  if(rail.track.station.displayStation!.stationName==='风起地站' && rail.line.displayLine?.lineName==='2号线')
+  debugger 
+  const s = Math.SQRT1_2;
+
+  // lean
   const directionOffset = [
-    [0, -1],
-    [SQRT1_2, -SQRT1_2],
-    [1, 0],
-    [SQRT1_2, SQRT1_2],
-    [0, 1],
-    [-SQRT1_2, SQRT1_2],
-    [-1, 0],
-    [-SQRT1_2, -SQRT1_2],
+    [[-1,0],[0,0],[1,0]],// 0 up
+    [[-s,-s],[0,0],[s,s]],// 1 upRight
+    [[0,-1],[0,0],[0,1]],// 2 right
+    [[s,-s],[0,0],[-s,s]],// 3 rightDown
+    [[-1,0],[0,0],[1,0]],// 4 down
+    [[-s,-s],[0,0],[s,s]],// 5 downLeft
+    [[0,1],[0,0],[0,-1]],// 6 left
+    [[-s,s],[0,0],[s,-s]],// 7 leftUp
   ];
-  const offsetIndex = (direction.direct + rail.index - 1 + 8) % 8;
-  const offset = directionOffset[offsetIndex];
-  const [offsetX, offsetY] = offset.map((x) => x * gauge);
+
+  // const directionOffset = [
+  //   [0, -1],
+  //   [SQRT1_2, -SQRT1_2],
+  //   [1, 0],
+  //   [SQRT1_2, SQRT1_2],
+  //   [0, 1],
+  //   [-SQRT1_2, SQRT1_2],
+  //   [-1, 0],
+  //   [-SQRT1_2, -SQRT1_2],
+  // ];
+  // const offsetIndex = (direction.direct + rail.index - 1 + 8) % 8;
+  const offset = directionOffset[direction.direct];
+  const [offsetX, offsetY] = offset[rail.index].map((x) => x * gauge);
   return new Point(offsetX + point.x, offsetY + point.y);
 };
 const getStartOffsetPointOfStation = (lineRecord: LineRecord) => {

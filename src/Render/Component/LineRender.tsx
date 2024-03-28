@@ -42,7 +42,7 @@ function LineRender({ line }: { line: Line }) {
               color: "gray",
             }}
           >
-            {/* {`x:${P.x.toFixed()},y:${P.y.toFixed()}`} */}
+            {`x:${P.x.toFixed()},y:${P.y.toFixed()}`}
           </div>
         ))}
       </div>
@@ -53,7 +53,7 @@ function LineRender({ line }: { line: Line }) {
       <div style={{ position: "absolute" }}>
         <svg width="200" height="200" style={{ overflow: "visible" }}>
           {/* <path fill="transparent" stroke="black" d={MCommand + LCommand} /> */}
-          <path fill="transparent" stroke={`${color}`} d={command} stroke-width={gauge} />
+          <path fill="transparent" stroke={`${color}55`} d={command} stroke-width={gauge} />
 
           {/* <circle cx="10" cy="10" r="2" fill="red" /> */}
         </svg>
