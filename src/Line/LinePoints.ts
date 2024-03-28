@@ -33,7 +33,7 @@ const getOffsetPointFromDirectionAndRail = (
     [[0,-1],[0,0],[0,1]],// 2 right
     [[s,-s],[0,0],[-s,s]],// 3 rightDown
     [[1,0],[0,0],[-1,0]],// 4 down
-    [[-s,-s],[0,0],[s,s]],// 5 downLeft
+    [[s,s],[0,0],[-s,-s]],// 5 downLeft
     [[0,1],[0,0],[0,-1]],// 6 left
     [[-s,s],[0,0],[s,-s]],// 7 leftUp
   ];
@@ -192,7 +192,8 @@ const deleteDuplicatedPoints = (keyPoints: Point[]) => {
     const AC = new Vector(A, C);
     const AB = new Vector(A, B);
     const BC = new Vector(B, C);
-    if (!AC.passesThroughPointRound(B) || AB.direct !== BC.direct)
+    if (!AC.passesThroughPointRound(B) || AB.direct !== BC.direct
+    )
       QKeyPoints.push(B);
   }
   QKeyPoints.push(end);

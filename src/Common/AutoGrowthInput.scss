@@ -10,9 +10,12 @@
         // margin-top: 14px;
         opacity: 0;
         background-color: transparent;
+        white-space: nowrap;
     }
     .auto-growth-input {
         // font-size: 36px;
+        white-space: nowrap;
+
         border: none;
         // font-weight: 500;
         width: calc(100% + 18px);

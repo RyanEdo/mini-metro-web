@@ -50,8 +50,10 @@
               .icon {
         display: inline-block;
         margin-left: 40px;
+
         .line {
-          width: 35.5px;
+          // width: 35.5px;
+          margin-right: 35.5px;
 
           .sign-input {
             // width: 35.5px;
@@ -71,6 +73,7 @@
           display: flex;
           justify-content: center;
           align-items: center;
+          margin-right: 25.8px;
           svg {
             &.square {
               zoom: 0.9;
@@ -95,7 +98,7 @@
         display: inline-block;
         font-weight: 500;
         font-size: 18px;
-        margin-left: 25.8px;
+     
         line-height: 35.5px;
         // vertical-align: middle;
       }

@@ -17,18 +17,18 @@ const getLPLPoints = (allKeyPoints: Point[]) => {
   return LQLPoints;
 };
 
-const checkIfStraightTrackHasHander = (
+const checkIfStraightTrackHasHanderOrLine = (
   direction: Direction,
   station: Station
 ) => {
   const { direct } = direction.opposite();
-  return station.handlers[direct];
+  return station.handlers[direct] || !station.tracks[direct].isEmpty();
 };
 const checkifHandeCanGoStraight = (
   outDirection: Direction,
   station: Station
 ) => {
-  const ifStraightTrackHasHander = !checkIfStraightTrackHasHander(
+  const ifStraightTrackHasHander = !checkIfStraightTrackHasHanderOrLine(
     outDirection,
     station
   );
