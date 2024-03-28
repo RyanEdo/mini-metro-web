@@ -62,6 +62,7 @@ export class Line {
     if (direction.standard) {
       const bOutIndex = Straight.getBestRailIndex(B, C, this);
       const cInIndex = Rail.oppositeIndex(bOutIndex);
+      // if(B.displayStation?.stationName==='风起地站'&&C.displayStation?.stationName==='达达乌帕谷') debugger
       const bTrack = B.getTrack(direction);
       const cTrack = C.getTrack(direction.opposite());
       const bRail = bTrack.getAvailableRail(bOutIndex);

@@ -22,7 +22,7 @@ const getOffsetPointFromDirectionAndRail = (
   direction: Direction,
   rail: Rail
 ) => {
-  if(rail.track.station.displayStation!.stationName==='风起地站' && rail.line.displayLine?.lineName==='2号线')
+  // if(rail.track.station.displayStation!.stationName==='风起地站' && rail.line.displayLine?.lineName==='2号线')
   debugger 
   const s = Math.SQRT1_2;
 
@@ -32,7 +32,7 @@ const getOffsetPointFromDirectionAndRail = (
     [[-s,-s],[0,0],[s,s]],// 1 upRight
     [[0,-1],[0,0],[0,1]],// 2 right
     [[s,-s],[0,0],[-s,s]],// 3 rightDown
-    [[-1,0],[0,0],[1,0]],// 4 down
+    [[1,0],[0,0],[-1,0]],// 4 down
     [[-s,-s],[0,0],[s,s]],// 5 downLeft
     [[0,1],[0,0],[0,-1]],// 6 left
     [[-s,s],[0,0],[s,-s]],// 7 leftUp
