@@ -213,12 +213,12 @@ export function LineCard({
           <div
             className="station-bar"
             style={expend ? { width: expendWidth } : {}}
-            onWheel={onWheelY}
+            onWheel={onWheelX}
           >
             <div className="add-first"></div>
-            {getStationsInThisLine().map((station) => {
-              const { stationName, stationId } = station!;
-              const bendFirst = getBendFirst(stationId);
+            {getStationsInThisLine().map((station, index) => {
+              const { stationName} = station!;
+              const bendFirst = getBendFirst(index);
               return (
                 <div className="station-block">
                   <div className="track">
@@ -228,7 +228,7 @@ export function LineCard({
                   </div>
                   <div
                     className="bend-first"
-                    onClick={() => setBendFirst(stationId, !bendFirst)}
+                    onClick={() => setBendFirst(index, !bendFirst)}
                   >
                     <img
                       src={arrowIcon}

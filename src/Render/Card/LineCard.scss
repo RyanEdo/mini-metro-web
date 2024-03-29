@@ -39,7 +39,7 @@
     .stations-count {
         font-size: 18px;
         font-weight: 500;
-
+        cursor: pointer;
         margin: 23px 0 0 var(--margin-left);
     }
     .line-name {
@@ -256,6 +256,7 @@
                 font-weight: 500;
                 margin: 8px;
                 color: #ea0b2a;
+                cursor: pointer;
             }
         }
     }

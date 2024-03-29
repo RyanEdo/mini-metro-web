@@ -9,7 +9,7 @@ import { mapToArr } from "../../Common/util";
 import { Line } from "../../DataStructure/Line";
 import LineRender from "../Component/LineRender";
 import shapes from "../../Resource/Shape/shape";
-import './RenderLayer.scss';
+import "./RenderLayer.scss";
 class RenderProps {
   data!: UserDataType;
   setData!: Dispatch<SetStateAction<UserDataType>>;
@@ -37,11 +37,11 @@ const buildLines = (
     const { stationIds, lineId, bendFirst } = line;
     const dLine = new Line();
     dLine.displayLine = line;
-    for(let i=1;i<stationIds.length;i++){
-      const B = stationMap.get(stationIds[i-1])!;
+    for (let i = 1; i < stationIds.length; i++) {
+      const B = stationMap.get(stationIds[i - 1])!;
       const C = stationMap.get(stationIds[i])!;
-      const _bendFirst = bendFirst.has(stationIds[i-1]);
-      dLine.link(B,C,_bendFirst);
+
+      dLine.link(B, C, !!bendFirst[i - 1]);
     }
     lineMap.set(lineId, dLine);
   });
@@ -52,28 +52,28 @@ const renderStations = (allStationsList: Station[]) => {
   return (
     <div>
       {allStationsList.map((station, index) => {
-        
-        const {displayStation} = station;
-        const {stationName, shape} = displayStation!;
-        return(
-        <div
-          style={{
-            position: "absolute",
-            left: station.position.x - 15,
-            top: station.position.y - 15,
-          }}
-          className="station-render"
-        >
-          <div className="station-shape">
-          {
-          //@ts-ignore
-          shapes[shape]}
+        const { displayStation } = station;
+        const { stationName, shape } = displayStation!;
+        return (
+          <div
+            style={{
+              position: "absolute",
+              left: station.position.x - 15,
+              top: station.position.y - 15,
+            }}
+            className="station-render"
+          >
+            <div className="station-shape">
+              {
+                //@ts-ignore
+                shapes[shape]
+              }
+            </div>
+            <div className="station-name">{stationName}</div>
+            {/* {String.fromCharCode("A".charCodeAt(0) + index)} */}
           </div>
-          <div className="station-name">
-          {stationName}</div>
-          {/* {String.fromCharCode("A".charCodeAt(0) + index)} */}
-        </div>
-      )})}
+        );
+      })}
     </div>
   );
 };

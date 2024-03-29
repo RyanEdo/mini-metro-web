@@ -111,22 +111,28 @@ export function StationCard({
       }
       case "operation": {
         return (
-          <div className="operation-detail" onWheel={onWheelY}>
+          <div className="operation-detail">
             <div className="operation-item">以此为起点新建线路...</div>
-            {lineIds.map((lineId) => {
+            {
+          
+            lineIds.map((lineId) => {
               const line = getLineById(lineId);
-              const index = line?.stationIds.findIndex((x) => x === stationId);
+              const stationIndexes: number[] = [];
+              line?.stationIds.forEach((x, index) => {
+                if (x === stationId) stationIndexes.push(index);
+              });
               const { lineName } = line!;
-              return (
-                <div
+              const removeStations = stationIndexes.map(stationIndex=>(
+                  <div
                   className="operation-item delete"
                   onClick={() => {
-                    showConfirmation!({ line, station });
+                    showConfirmation!({ line, station, stationIndex });
                   }}
                 >
-                  从{lineName}的第{index! + 1}站移除...
+                  从{lineName}的第{stationIndex! + 1}站移除...
                 </div>
-              );
+                ))
+              return removeStations;
             })}
             <div
               className="operation-item delete"
@@ -149,7 +155,9 @@ export function StationCard({
         className="station-name"
         value={stationName}
       />
-      <div className="edit-detail">{editTools(tab)}</div>
+      <div className="edit-detail" onWheel={onWheelY}>
+        {editTools(tab)}
+      </div>
 
       {
         <div className={classNames({ "edit-panel": 1, edit: 1 })}>

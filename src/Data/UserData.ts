@@ -13,7 +13,7 @@ export class LineProps {
   stationIds!: number[];
   sign!: string;
   order!: number;
-  bendFirst!: Set<number>;
+  bendFirst!: boolean[];
 }
 export class UserDataType {
   stations!: Map<number | string, StationProps>;
@@ -40,7 +40,7 @@ const initDataMock: UserDataType = {
       stationName: "达达乌帕谷",
       position: [500, 600],
       shape: "square",
-      lineIds: [2],
+      lineIds: [2,3],
     },
     {
       stationId: 4,
@@ -61,7 +61,7 @@ const initDataMock: UserDataType = {
       stationIds: [1, 2],
       sign: "1",
       order: 1,
-      bendFirst: [1],
+      bendFirst: [1, 0],
     },
     {
       lineId: 2,
@@ -70,20 +70,18 @@ const initDataMock: UserDataType = {
       stationIds: [1, 3, 4],
       sign: "2",
       order: 2,
-      bendFirst: [1, 3],
+      bendFirst: [1, 0, 1],
     },
     {
       lineId: 3,
       lineName: "3号线",
       color: "#F8D000",
-      stationIds: [1, 4, 2],
+      stationIds: [1, 4, 2,3,4],
       sign: "3",
       order: 3,
-      bendFirst: [1, 2],
+      bendFirst: [1, 0, 0,0,0],
     },
   ].reduce((map, cur) => {
-    //@ts-ignore
-    cur.bendFirst = new Set(cur.bendFirst);
     map.set(cur.lineId, cur);
     return map;
   }, new Map()),
@@ -160,15 +158,14 @@ export const useData = (
         return { ...state };
       });
     },
-    getBendFirst: (stationId: number) => {
+    getBendFirst: (stationIndex: number) => {
       const line = lines.get(id);
-      return line?.bendFirst.has(stationId);
+      return line?.bendFirst[stationIndex];
     },
-    setBendFirst: (stationId: number, bendFirst: boolean) => {
+    setBendFirst: (stationIndex: number, bendFirst: boolean) => {
       setData((state) => {
         const line = lines.get(id);
-        if (bendFirst) line!.bendFirst.add(stationId);
-        else line!.bendFirst.delete(stationId);
+        line!.bendFirst[stationIndex] = bendFirst;
         return { ...state };
       });
     },

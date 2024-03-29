@@ -1,6 +1,6 @@
 import { MouseEvent, WheelEventHandler } from "react";
 
-export const mapToArr = <K,V>(map: Map<K, V>) => {
+export const mapToArr = <K, V>(map: Map<K, V>) => {
   const arr: V[] = [];
   map.forEach((x) => arr.push(x));
   return arr;
@@ -45,15 +45,19 @@ export const onWheelX: WheelEventHandler = (event) => {
 
 export const onWheelY: WheelEventHandler = (event) => {
   const { currentTarget, deltaY } = event;
-  currentTarget.scrollBy({
-    top: deltaY,
-    left: 0,
-    behavior: "auto",
-  });
-  const {scrollHeight, clientHeight, scrollTop} = currentTarget;
-  const scrollMax = scrollTop === scrollHeight-clientHeight && deltaY>0;
-  const scrollMin = scrollTop === 0 && deltaY<0;
-  if(!(scrollMax||scrollMin)){
+
+  const { scrollHeight, clientHeight, scrollTop } = currentTarget;
+  const deltaHeight = scrollHeight - clientHeight;
+  const scrollMax =
+    scrollTop > deltaHeight - 1 && scrollTop < deltaHeight + 1 && deltaY > 0;
+  const scrollMin = scrollTop === 0 && deltaY < 0;
+  console.log(deltaY, scrollTop, scrollHeight - clientHeight);
+  if (!(scrollMax || scrollMin)) {
+    currentTarget.scrollBy({
+      top: deltaY,
+      left: 0,
+      behavior: "auto",
+    });
     event.stopPropagation();
     event.preventDefault();
   }

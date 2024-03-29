@@ -23,7 +23,7 @@ const getOffsetPointFromDirectionAndRail = (
   rail: Rail
 ) => {
   // if(rail.track.station.displayStation!.stationName==='风起地站' && rail.line.displayLine?.lineName==='2号线')
-  debugger 
+  // debugger 
   const s = Math.SQRT1_2;
 
   // lean
