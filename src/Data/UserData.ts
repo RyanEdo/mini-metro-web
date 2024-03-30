@@ -171,3 +171,23 @@ export const useData = (
     },
   };
 };
+
+
+export const addNewStation = (data: UserDataType, setData: Dispatch<SetStateAction<UserDataType>>,
+ x: number, y: number
+  )=>{
+    const {stations} = data;
+    let max = -Infinity;
+    stations.forEach((station)=>{
+      max = Math.max(station.stationId, max)
+    });
+    const newStation = {
+      stationId: max+1,
+      stationName: `新增站点 ${max+1}`,
+      position: [x,y].map(Math.round),
+      shape: "square",
+      lineIds: [],
+    };
+    stations.set(max+1,newStation);
+  setData({...data});
+}

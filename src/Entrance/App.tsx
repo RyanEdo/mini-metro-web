@@ -1,5 +1,5 @@
 import { initData } from "../Data/UserData";
-import { Mode } from "../DataStructure/Mode";
+import { FunctionMode, Mode } from "../DataStructure/Mode";
 import { Cards } from "../Render/Card/Cards";
 import {
   DeleteConfirmation,
@@ -12,6 +12,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 function App() {
   const [editingMode, setEditingMode] = useState(Mode.normal);
+  const [funtionMode, setFuntionMode] = useState(FunctionMode.normal);
   const [data, setData] = useState(initData);
   const ref = useRef<any>();
   const [showConfirmation, setShowConfirmation] =
@@ -21,13 +22,14 @@ function App() {
   }, [ref.current?.showConfirmation]);
   return (
     <div className="App">
-      <Menu setEditingMode={setEditingMode}/>
+      <Menu setEditingMode={setEditingMode} setFuntionMode={setFuntionMode}/>
       <DeleteConfirmation ref={ref} />
       <ScaleLayer
         editingMode={editingMode}
         setEditingMode={setEditingMode}
         data={data}
         setData={setData}
+        funtionMode={funtionMode}
       />
       <Cards
         data={data}

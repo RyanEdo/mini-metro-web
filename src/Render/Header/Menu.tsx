@@ -2,9 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { AutoGrowthInput } from "../../Common/AutoGrowthInput";
 import "./Menu.scss";
 import classNames from "classnames";
-import { Mode } from "../../DataStructure/Mode";
-type MenuType = { setEditingMode: React.Dispatch<React.SetStateAction<Mode>> };
-export function Menu({ setEditingMode }: MenuType) {
+import { FunctionMode, Mode } from "../../DataStructure/Mode";
+type MenuType = { setEditingMode: React.Dispatch<React.SetStateAction<Mode>>,
+  setFuntionMode: React.Dispatch<React.SetStateAction<FunctionMode>>
+};
+export function Menu({ setEditingMode, setFuntionMode }: MenuType) {
   const [page, setPage] = useState("title");
   const [titleEditable, setTitleEditable] = useState(false);
   const [display, setDisplay] = useState("none");
@@ -86,6 +88,7 @@ export function Menu({ setEditingMode }: MenuType) {
                 className="column-item"
                 onClick={(e) => {
                   e.stopPropagation();
+                  setFuntionMode(FunctionMode.addingStation);
                   setTitleEditable(false);
                   setToolsDisPlay(
                     window.innerWidth >= 710 ? "inline-block" : "block"

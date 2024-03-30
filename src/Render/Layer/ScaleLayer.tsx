@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
-import { Mode } from "../../DataStructure/Mode";
+import { FunctionMode, Mode } from "../../DataStructure/Mode";
 import RenderLayer from "./RenderLayer";
 import {
   onMouseDown,
@@ -20,12 +20,14 @@ class ScaleLayerProp {
   setEditingMode!: React.Dispatch<React.SetStateAction<Mode>>;
   data!: UserDataType;
   setData!: Dispatch<SetStateAction<UserDataType>>;
+  funtionMode!: FunctionMode;
 }
 function ScaleLayer({
   editingMode,
   setEditingMode,
   data,
   setData,
+  funtionMode,
 }: ScaleLayerProp) {
   const [translateX, setTranslateX] = useState(0);
   const [translateY, setTranslateY] = useState(0);
@@ -53,6 +55,8 @@ function ScaleLayer({
   // record translate position when touch start
   // translate should add this value when touch moving
   const [touchStartTranslate, setTouchStartTranslate] = useState(new Point());
+  // touches or mouse moved, that means user trying to scale or move, not adding station
+  const [moved, setMoved] = useState(false);
   const style = {
     transform: `translate(${translateX}px,${translateY}px) scale(${scale})`,
   };
@@ -105,7 +109,8 @@ function ScaleLayer({
           scale,
           setTouchStartTranslate,
           translateX,
-          translateY
+          translateY,
+          setMoved
         )
       }
       onTouchMove={(event) =>
@@ -120,10 +125,13 @@ function ScaleLayer({
           touchStartDistance,
           touchStartScale,
           setScale,
-          touchStartTranslate
+          touchStartTranslate,
+          setMoved
         )
       }
-      onTouchEnd={(event) => onTouchEnd(event, setEditingMode)}
+      onTouchEnd={(event) =>
+        onTouchEnd(event, setEditingMode, editingMode, funtionMode, data, setData, moved, translateX, translateY, scale)
+      }
       style={{ cursor: getCursor(editingMode) }}
     >
       <div className="transform-layer" style={style}>

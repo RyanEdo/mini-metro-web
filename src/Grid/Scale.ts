@@ -1,3 +1,4 @@
+import { UserDataType, addNewStation } from "./../Data/UserData";
 import {
   WheelEvent,
   Dispatch,
@@ -5,7 +6,7 @@ import {
   MouseEvent,
   TouchEvent,
 } from "react";
-import { Mode } from "../DataStructure/Mode";
+import { FunctionMode, Mode } from "../DataStructure/Mode";
 import { Point } from "../DataStructure/Point";
 
 const sensitivity = -0.0006;
@@ -109,11 +110,13 @@ export const onTouchStart = (
   scale: number,
   setTouchStartTranslate: Dispatch<SetStateAction<Point>>,
   translateX: number,
-  translateY: number
+  translateY: number,
+  setMoved: Dispatch<SetStateAction<boolean>>
 ) => {
   const { touches } = event;
   // record touch start translate position
   setTouchStartTranslate(new Point(translateX, translateY));
+  setMoved(false);
 
   switch (touches.length) {
     //one finger
@@ -151,9 +154,11 @@ export const onTouchMove = (
   touchStartDistance: number,
   touchStartScale: number,
   setScale: Dispatch<SetStateAction<number>>,
-  touchStartTranslate: Point
+  touchStartTranslate: Point,
+  setMoved: Dispatch<SetStateAction<boolean>>
 ) => {
   const { touches } = event;
+  setMoved(true);
   // console.log(event, touches.length, editingMode);
   switch (touches.length) {
     //one finger
@@ -202,9 +207,29 @@ export const onTouchMove = (
 
 export const onTouchEnd = (
   event: TouchEvent<HTMLDivElement>,
-  setEditingMode: Dispatch<SetStateAction<Mode>>
+  setEditingMode: Dispatch<SetStateAction<Mode>>,
+  editingMode: Mode,
+  funtionMode: FunctionMode,
+  data: UserDataType,
+  setData: Dispatch<SetStateAction<UserDataType>>,
+  moved: boolean,
+  translateX: number,
+  translateY: number,
+  scale: number
 ) => {
-  // const { touches } = event;
-  // console.log(event);
+  const { changedTouches } = event;
+  // console.log(event,editingMode);
+  if (
+    funtionMode === FunctionMode.addingStation &&
+    !moved &&
+    changedTouches.length === 1
+  ) {
+    const touch = changedTouches[0];
+    console.log({touch, translateX, translateY, scale});
+    const {clientX, clientY} = touch;
+    const x = (clientX-translateX)/scale;
+    const y = (clientY - translateY)/scale;
+    addNewStation( data,setData, x, y);
+  }
   setEditingMode(Mode.normal);
 };
