@@ -161,7 +161,7 @@ export const onTouchMove = (
       if (editingMode === Mode.touchMoving) {
         const touch = touches[0];
         const point = Point.getPointFromTouch(touch);
-        console.log(touchRefPoint);
+        // console.log(touchRefPoint);
         const displacement = point.displacementTo(touchRefPoint);
         setTranslateX(displacement.x + touchStartTranslate.x);
         setTranslateY(displacement.y + touchStartTranslate.y);

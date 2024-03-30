@@ -78,7 +78,7 @@ export function StationCard({
               {grid.map((shape, index) => {
                 const left = index % column === 0;
                 const bottom = Math.floor(index / column) === row - 1;
-                console.log({ shape });
+                // console.log({ shape });
                 return (
                   <div
                     className={classNames({

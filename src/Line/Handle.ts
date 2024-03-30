@@ -176,7 +176,6 @@ const getHandleCommand = (line: Line, allKeyPoints: Point[]) => {
     D = allKeyPoints[allKeyPoints.length - 1];
   const { departureRecord } = line;
   const terminalRecord = line.getTerminalRecord();
-  console.log(terminalRecord)
   const startHandleCommand = getStartHandleCommand(A, B, departureRecord!);
   let endHandleCommand = ` L ${A.x} ${A.y}`; // loop line 
   if (!(departureRecord?.station === terminalRecord?.station)){ 

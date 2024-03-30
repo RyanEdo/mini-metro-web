@@ -51,7 +51,7 @@ export const onWheelY: WheelEventHandler = (event) => {
   const scrollMax =
     scrollTop > deltaHeight - 1 && scrollTop < deltaHeight + 1 && deltaY > 0;
   const scrollMin = scrollTop === 0 && deltaY < 0;
-  console.log(deltaY, scrollTop, scrollHeight - clientHeight);
+  // console.log(deltaY, scrollTop, scrollHeight - clientHeight);
   if (!(scrollMax || scrollMin)) {
     currentTarget.scrollBy({
       top: deltaY,

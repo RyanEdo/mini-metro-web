@@ -54,7 +54,7 @@ export function LineCard({
     const expected = 33 + 161 * stationIds.length;
     const width =
       expected > window.innerWidth ? window.innerWidth - 100 : expected;
-    console.log(width);
+    // console.log(width);
     setExpendWidth(width);
   };
   useEffect(() => {

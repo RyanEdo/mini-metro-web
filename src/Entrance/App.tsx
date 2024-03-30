@@ -5,6 +5,7 @@ import {
   DeleteConfirmation,
   showConfirmationInterface,
 } from "../Render/Delete/DeleteConfirmation";
+import { Menu } from "../Render/Header/Menu";
 import ScaleLayer from "../Render/Layer/ScaleLayer";
 import "./App.scss";
 import React, { useEffect, useRef, useState } from "react";
@@ -20,6 +21,7 @@ function App() {
   }, [ref.current?.showConfirmation]);
   return (
     <div className="App">
+      <Menu/>
       <DeleteConfirmation ref={ref} />
       <ScaleLayer
         editingMode={editingMode}

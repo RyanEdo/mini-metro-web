@@ -15,16 +15,19 @@ export function AutoGrowthInput({
   type = "",
   disabled = false,
   style = {},
+  onClick,
 }: {
-  value: number | string;
+  value?: number | string;
   onInput?: (x: any) => void;
   className?: string;
   type?: string;
   disabled?: boolean;
   style?: CSSProperties;
+  onClick?: (x: any) => void;
 }) {
   return (
     <div
+      onClick={onClick}
       className={classNames({
         "auto-growth-container": 1,
         [className]: className,
@@ -40,10 +43,9 @@ export function AutoGrowthInput({
         value={value}
         onInput={onInput}
         type={type}
-        disabled={disabled}
-        onWheel={e=>{
-          if(document.activeElement === e.currentTarget)
-          e.stopPropagation();
+        readOnly={disabled}
+        onWheel={(e) => {
+          if (document.activeElement === e.currentTarget) e.stopPropagation();
         }}
       ></input>
     </div>

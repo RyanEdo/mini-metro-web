@@ -60,6 +60,7 @@ const renderStations = (allStationsList: Station[]) => {
               position: "absolute",
               left: station.position.x - 15,
               top: station.position.y - 15,
+              whiteSpace: 'nowrap'
             }}
             className="station-render"
           >
