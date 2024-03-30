@@ -21,7 +21,7 @@ function App() {
   }, [ref.current?.showConfirmation]);
   return (
     <div className="App">
-      <Menu/>
+      <Menu setEditingMode={setEditingMode}/>
       <DeleteConfirmation ref={ref} />
       <ScaleLayer
         editingMode={editingMode}

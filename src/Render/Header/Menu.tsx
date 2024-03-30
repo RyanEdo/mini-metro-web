@@ -2,38 +2,41 @@ import React, { useEffect, useRef, useState } from "react";
 import { AutoGrowthInput } from "../../Common/AutoGrowthInput";
 import "./Menu.scss";
 import classNames from "classnames";
-export function Menu() {
+import { Mode } from "../../DataStructure/Mode";
+type MenuType = { setEditingMode: React.Dispatch<React.SetStateAction<Mode>> };
+export function Menu({ setEditingMode }: MenuType) {
   const [page, setPage] = useState("title");
-  const chrome = navigator.userAgent.toLowerCase().includes('chrome')
-  const [titleEditable, setTitleEditable] = useState(!chrome);
+  const [titleEditable, setTitleEditable] = useState(false);
   const [display, setDisplay] = useState("none");
   const [title, setTitle] = useState("提瓦特");
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [toolsDisPlay, setToolsDisPlay] = useState("none");
   return (
     <div
       className={classNames({ menu: 1, [`page-${page}`]: 1 })}
-      onClick={() => {
+      onClick={(e) => {
+        // if (e.target === e.currentTarget) {
         setPage("title");
-        if(chrome)
         setTitleEditable(false);
+        // }
       }}
       onTransitionEnd={() => {
-        if (page === "title") setDisplay("none");
+        if (page === "title" || page === "tools") setDisplay("none");
       }}
     >
-      <div
-        className="title"
-        onClick={(e) => {
-          e.stopPropagation();
-          if (page === "title") {
-            setDisplay("block");
-            setTimeout(()=>setPage("menu"))
-          }
-          if (page === "menu") setTitleEditable(true);
-        }}
-      >
+      <div className="title" onClick={(e) => e.stopPropagation()}>
         <AutoGrowthInput
           value={title}
-          onInput={e=>setTitle(e.currentTarget.value)}
+          onClick={(e) => {
+            e.stopPropagation();
+            if (page === "title" || page === "tools") {
+              setDisplay("block");
+              setTimeout(() => setPage("menu"));
+              setTitleEditable(true);
+            }
+          }}
+          onInput={(e) => setTitle(e.currentTarget.value)}
+          ref={inputRef}
           style={{
             cursor:
               page === "title"
@@ -46,17 +49,52 @@ export function Menu() {
           }}
           disabled={!titleEditable}
         />
+
+        <div
+          className="tools"
+          style={{ display: toolsDisPlay }}
+          onTransitionEnd={() => {
+            if (page !== "tools") {
+              setToolsDisPlay("none");
+            }
+          }}
+        >
+          <div className="tool disabled">点击空白处新增站点</div>
+          <div className="tool">撤销</div>
+          <div className="tool" onClick={(e) => e.stopPropagation()}>
+            重做
+          </div>
+          <div
+            className="tool"
+            onClick={() => {
+              setPage("title");
+              setTitleEditable(false);
+            }}
+          >
+            完成
+          </div>
+        </div>
       </div>
-      <div className="tools">
-        <div className="tool"></div>
-      </div>
+
       <div className="dots" style={{ display }}></div>
       <div className="menus" style={{ display }}>
         <div className="columns">
           <div className="column">
             <div className="column-title">站点</div>
             <div className="column-items">
-              <div className="column-item">添加站点...</div>
+              <div
+                className="column-item"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setTitleEditable(false);
+                  setToolsDisPlay(
+                    window.innerWidth >= 710 ? "inline-block" : "block"
+                  );
+                  setTimeout(() => setPage("tools"));
+                }}
+              >
+                添加站点...
+              </div>
               <div className="column-item">调整站点...</div>
             </div>
           </div>

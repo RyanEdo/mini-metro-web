@@ -2,21 +2,17 @@ import classNames from "classnames";
 import React, {
   CSSProperties,
   Dispatch,
+  LegacyRef,
+  RefAttributes,
+  RefObject,
   SetStateAction,
   StyleHTMLAttributes,
+  forwardRef,
   useEffect,
   useState,
 } from "react";
 import "./AutoGrowthInput.scss";
-export function AutoGrowthInput({
-  value,
-  onInput,
-  className = "",
-  type = "",
-  disabled = false,
-  style = {},
-  onClick,
-}: {
+type InputProps = {
   value?: number | string;
   onInput?: (x: any) => void;
   className?: string;
@@ -24,10 +20,19 @@ export function AutoGrowthInput({
   disabled?: boolean;
   style?: CSSProperties;
   onClick?: (x: any) => void;
-}) {
+}
+export const AutoGrowthInput = forwardRef<HTMLInputElement, InputProps>(function ({
+  value,
+  onInput,
+  className = "",
+  type = "",
+  disabled = false,
+  style = {},
+  onClick,
+}, ref) {
   return (
     <div
-      onClick={onClick}
+      // onClick={onClick}
       className={classNames({
         "auto-growth-container": 1,
         [className]: className,
@@ -38,16 +43,20 @@ export function AutoGrowthInput({
         {value}
       </span>
       <input
+
+      ref={ref}
         style={style}
         className="auto-growth-input"
         value={value}
         onInput={onInput}
         type={type}
-        readOnly={disabled}
+        disabled={disabled}
+        onClick={onClick}
         onWheel={(e) => {
           if (document.activeElement === e.currentTarget) e.stopPropagation();
         }}
       ></input>
+      {disabled?<div className="click-panel" onClick={onClick}></div>:<></>}
     </div>
   );
-}
+}) 

@@ -24,7 +24,7 @@
         left: 0;
         padding: 0;
         background-color: transparent;
-        &:read-only{
+        &:disabled{
             appearance: none;
             color: inherit;
             opacity: inherit;
@@ -34,6 +34,14 @@
                 outline: none;
             }
         }
+    }
+    .click-panel{
+        position: absolute;
+        left: 0;
+        width: calc(100% + 18px);
+        height: 100%;
+        top: 0;
+        // cursor: pointer;
     }
 
     &.disabled{
