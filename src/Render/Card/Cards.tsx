@@ -6,7 +6,7 @@ import { LineCard } from "./LineCard";
 import "./Cards.scss";
 import { StationCard } from "./StationCard";
 import { UserDataType } from "../../Data/UserData";
-import { mapToArr, onWheelX, onWheelY } from "../../Common/util";
+import { browserInfo, mapToArr, onWheelX, onWheelY } from "../../Common/util";
 import { showConfirmationInterface } from "../Delete/DeleteConfirmation";
 import { FunctionMode } from "../../DataStructure/Mode";
 
@@ -14,38 +14,44 @@ export function Cards({
   data,
   setData,
   showConfirmation,
-  menuRef
+  menuRef,
 }: {
   data: UserDataType;
   setData: Dispatch<SetStateAction<UserDataType>>;
   showConfirmation?: showConfirmationInterface;
-  menuRef: RefObject<any>
+  menuRef: RefObject<any>;
 }) {
   const { lines, stations } = data;
+  const { engine, device } = browserInfo;
+  console.log(engine);
   return (
     <div
       className="cards"
       onWheel={onWheelX}
+      style={engine.name === "WebKit" ? { pointerEvents: "auto" } : {}}
     >
       {mapToArr(lines).map((line) => (
-        <LineCard
-          setData={setData}
-          line={line}
-          data={data}
-          key={"line-card-" + line.lineId}
-          showConfirmation={showConfirmation}
-        />
+        <div className="card-container">
+          <LineCard
+            setData={setData}
+            line={line}
+            data={data}
+            key={"line-card-" + line.lineId}
+            showConfirmation={showConfirmation}
+          />
+        </div>
       ))}
       {mapToArr(stations).map((station) => (
-        <StationCard
-          setData={setData}
-          station={station}
-          data={data}
-          key={"station-card-" + station.stationId}
-          showConfirmation={showConfirmation}
-          menuRef={menuRef}
-
-        />
+        <div className="card-container">
+          <StationCard
+            setData={setData}
+            station={station}
+            data={data}
+            key={"station-card-" + station.stationId}
+            showConfirmation={showConfirmation}
+            menuRef={menuRef}
+          />
+        </div>
       ))}
     </div>
   );

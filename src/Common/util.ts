@@ -1,4 +1,5 @@
 import { MouseEvent, WheelEventHandler } from "react";
+import UAParser from 'ua-parser-js';
 
 export const mapToArr = <K, V>(map: Map<K, V>) => {
   const arr: V[] = [];
@@ -62,3 +63,7 @@ export const onWheelY: WheelEventHandler = (event) => {
     event.preventDefault();
   }
 };
+
+
+const parser = new UAParser(navigator.userAgent); 
+export const browserInfo = parser.getResult();
