@@ -1,27 +1,70 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 import { AutoGrowthInput } from "../../Common/AutoGrowthInput";
 import "./Menu.scss";
 import classNames from "classnames";
 import { FunctionMode, Mode } from "../../DataStructure/Mode";
-type MenuType = { setEditingMode: React.Dispatch<React.SetStateAction<Mode>>,
-  setFuntionMode: React.Dispatch<React.SetStateAction<FunctionMode>>
+import {
+  StationProps,
+  UserDataType,
+  addNewStation,
+  addStationFromRecord,
+  deleteStation,
+} from "../../Data/UserData";
+type MenuType = {
+  setEditingMode: React.Dispatch<React.SetStateAction<Mode>>;
+  setFuntionMode: React.Dispatch<React.SetStateAction<FunctionMode>>;
+  record: StationProps[];
+  setRecord: React.Dispatch<React.SetStateAction<StationProps[]>>;
+  currentRecordIndex: number;
+  setCurrentRecordIndex: React.Dispatch<React.SetStateAction<number>>;
+  data: UserDataType;
+  setData: Dispatch<SetStateAction<UserDataType>>;
 };
-export function Menu({ setEditingMode, setFuntionMode }: MenuType) {
+export const Menu = forwardRef( function ({
+  setEditingMode,
+  setFuntionMode,
+  record,
+  setRecord,
+  currentRecordIndex,
+  setCurrentRecordIndex,
+  data,
+  setData,
+}: MenuType, ref) {
   const [page, setPage] = useState("title");
   const [titleEditable, setTitleEditable] = useState(false);
   const [display, setDisplay] = useState("none");
   const [title, setTitle] = useState("提瓦特");
   const inputRef = useRef<HTMLInputElement>(null);
   const [toolsDisPlay, setToolsDisPlay] = useState("none");
+  const undoCondition = currentRecordIndex >= 0;
+  const redoCondition = currentRecordIndex < record.length - 1;
+  console.log(record,data.stations);
+  const backToTitle = () =>{
+            setPage("title");
+        setTitleEditable(false);
+        setFuntionMode(FunctionMode.normal);
+  }
+  useImperativeHandle(
+    ref,
+    () => {
+      return {
+        backToTitle,
+      };
+    },
+    []
+  );
   return (
     <div
       className={classNames({ menu: 1, [`page-${page}`]: 1 })}
-      onClick={(e) => {
-        // if (e.target === e.currentTarget) {
-        setPage("title");
-        setTitleEditable(false);
-        // }
-      }}
+      onClick={backToTitle}
       onTransitionEnd={() => {
         if (page === "title" || page === "tools") setDisplay("none");
       }}
@@ -58,12 +101,36 @@ export function Menu({ setEditingMode, setFuntionMode }: MenuType) {
           onTransitionEnd={() => {
             if (page !== "tools") {
               setToolsDisPlay("none");
+              setFuntionMode(FunctionMode.normal);
             }
           }}
         >
-          <div className="tool disabled">点击空白处新增站点</div>
-          <div className="tool">撤销</div>
-          <div className="tool" onClick={(e) => e.stopPropagation()}>
+          <div className="tool disabled">{currentRecordIndex>=0?`已添加${currentRecordIndex+1}站` :'点击空白处新增站点'}</div>
+          <div
+            className={classNames({ tool: 1, disabled: !undoCondition })}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (undoCondition) {
+                const station = record[currentRecordIndex];
+                const { stationId } = station;
+                deleteStation(data, setData, stationId);
+                setCurrentRecordIndex(currentRecordIndex - 1);
+              }
+            }}
+          >
+            撤销
+          </div>
+          <div
+            className={classNames({ tool: 1, disabled: !redoCondition })}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (redoCondition) {
+                const station = record[currentRecordIndex + 1];
+                addStationFromRecord(data, setData, station);
+                setCurrentRecordIndex(currentRecordIndex + 1);
+              }
+            }}
+          >
             重做
           </div>
           <div
@@ -88,6 +155,8 @@ export function Menu({ setEditingMode, setFuntionMode }: MenuType) {
                 className="column-item"
                 onClick={(e) => {
                   e.stopPropagation();
+                  setRecord([]);
+                  setCurrentRecordIndex(-1);
                   setFuntionMode(FunctionMode.addingStation);
                   setTitleEditable(false);
                   setToolsDisPlay(
@@ -122,4 +191,4 @@ export function Menu({ setEditingMode, setFuntionMode }: MenuType) {
       </div>
     </div>
   );
-}
+})

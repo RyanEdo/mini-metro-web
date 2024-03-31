@@ -14,13 +14,17 @@ import {
 import "./ScaleLayer.scss";
 import { getCursor } from "../../Style/Cursor";
 import { Point } from "../../DataStructure/Point";
-import { UserDataType } from "../../Data/UserData";
+import { StationProps, UserDataType } from "../../Data/UserData";
 class ScaleLayerProp {
   editingMode!: Mode;
   setEditingMode!: React.Dispatch<React.SetStateAction<Mode>>;
   data!: UserDataType;
   setData!: Dispatch<SetStateAction<UserDataType>>;
   funtionMode!: FunctionMode;
+  record!: StationProps[];
+  setRecord!: React.Dispatch<React.SetStateAction<StationProps[]>>;
+  currentRecordIndex!: number;
+  setCurrentRecordIndex!: React.Dispatch<React.SetStateAction<number>>;
 }
 function ScaleLayer({
   editingMode,
@@ -28,6 +32,10 @@ function ScaleLayer({
   data,
   setData,
   funtionMode,
+  record,
+  setRecord,
+  currentRecordIndex,
+  setCurrentRecordIndex,
 }: ScaleLayerProp) {
   const [translateX, setTranslateX] = useState(0);
   const [translateY, setTranslateY] = useState(0);
@@ -82,10 +90,28 @@ function ScaleLayer({
           translateY,
           setEditingMode,
           setMouseRefPoint,
-          setMouseStartTranslate
+          setMouseStartTranslate,
+          setMoved
         )
       }
-      onMouseUp={(event) => onMouseUp(event, setEditingMode)}
+      onMouseUp={(event) =>
+        onMouseUp(
+          event,
+          setEditingMode,
+          editingMode,
+          funtionMode,
+          data,
+          setData,
+          moved,
+          translateX,
+          translateY,
+          scale,
+          record,
+          setRecord,
+          currentRecordIndex,
+          setCurrentRecordIndex,
+        )
+      }
       onMouseLeave={(event) => onMouseLeave(event, setEditingMode)}
       onMouseMove={(event) =>
         onMouseMove(
@@ -96,7 +122,8 @@ function ScaleLayer({
           setTranslateY,
           editingMode,
           mouseRefPoint,
-          mouseStartTranslate
+          mouseStartTranslate,
+          setMoved
         )
       }
       onTouchStart={(event) =>
@@ -130,7 +157,22 @@ function ScaleLayer({
         )
       }
       onTouchEnd={(event) =>
-        onTouchEnd(event, setEditingMode, editingMode, funtionMode, data, setData, moved, translateX, translateY, scale)
+        onTouchEnd(
+          event,
+          setEditingMode,
+          editingMode,
+          funtionMode,
+          data,
+          setData,
+          moved,
+          translateX,
+          translateY,
+          scale, 
+          record,
+          setRecord,
+          currentRecordIndex,
+          setCurrentRecordIndex,
+        )
       }
       style={{ cursor: getCursor(editingMode) }}
     >

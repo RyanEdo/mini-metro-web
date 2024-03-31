@@ -39,7 +39,7 @@ export const DeleteConfirmation = forwardRef(function (
     setShow(true);
     setLine(line);
     setStation(station);
-    setCallback(callback);
+    setCallback(()=>callback);
     setStationIndex(stationIndex);
   };
   useImperativeHandle(

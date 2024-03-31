@@ -40,7 +40,7 @@ const initDataMock: UserDataType = {
       stationName: "达达乌帕谷",
       position: [500, 600],
       shape: "square",
-      lineIds: [2,3],
+      lineIds: [2, 3],
     },
     {
       stationId: 4,
@@ -76,10 +76,10 @@ const initDataMock: UserDataType = {
       lineId: 3,
       lineName: "3号线",
       color: "#F8D000",
-      stationIds: [1, 4, 2,3,4],
+      stationIds: [1, 4, 2, 3, 4],
       sign: "3",
       order: 3,
-      bendFirst: [1, 0, 0,0,0],
+      bendFirst: [1, 0, 0, 0, 0],
     },
   ].reduce((map, cur) => {
     map.set(cur.lineId, cur);
@@ -91,6 +91,36 @@ export const initData = {
   // stations: [],
   // lines: [],
   ...initDataMock,
+};
+export const deleteStation = (
+  data: UserDataType,
+  setData: Dispatch<SetStateAction<UserDataType>>,
+  stationId: number
+) => {
+  const { stations, lines } = data;
+  const station = stations.get(stationId);
+  const { lineIds } = station!;
+  //detele stations in line
+  lineIds.forEach((lineId) => {
+    const newStationIds: number[] = [];
+    const newBendFirst: boolean[] = [];
+    const line = lines.get(lineId);
+    const { stationIds, bendFirst } = line!;
+    stationIds.forEach((id, index) => {
+      if (stationId !== id) {
+        newStationIds.push(id);
+        newBendFirst.push(bendFirst[index]);
+      }
+    });
+    lines.set(lineId, {
+      ...line!,
+      stationIds: newStationIds,
+      bendFirst: newBendFirst,
+    });
+  });
+  // delete station
+  stations.delete(stationId);
+  setData({ ...data });
 };
 
 export const useData = (
@@ -169,25 +199,50 @@ export const useData = (
         return { ...state };
       });
     },
+    deleteStation: () => deleteStation(state, setData, id),
   };
 };
 
+export const addNewStation = (
+  data: UserDataType,
+  setData: Dispatch<SetStateAction<UserDataType>>,
+  x: number,
+  y: number,
+  record: StationProps[],
+  setRecord: React.Dispatch<React.SetStateAction<StationProps[]>>,
+  currentRecordIndex: number,
+  setCurrentRecordIndex: React.Dispatch<React.SetStateAction<number>>
+) => {
+  const { stations } = data;
+  let max = -Infinity;
+  stations.forEach((station) => {
+    max = Math.max(station.stationId, max);
+  });
+  const newStation = {
+    stationId: max + 1,
+    stationName: `新增站点 ${max + 1}`,
+    position: [x, y].map(Math.round),
+    shape: "square",
+    lineIds: [],
+  };
+  const newRecord = record.slice(0, currentRecordIndex + 1);
+  setRecord(newRecord.concat([newStation]));
+  setCurrentRecordIndex(currentRecordIndex + 1);
+  stations.set(max + 1, newStation);
+  setData({ ...data });
+};
 
-export const addNewStation = (data: UserDataType, setData: Dispatch<SetStateAction<UserDataType>>,
- x: number, y: number
-  )=>{
-    const {stations} = data;
-    let max = -Infinity;
-    stations.forEach((station)=>{
-      max = Math.max(station.stationId, max)
-    });
-    const newStation = {
-      stationId: max+1,
-      stationName: `新增站点 ${max+1}`,
-      position: [x,y].map(Math.round),
-      shape: "square",
-      lineIds: [],
-    };
-    stations.set(max+1,newStation);
-  setData({...data});
-}
+export const addStationFromRecord = (
+  data: UserDataType,
+  setData: Dispatch<SetStateAction<UserDataType>>,
+  station: StationProps
+) => {
+  const { stations } = data;
+  let max = -Infinity;
+  stations.forEach((station) => {
+    max = Math.max(station.stationId, max);
+  });
+  const newStation = { ...station, stationId: max + 1 };
+  stations.set(max + 1, newStation);
+  setData({ ...data });
+};

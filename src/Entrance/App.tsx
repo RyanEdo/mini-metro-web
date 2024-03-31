@@ -1,4 +1,4 @@
-import { initData } from "../Data/UserData";
+import { StationProps, initData } from "../Data/UserData";
 import { FunctionMode, Mode } from "../DataStructure/Mode";
 import { Cards } from "../Render/Card/Cards";
 import {
@@ -13,8 +13,11 @@ import React, { useEffect, useRef, useState } from "react";
 function App() {
   const [editingMode, setEditingMode] = useState(Mode.normal);
   const [funtionMode, setFuntionMode] = useState(FunctionMode.normal);
+  const [record, setRecord] = useState<StationProps[]>([]);
+  const [currentRecordIndex, setCurrentRecordIndex] = useState(-1);
   const [data, setData] = useState(initData);
   const ref = useRef<any>();
+  const menuRef = useRef();
   const [showConfirmation, setShowConfirmation] =
     useState<showConfirmationInterface>();
   useEffect(() => {
@@ -22,7 +25,17 @@ function App() {
   }, [ref.current?.showConfirmation]);
   return (
     <div className="App">
-      <Menu setEditingMode={setEditingMode} setFuntionMode={setFuntionMode}/>
+      <Menu
+        setEditingMode={setEditingMode}
+        setFuntionMode={setFuntionMode}
+        record={record}
+        setRecord={setRecord}
+        currentRecordIndex={currentRecordIndex}
+        setCurrentRecordIndex={setCurrentRecordIndex}
+        data={data}
+        setData={setData}
+        ref={menuRef}
+      />
       <DeleteConfirmation ref={ref} />
       <ScaleLayer
         editingMode={editingMode}
@@ -30,11 +43,16 @@ function App() {
         data={data}
         setData={setData}
         funtionMode={funtionMode}
+        record={record}
+        setRecord={setRecord}
+        currentRecordIndex={currentRecordIndex}
+        setCurrentRecordIndex={setCurrentRecordIndex}
       />
       <Cards
         data={data}
         setData={setData}
         showConfirmation={showConfirmation}
+        menuRef={menuRef}
       />
     </div>
   );

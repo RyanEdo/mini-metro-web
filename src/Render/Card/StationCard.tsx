@@ -1,4 +1,10 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, {
+  Dispatch,
+  RefObject,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 
 import "./StationCard.scss";
 import classNames from "classnames";
@@ -9,16 +15,19 @@ import { Shape } from "../../Data/Shape";
 import { AutoGrowthInput } from "../../Common/AutoGrowthInput";
 import { onWheelX, onWheelY, scrollOptimize } from "../../Common/util";
 import { showConfirmationInterface } from "../Delete/DeleteConfirmation";
+import { FunctionMode } from "../../DataStructure/Mode";
 export function StationCard({
   station,
   setData,
   data,
   showConfirmation,
+  menuRef,
 }: {
   station: StationProps;
   setData: Dispatch<SetStateAction<UserDataType>>;
   data: UserDataType;
   showConfirmation?: showConfirmationInterface;
+  menuRef: RefObject<any>;
 }) {
   const {
     stationName,
@@ -27,8 +36,13 @@ export function StationCard({
     shape: shapeSelected,
     stationId,
   } = station;
-  const { setStationName, setStationPosition, setStationShape, getLineById } =
-    useData(stationId, setData, data);
+  const {
+    setStationName,
+    setStationPosition,
+    setStationShape,
+    getLineById,
+    deleteStation,
+  } = useData(stationId, setData, data);
   const [x, y] = position;
   const setX = (x: number) => setStationPosition(x, y);
   const setY = (y: number) => setStationPosition(x, y);
@@ -113,17 +127,15 @@ export function StationCard({
         return (
           <div className="operation-detail">
             <div className="operation-item">以此为起点新建线路...</div>
-            {
-          
-            lineIds.map((lineId) => {
+            {lineIds.map((lineId) => {
               const line = getLineById(lineId);
               const stationIndexes: number[] = [];
               line?.stationIds.forEach((x, index) => {
                 if (x === stationId) stationIndexes.push(index);
               });
               const { lineName } = line!;
-              const removeStations = stationIndexes.map(stationIndex=>(
-                  <div
+              const removeStations = stationIndexes.map((stationIndex) => (
+                <div
                   className="operation-item delete"
                   onClick={() => {
                     showConfirmation!({ line, station, stationIndex });
@@ -131,13 +143,18 @@ export function StationCard({
                 >
                   从{lineName}的第{stationIndex! + 1}站移除...
                 </div>
-                ))
+              ));
               return removeStations;
             })}
             <div
               className="operation-item delete"
               onClick={() => {
-                showConfirmation!({ station });
+                showConfirmation!({ station }, () => {
+                  deleteStation();
+                  if (menuRef?.current?.backToTitle) {
+                    menuRef.current.backToTitle();
+                  }
+                });
               }}
             >
               删除站点...

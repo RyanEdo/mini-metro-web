@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect } from "react";
+import React, { Dispatch, RefObject, SetStateAction, useEffect } from "react";
 import { Line } from "../../DataStructure/Line";
 import { Station } from "../../DataStructure/Station";
 import { DisplayStation } from "../../DataStructure/Display";
@@ -8,15 +8,18 @@ import { StationCard } from "./StationCard";
 import { UserDataType } from "../../Data/UserData";
 import { mapToArr, onWheelX, onWheelY } from "../../Common/util";
 import { showConfirmationInterface } from "../Delete/DeleteConfirmation";
+import { FunctionMode } from "../../DataStructure/Mode";
 
 export function Cards({
   data,
   setData,
   showConfirmation,
+  menuRef
 }: {
   data: UserDataType;
   setData: Dispatch<SetStateAction<UserDataType>>;
   showConfirmation?: showConfirmationInterface;
+  menuRef: RefObject<any>
 }) {
   const { lines, stations } = data;
   return (
@@ -40,6 +43,8 @@ export function Cards({
           data={data}
           key={"station-card-" + station.stationId}
           showConfirmation={showConfirmation}
+          menuRef={menuRef}
+
         />
       ))}
     </div>

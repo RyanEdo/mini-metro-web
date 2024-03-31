@@ -1,4 +1,4 @@
-import { UserDataType, addNewStation } from "./../Data/UserData";
+import { StationProps, UserDataType, addNewStation } from "./../Data/UserData";
 import {
   WheelEvent,
   Dispatch,
@@ -55,12 +55,14 @@ export const onMouseDown = (
   translateY: number,
   setEditingMode: Dispatch<SetStateAction<Mode>>,
   setMouseRefPoint: Dispatch<SetStateAction<Point>>,
-  setMouseStartTranslate: Dispatch<React.SetStateAction<Point>>
+  setMouseStartTranslate: Dispatch<React.SetStateAction<Point>>,
+  setMoved: Dispatch<SetStateAction<boolean>>
 ) => {
   const point = Point.getPointFromMouse(event);
   setMouseRefPoint(point);
   setEditingMode(Mode.moving);
   setMouseStartTranslate(new Point(translateX, translateY));
+  setMoved(false);
 };
 
 export const onMouseMove = (
@@ -71,8 +73,10 @@ export const onMouseMove = (
   setTranslateY: Dispatch<SetStateAction<number>>,
   editingMode: Mode,
   mouseRefPoint: Point,
-  mouseStartTranslate: Point
+  mouseStartTranslate: Point,
+  setMoved: Dispatch<SetStateAction<boolean>>
 ) => {
+  setMoved(true);
   switch (editingMode) {
     case Mode.moving: {
       // console.log(event);
@@ -87,10 +91,38 @@ export const onMouseMove = (
 
 export const onMouseUp = (
   event: MouseEvent<HTMLDivElement>,
-  setEditingMode: Dispatch<SetStateAction<Mode>>
+  setEditingMode: Dispatch<SetStateAction<Mode>>,
+  editingMode: Mode,
+  funtionMode: FunctionMode,
+  data: UserDataType,
+  setData: Dispatch<SetStateAction<UserDataType>>,
+  moved: boolean,
+  translateX: number,
+  translateY: number,
+  scale: number,
+  record: StationProps[],
+  setRecord: React.Dispatch<React.SetStateAction<StationProps[]>>,
+  currentRecordIndex: number,
+  setCurrentRecordIndex: React.Dispatch<React.SetStateAction<number>>
 ) => {
   // console.log(event);
   setEditingMode(Mode.normal);
+  if (funtionMode === FunctionMode.addingStation && !moved) {
+    console.log({ translateX, translateY, scale });
+    const { clientX, clientY } = event;
+    const x = (clientX - translateX) / scale;
+    const y = (clientY - translateY) / scale;
+    addNewStation(
+      data,
+      setData,
+      x,
+      y,
+      record,
+      setRecord,
+      currentRecordIndex,
+      setCurrentRecordIndex
+    );
+  }
 };
 
 export const onMouseLeave = (
@@ -113,6 +145,7 @@ export const onTouchStart = (
   translateY: number,
   setMoved: Dispatch<SetStateAction<boolean>>
 ) => {
+  event.preventDefault();
   const { touches } = event;
   // record touch start translate position
   setTouchStartTranslate(new Point(translateX, translateY));
@@ -157,6 +190,7 @@ export const onTouchMove = (
   touchStartTranslate: Point,
   setMoved: Dispatch<SetStateAction<boolean>>
 ) => {
+  event.preventDefault();
   const { touches } = event;
   setMoved(true);
   // console.log(event, touches.length, editingMode);
@@ -215,8 +249,13 @@ export const onTouchEnd = (
   moved: boolean,
   translateX: number,
   translateY: number,
-  scale: number
+  scale: number,
+  record: StationProps[],
+  setRecord: React.Dispatch<React.SetStateAction<StationProps[]>>,
+  currentRecordIndex: number,
+  setCurrentRecordIndex: React.Dispatch<React.SetStateAction<number>>
 ) => {
+  event.preventDefault();
   const { changedTouches } = event;
   // console.log(event,editingMode);
   if (
@@ -225,11 +264,20 @@ export const onTouchEnd = (
     changedTouches.length === 1
   ) {
     const touch = changedTouches[0];
-    console.log({touch, translateX, translateY, scale});
-    const {clientX, clientY} = touch;
-    const x = (clientX-translateX)/scale;
-    const y = (clientY - translateY)/scale;
-    addNewStation( data,setData, x, y);
+    console.log({ touch, translateX, translateY, scale });
+    const { clientX, clientY } = touch;
+    const x = (clientX - translateX) / scale;
+    const y = (clientY - translateY) / scale;
+    addNewStation(
+      data,
+      setData,
+      x,
+      y,
+      record,
+      setRecord,
+      currentRecordIndex,
+      setCurrentRecordIndex
+    );
   }
   setEditingMode(Mode.normal);
 };
