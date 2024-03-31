@@ -140,7 +140,7 @@ export const useData = (
     setStationPosition: (x: number, y: number) => {
       setData((state) => {
         const station = stations.get(id);
-        station!.position = [x, y];
+        station!.position = [x, y].map(x=>Number.isInteger(x)?x:0);
         return { ...state };
       });
     },

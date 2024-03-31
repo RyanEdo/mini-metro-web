@@ -55,6 +55,13 @@ export const AutoGrowthInput = forwardRef<HTMLInputElement, InputProps>(function
         onWheel={(e) => {
           if (document.activeElement === e.currentTarget) e.stopPropagation();
         }}
+        onBlur={(e)=>{
+          if(type === "number")
+          setTimeout(()=>{
+            //@ts-ignore
+            e.target.value = value
+          })
+        }}
       ></input>
       {disabled?<div className="click-panel" onClick={onClick}></div>:<></>}
     </div>

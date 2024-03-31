@@ -124,7 +124,8 @@ const getPointsInStation = (lineRecord: LineRecord) => {
     else {
       // same in same out, need two points
       if (inDirection?.sameTo(outDirection!)) {
-        return [AOffsetPoint, BOffsetPoint];
+        return []; // no need points cause last and next will add end and start points
+        // return [AOffsetPoint, BOffsetPoint];
       }
       const crossPointInStation = getTurningPoint(
         AOffsetPoint,
@@ -160,6 +161,7 @@ const getAllKeyPoints = (line: Line) => {
   }
   while (lineRecord.nextLineRecord) {
     const pointsInStation = getPointsInStation(lineRecord);
+    // if(pointsInStation[0]&&(pointsInStation[0].x === 500 && pointsInStation[0].y === 600)) debugger;
     keyPoints = keyPoints.concat(pointsInStation);
     const pointsBetweenStations = getPointsBetweenStations(lineRecord);
 

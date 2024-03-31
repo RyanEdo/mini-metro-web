@@ -13,7 +13,12 @@ import { StationProps, UserDataType, useData } from "../../Data/UserData";
 import shapes from "../../Resource/Shape/shape";
 import { Shape } from "../../Data/Shape";
 import { AutoGrowthInput } from "../../Common/AutoGrowthInput";
-import { onWheelX, onWheelY, scrollOptimize } from "../../Common/util";
+import {
+  browserInfo,
+  onWheelX,
+  onWheelY,
+  scrollOptimize,
+} from "../../Common/util";
 import { showConfirmationInterface } from "../Delete/DeleteConfirmation";
 import { FunctionMode } from "../../DataStructure/Mode";
 export function StationCard({
@@ -48,6 +53,7 @@ export function StationCard({
   const setY = (y: number) => setStationPosition(x, y);
   const lineCount = lineIds.length;
   const [tab, setTab] = useState("name");
+  const { engine } = browserInfo;
 
   const editTools = (tab: string) => {
     switch (tab) {
@@ -58,7 +64,7 @@ export function StationCard({
               <div className="title">横坐标</div>
               <AutoGrowthInput
                 value={x}
-                onInput={(x) => setX(parseInt(x.currentTarget.value))}
+                onInput={(x) => setX(Number(x.currentTarget.value))}
                 type="number"
               />
             </div>
@@ -66,17 +72,9 @@ export function StationCard({
               <div className="title">纵坐标</div>
               <AutoGrowthInput
                 value={y}
-                onInput={(y) => setY(parseInt(y.currentTarget.value))}
+                onInput={(y) => setY(Number(y.currentTarget.value))}
                 type="number"
               />
-              {/* <span className="auto-growth-span">{y}</span>
-
-              <input
-                className="auto-growth-input"
-                value={y}
-                type="number"
-                onInput={(y) => setY(parseInt(y.currentTarget.value))}
-              ></input> */}
             </div>
           </div>
         );
@@ -165,7 +163,14 @@ export function StationCard({
     }
   };
   return (
-    <div className={classNames({ "station-card": 1 })}>
+    <div
+      className={classNames({ "station-card": 1 })}
+      style={
+        engine.name === "WebKit"
+          ? { boxShadow: "0 4px 59px 7px rgba(0, 0, 0, 0.25)" }
+          : {}
+      }
+    >
       <div className="line-count">{lineCount}条线路</div>
       <AutoGrowthInput
         onInput={(e) => setStationName(e.currentTarget.value)}

@@ -50,7 +50,7 @@ export class Vector extends Direction {
     const deltaX = this.end.x - this.start.x;
     const deltaY = this.end.y - this.start.y;
     const module = Math.sqrt(
-      Math.pow(deltaX, 2) + Math.pow(deltaY - this.end.y, 2)
+      Math.pow(deltaX, 2) + Math.pow(deltaY, 2)
     );
     return new Vector(
       new Point(0, 0),
@@ -122,7 +122,7 @@ export class Vector extends Direction {
       if (-deltaX === deltaY) return Direct.leftUp;
       else if (-deltaX > deltaY) return Direct.leftUpA;
       else return Direct.leftUpB;
-    // debugger
+    debugger
     throw Error("error happend when getting direction");
   }
 }

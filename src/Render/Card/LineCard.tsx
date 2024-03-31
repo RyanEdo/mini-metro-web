@@ -10,7 +10,7 @@ import EditIcon from "../../Resource/Icon/edit.svg";
 
 import classNames from "classnames";
 import { LineProps, UserDataType, useData } from "../../Data/UserData";
-import { mapToArr, onWheelX, onWheelY, scrollOptimize } from "../../Common/util";
+import { browserInfo, mapToArr, onWheelX, onWheelY, scrollOptimize } from "../../Common/util";
 import { AutoGrowthInput } from "../../Common/AutoGrowthInput";
 import { colorSH, colorSHMap } from "../../Common/color";
 import { showConfirmationInterface } from "../Delete/DeleteConfirmation";
@@ -165,10 +165,15 @@ export function LineCard({
       }
     }
   };
+  const { engine } = browserInfo;
   return (
     <div
       className={classNames({ "line-card": 1, "expend-card": expend })}
-      style={expend ? { width: expendWidth } : {}}
+      style={expend ? { width: expendWidth } :      
+        engine.name === "WebKit"
+          ? { boxShadow: "0 4px 59px 7px rgba(0, 0, 0, 0.25)" }
+          : {}
+      }
     >
       <div className="tools">
         {expend || edit ? (

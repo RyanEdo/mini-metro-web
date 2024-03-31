@@ -22,13 +22,12 @@ export function Cards({
   menuRef: RefObject<any>;
 }) {
   const { lines, stations } = data;
-  const { engine, device } = browserInfo;
-  console.log(engine);
+  const { engine } = browserInfo;
   return (
     <div
       className="cards"
       onWheel={onWheelX}
-      style={engine.name === "WebKit" ? { pointerEvents: "auto" } : {}}
+      style={engine.name === "WebKit" ? { pointerEvents: "auto", height: 370, paddingTop:70 } : {}}
     >
       {mapToArr(lines).map((line) => (
         <div className="card-container">
