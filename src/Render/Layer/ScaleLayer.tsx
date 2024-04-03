@@ -21,8 +21,10 @@ class ScaleLayerProp {
   data!: UserDataType;
   setData!: Dispatch<SetStateAction<UserDataType>>;
   funtionMode!: FunctionMode;
-  record!: StationProps[]|ChangeSteps[];
-  setRecord!: React.Dispatch<React.SetStateAction<StationProps[]|ChangeSteps[]>>;
+  record!: StationProps[] | ChangeSteps[];
+  setRecord!: React.Dispatch<
+    React.SetStateAction<StationProps[] | ChangeSteps[]>
+  >;
   currentRecordIndex!: number;
   setCurrentRecordIndex!: React.Dispatch<React.SetStateAction<number>>;
 }
@@ -109,7 +111,7 @@ function ScaleLayer({
           record,
           setRecord,
           currentRecordIndex,
-          setCurrentRecordIndex,
+          setCurrentRecordIndex
         )
       }
       onMouseLeave={(event) => onMouseLeave(event, setEditingMode)}
@@ -167,17 +169,28 @@ function ScaleLayer({
           moved,
           translateX,
           translateY,
-          scale, 
+          scale,
           record,
           setRecord,
           currentRecordIndex,
-          setCurrentRecordIndex,
+          setCurrentRecordIndex
         )
       }
       style={{ cursor: getCursor(editingMode) }}
     >
       <div className="transform-layer" style={style}>
-        <RenderLayer data={data} setData={setData} />
+        <RenderLayer
+          data={data}
+          setData={setData}
+          translateX={translateX}
+          translateY={translateY}
+          scale={scale}
+          funtionMode={funtionMode}
+          record={record}
+          setRecord={setRecord}
+          currentRecordIndex={currentRecordIndex}
+          setCurrentRecordIndex={setCurrentRecordIndex}
+        />
       </div>
     </div>
   );

@@ -18,7 +18,7 @@ import {
   addNewStation,
   addStationFromRecord,
   deleteStation,
-  useData,
+  dataProcessor,
 } from "../../Data/UserData";
 type MenuType = {
   setEditingMode: React.Dispatch<React.SetStateAction<Mode>>;
@@ -144,7 +144,7 @@ export const Menu = forwardRef(function (
                 if (undoCondition) {
                   const change = changeRecords[currentRecordIndex];
                   const { stationId, fromX, fromY } = change;
-                  const {setStationPosition} = useData(stationId, setData, data);
+                  const {setStationPosition} = dataProcessor(stationId, setData, data);
                   setStationPosition(fromX, fromY);
                   setCurrentRecordIndex(currentRecordIndex - 1);
                 }
@@ -157,11 +157,11 @@ export const Menu = forwardRef(function (
               onClick={(e) => {
                 e.stopPropagation();
                 if (redoCondition) {
-                  const change = changeRecords[currentRecordIndex];
+                  const change = changeRecords[currentRecordIndex+1];
                   const { stationId, toX, toY } = change;
-                  const {setStationPosition} = useData(stationId, setData, data);
+                  const {setStationPosition} = dataProcessor(stationId, setData, data);
                   setStationPosition(toX, toY);
-                  setCurrentRecordIndex(currentRecordIndex - 1);
+                  setCurrentRecordIndex(currentRecordIndex + 1);
                 }
               }}
             >

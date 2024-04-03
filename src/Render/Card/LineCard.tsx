@@ -9,7 +9,7 @@ import shrinkIcon from "../../Resource/Icon/shrink-icon.svg";
 import EditIcon from "../../Resource/Icon/edit.svg";
 
 import classNames from "classnames";
-import { LineProps, UserDataType, useData } from "../../Data/UserData";
+import { LineProps, UserDataType, dataProcessor } from "../../Data/UserData";
 import { browserInfo, mapToArr, onWheelX, onWheelY, scrollOptimize } from "../../Common/util";
 import { AutoGrowthInput } from "../../Common/AutoGrowthInput";
 import { colorSH, colorSHMap } from "../../Common/color";
@@ -42,7 +42,7 @@ export function LineCard({
     setColor,
     getBendFirst,
     setBendFirst,
-  } = useData(lineId, setData, data);
+  } = dataProcessor(lineId, setData, data);
   const colorName = colorSHMap.get(colorSelected)?.color_name || colorSelected;
   const firstStation = getStationById(stationIds[0]);
   const lastStation = getStationById(stationIds[stationIds.length - 1]);

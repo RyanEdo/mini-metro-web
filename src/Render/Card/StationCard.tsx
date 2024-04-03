@@ -9,7 +9,7 @@ import React, {
 import "./StationCard.scss";
 import classNames from "classnames";
 import { Point } from "../../DataStructure/Point";
-import { StationProps, UserDataType, useData } from "../../Data/UserData";
+import { StationProps, UserDataType, dataProcessor } from "../../Data/UserData";
 import shapes from "../../Resource/Shape/shape";
 import { Shape } from "../../Data/Shape";
 import { AutoGrowthInput } from "../../Common/AutoGrowthInput";
@@ -47,7 +47,7 @@ export function StationCard({
     setStationShape,
     getLineById,
     deleteStation,
-  } = useData(stationId, setData, data);
+  } = dataProcessor(stationId, setData, data);
   const [x, y] = position;
   const setX = (x: number) => setStationPosition(x, y);
   const setY = (y: number) => setStationPosition(x, y);

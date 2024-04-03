@@ -179,7 +179,8 @@ const getAllKeyPoints = (line: Line) => {
     lineRecord = lineRecord.nextLineRecord;
     if (lineRecord === line.departureRecord) break;
   }
-  return keyPoints;
+  // to-do why duplicate
+  return keyPoints.filter((p,index)=>index>0?!(p.x===keyPoints[index-1].x&&p.y===keyPoints[index-1].y):true);
 };
 
 const deleteDuplicatedPoints = (keyPoints: Point[]) => {

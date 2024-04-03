@@ -131,7 +131,7 @@ export const deleteStation = (
   setData({ ...data });
 };
 
-export const useData = (
+export const dataProcessor = (
   id: number,
   setData: Dispatch<SetStateAction<UserDataType>>,
   state: UserDataType
