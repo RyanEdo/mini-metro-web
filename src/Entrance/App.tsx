@@ -1,4 +1,4 @@
-import { StationProps, initData } from "../Data/UserData";
+import { ChangeSteps, StationProps, initData } from "../Data/UserData";
 import { FunctionMode, Mode } from "../DataStructure/Mode";
 import { Cards } from "../Render/Card/Cards";
 import {
@@ -13,7 +13,7 @@ import React, { useEffect, useRef, useState } from "react";
 function App() {
   const [editingMode, setEditingMode] = useState(Mode.normal);
   const [funtionMode, setFuntionMode] = useState(FunctionMode.normal);
-  const [record, setRecord] = useState<StationProps[]>([]);
+  const [record, setRecord] = useState<StationProps[]|ChangeSteps[]>([]);
   const [currentRecordIndex, setCurrentRecordIndex] = useState(-1);
   const [data, setData] = useState(initData);
   const ref = useRef<any>();
@@ -27,6 +27,7 @@ function App() {
     <div className="App">
       <Menu
         setEditingMode={setEditingMode}
+        funtionMode={funtionMode}
         setFuntionMode={setFuntionMode}
         record={record}
         setRecord={setRecord}

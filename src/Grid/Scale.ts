@@ -1,4 +1,4 @@
-import { StationProps, UserDataType, addNewStation } from "./../Data/UserData";
+import { ChangeSteps, StationProps, UserDataType, addNewStation } from "./../Data/UserData";
 import {
   WheelEvent,
   Dispatch,
@@ -8,6 +8,7 @@ import {
 } from "react";
 import { FunctionMode, Mode } from "../DataStructure/Mode";
 import { Point } from "../DataStructure/Point";
+import React from "react";
 
 const sensitivity = -0.0006;
 
@@ -100,8 +101,8 @@ export const onMouseUp = (
   translateX: number,
   translateY: number,
   scale: number,
-  record: StationProps[],
-  setRecord: React.Dispatch<React.SetStateAction<StationProps[]>>,
+  record: StationProps[]|ChangeSteps[],
+  setRecord: React.Dispatch<React.SetStateAction<StationProps[]|ChangeSteps[]>>,
   currentRecordIndex: number,
   setCurrentRecordIndex: React.Dispatch<React.SetStateAction<number>>
 ) => {
@@ -117,7 +118,7 @@ export const onMouseUp = (
       setData,
       x,
       y,
-      record,
+      record as StationProps[],
       setRecord,
       currentRecordIndex,
       setCurrentRecordIndex
@@ -250,8 +251,8 @@ export const onTouchEnd = (
   translateX: number,
   translateY: number,
   scale: number,
-  record: StationProps[],
-  setRecord: React.Dispatch<React.SetStateAction<StationProps[]>>,
+  record: StationProps[] | ChangeSteps[],
+  setRecord: React.Dispatch<React.SetStateAction<StationProps[]|ChangeSteps[]>>,
   currentRecordIndex: number,
   setCurrentRecordIndex: React.Dispatch<React.SetStateAction<number>>
 ) => {
@@ -273,7 +274,7 @@ export const onTouchEnd = (
       setData,
       x,
       y,
-      record,
+      record as StationProps[],
       setRecord,
       currentRecordIndex,
       setCurrentRecordIndex

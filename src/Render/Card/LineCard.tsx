@@ -73,7 +73,8 @@ export function LineCard({
             onWheel={onWheelX}
           >
             <div className="name-item sign">
-              <div className="title">标识</div>
+                    
+              <div className="title" style={{ color: colorSelected }}>标识</div>
 
               <AutoGrowthInput
                 className="sign-input"
@@ -83,7 +84,7 @@ export function LineCard({
               />
             </div>
             <div className="name-item line-name-item">
-              <div className="title">名称</div>
+              <div className="title" style={{ color: colorSelected }}>名称</div>
               <AutoGrowthInput
                 onInput={(e) => setLineName(e.currentTarget.value)}
                 className="line-name-input"
@@ -91,7 +92,7 @@ export function LineCard({
               />
             </div>
             <div className="name-item order">
-              <div className="title">排序</div>
+              <div className="title" style={{ color: colorSelected }}>排序</div>
 
               <AutoGrowthInput
                 className="order-input"

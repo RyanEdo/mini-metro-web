@@ -15,6 +15,14 @@ export class LineProps {
   order!: number;
   bendFirst!: boolean[];
 }
+
+export type ChangeSteps={
+  fromX: number;
+  fromY: number;
+  toX: number;
+  toY: number;
+  stationId: number;
+}
 export class UserDataType {
   stations!: Map<number | string, StationProps>;
   lines!: Map<number | string, LineProps>;
@@ -209,7 +217,7 @@ export const addNewStation = (
   x: number,
   y: number,
   record: StationProps[],
-  setRecord: React.Dispatch<React.SetStateAction<StationProps[]>>,
+  setRecord: React.Dispatch<React.SetStateAction<StationProps[]|ChangeSteps[]>>,
   currentRecordIndex: number,
   setCurrentRecordIndex: React.Dispatch<React.SetStateAction<number>>
 ) => {

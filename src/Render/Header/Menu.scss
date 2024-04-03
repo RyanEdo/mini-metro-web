@@ -14,7 +14,6 @@
                 .tool {
                     margin-left: -5px;
                     opacity: 0;
-
                 }
             }
         }
@@ -28,6 +27,14 @@
         .menus {
             transition: 0.3s ease-in-out opacity;
             opacity: 1;
+            .columns {
+                .column {
+                    @media (max-width: 710px) {
+                        margin-top: 28.5px;
+                        opacity: 1;
+                    }
+                }
+            }
         }
     }
 
@@ -121,10 +128,10 @@
             @media (max-width: 710px) {
                 // display: block !important;
                 margin-left: -21.77px;
-                .tool{
-                margin-top: 5px;
+                .tool {
+                    margin-top: 5px;
 
-                    &:first-child{
+                    &:first-child {
                         // display: none;
                     }
                 }
@@ -167,8 +174,11 @@
                 display: inline-block;
                 vertical-align: top;
                 width: 20vw;
+                transition: 0.3s ease-in-out;
                 @media (max-width: 710px) {
                     width: auto;
+                    margin-top: -15px;
+                    opacity: 0;
                 }
                 .column-title {
                     font-size: 36px;

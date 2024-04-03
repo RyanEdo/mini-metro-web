@@ -14,15 +14,15 @@ import {
 import "./ScaleLayer.scss";
 import { getCursor } from "../../Style/Cursor";
 import { Point } from "../../DataStructure/Point";
-import { StationProps, UserDataType } from "../../Data/UserData";
+import { ChangeSteps, StationProps, UserDataType } from "../../Data/UserData";
 class ScaleLayerProp {
   editingMode!: Mode;
   setEditingMode!: React.Dispatch<React.SetStateAction<Mode>>;
   data!: UserDataType;
   setData!: Dispatch<SetStateAction<UserDataType>>;
   funtionMode!: FunctionMode;
-  record!: StationProps[];
-  setRecord!: React.Dispatch<React.SetStateAction<StationProps[]>>;
+  record!: StationProps[]|ChangeSteps[];
+  setRecord!: React.Dispatch<React.SetStateAction<StationProps[]|ChangeSteps[]>>;
   currentRecordIndex!: number;
   setCurrentRecordIndex!: React.Dispatch<React.SetStateAction<number>>;
 }

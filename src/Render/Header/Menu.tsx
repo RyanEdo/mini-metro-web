@@ -12,32 +12,39 @@ import "./Menu.scss";
 import classNames from "classnames";
 import { FunctionMode, Mode } from "../../DataStructure/Mode";
 import {
+  ChangeSteps,
   StationProps,
   UserDataType,
   addNewStation,
   addStationFromRecord,
   deleteStation,
+  useData,
 } from "../../Data/UserData";
 type MenuType = {
   setEditingMode: React.Dispatch<React.SetStateAction<Mode>>;
+  funtionMode: FunctionMode;
   setFuntionMode: React.Dispatch<React.SetStateAction<FunctionMode>>;
-  record: StationProps[];
-  setRecord: React.Dispatch<React.SetStateAction<StationProps[]>>;
+  record: StationProps[] | ChangeSteps[];
+  setRecord: React.Dispatch<React.SetStateAction<StationProps[]|ChangeSteps[]>>;
   currentRecordIndex: number;
   setCurrentRecordIndex: React.Dispatch<React.SetStateAction<number>>;
   data: UserDataType;
   setData: Dispatch<SetStateAction<UserDataType>>;
 };
-export const Menu = forwardRef( function ({
-  setEditingMode,
-  setFuntionMode,
-  record,
-  setRecord,
-  currentRecordIndex,
-  setCurrentRecordIndex,
-  data,
-  setData,
-}: MenuType, ref) {
+export const Menu = forwardRef(function (
+  {
+    setEditingMode,
+    funtionMode,
+    setFuntionMode,
+    record,
+    setRecord,
+    currentRecordIndex,
+    setCurrentRecordIndex,
+    data,
+    setData,
+  }: MenuType,
+  ref
+) {
   const [page, setPage] = useState("title");
   const [titleEditable, setTitleEditable] = useState(false);
   const [display, setDisplay] = useState("none");
@@ -46,12 +53,12 @@ export const Menu = forwardRef( function ({
   const [toolsDisPlay, setToolsDisPlay] = useState("none");
   const undoCondition = currentRecordIndex >= 0;
   const redoCondition = currentRecordIndex < record.length - 1;
-  console.log(record,data.stations);
-  const backToTitle = () =>{
-            setPage("title");
-        setTitleEditable(false);
-        setFuntionMode(FunctionMode.normal);
-  }
+  console.log(record, data.stations);
+  const backToTitle = () => {
+    setPage("title");
+    setTitleEditable(false);
+    setFuntionMode(FunctionMode.normal);
+  };
   useImperativeHandle(
     ref,
     () => {
@@ -61,6 +68,119 @@ export const Menu = forwardRef( function ({
     },
     []
   );
+  const showTools = (e: React.MouseEvent, functionMode: FunctionMode) => {
+    e.stopPropagation();
+    setRecord([]);
+    setCurrentRecordIndex(-1);
+    setFuntionMode(functionMode);
+    setTitleEditable(false);
+    setToolsDisPlay(window.innerWidth >= 710 ? "inline-block" : "block");
+    setTimeout(() => setPage("tools"));
+  };
+
+  const tools = () => {
+    switch (funtionMode) {
+      case FunctionMode.addingStation: {
+        const stationRecords = record as StationProps[];
+        return (
+          <>
+            <div className="tool disabled">
+              {currentRecordIndex >= 0
+                ? `已添加${currentRecordIndex + 1}站`
+                : "点击空白处新增站点"}
+            </div>
+            <div
+              className={classNames({ tool: 1, disabled: !undoCondition })}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (undoCondition) {
+                  const station = stationRecords[currentRecordIndex];
+                  const { stationId } = station;
+                  deleteStation(data, setData, stationId);
+                  setCurrentRecordIndex(currentRecordIndex - 1);
+                }
+              }}
+            >
+              撤销
+            </div>
+            <div
+              className={classNames({ tool: 1, disabled: !redoCondition })}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (redoCondition) {
+                  const station = stationRecords[currentRecordIndex + 1];
+                  addStationFromRecord(data, setData, station);
+                  setCurrentRecordIndex(currentRecordIndex + 1);
+                }
+              }}
+            >
+              重做
+            </div>
+            <div
+              className="tool"
+              onClick={() => {
+                setPage("title");
+                setTitleEditable(false);
+              }}
+            >
+              完成
+            </div>
+          </>
+        );
+      }
+      case FunctionMode.dragingStation: {
+        const changeRecords = record as ChangeSteps[];
+        return (
+          <>
+            <div className="tool disabled">
+              {currentRecordIndex >= 0
+                ? `已修改${currentRecordIndex + 1}次`
+                : "拖动站点更改位置"}
+            </div>
+            <div
+              className={classNames({ tool: 1, disabled: !undoCondition })}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (undoCondition) {
+                  const change = changeRecords[currentRecordIndex];
+                  const { stationId, fromX, fromY } = change;
+                  const {setStationPosition} = useData(stationId, setData, data);
+                  setStationPosition(fromX, fromY);
+                  setCurrentRecordIndex(currentRecordIndex - 1);
+                }
+              }}
+            >
+              撤销
+            </div>
+            <div
+              className={classNames({ tool: 1, disabled: !redoCondition })}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (redoCondition) {
+                  const change = changeRecords[currentRecordIndex];
+                  const { stationId, toX, toY } = change;
+                  const {setStationPosition} = useData(stationId, setData, data);
+                  setStationPosition(toX, toY);
+                  setCurrentRecordIndex(currentRecordIndex - 1);
+                }
+              }}
+            >
+              重做
+            </div>
+            <div
+              className="tool"
+              onClick={() => {
+                setPage("title");
+                setTitleEditable(false);
+              }}
+            >
+              完成
+            </div>
+          </>
+        );
+      }
+    }
+  };
   return (
     <div
       className={classNames({ menu: 1, [`page-${page}`]: 1 })}
@@ -105,43 +225,7 @@ export const Menu = forwardRef( function ({
             }
           }}
         >
-          <div className="tool disabled">{currentRecordIndex>=0?`已添加${currentRecordIndex+1}站` :'点击空白处新增站点'}</div>
-          <div
-            className={classNames({ tool: 1, disabled: !undoCondition })}
-            onClick={(e) => {
-              e.stopPropagation();
-              if (undoCondition) {
-                const station = record[currentRecordIndex];
-                const { stationId } = station;
-                deleteStation(data, setData, stationId);
-                setCurrentRecordIndex(currentRecordIndex - 1);
-              }
-            }}
-          >
-            撤销
-          </div>
-          <div
-            className={classNames({ tool: 1, disabled: !redoCondition })}
-            onClick={(e) => {
-              e.stopPropagation();
-              if (redoCondition) {
-                const station = record[currentRecordIndex + 1];
-                addStationFromRecord(data, setData, station);
-                setCurrentRecordIndex(currentRecordIndex + 1);
-              }
-            }}
-          >
-            重做
-          </div>
-          <div
-            className="tool"
-            onClick={() => {
-              setPage("title");
-              setTitleEditable(false);
-            }}
-          >
-            完成
-          </div>
+          {tools()}
         </div>
       </div>
 
@@ -153,27 +237,23 @@ export const Menu = forwardRef( function ({
             <div className="column-items">
               <div
                 className="column-item"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setRecord([]);
-                  setCurrentRecordIndex(-1);
-                  setFuntionMode(FunctionMode.addingStation);
-                  setTitleEditable(false);
-                  setToolsDisPlay(
-                    window.innerWidth >= 710 ? "inline-block" : "block"
-                  );
-                  setTimeout(() => setPage("tools"));
-                }}
+                onClick={(e) => showTools(e, FunctionMode.addingStation)}
               >
                 添加站点...
               </div>
-              <div className="column-item">调整站点...</div>
+              <div
+                className="column-item"
+                onClick={(e) => showTools(e, FunctionMode.dragingStation)}
+              >
+                调整站点位置...
+              </div>
+              <div className="column-item">隐藏站点名称...</div>
             </div>
           </div>
           <div className="column">
             <div className="column-title">线路</div>
             <div className="column-items">
-              <div className="column-item">添加线路...</div>
+              <div className="column-item">调整线路图...</div>
             </div>
           </div>
           <div className="column">
@@ -191,4 +271,4 @@ export const Menu = forwardRef( function ({
       </div>
     </div>
   );
-})
+});
