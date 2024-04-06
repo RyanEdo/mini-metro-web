@@ -16,13 +16,13 @@ export class LineProps {
   bendFirst!: boolean[];
 }
 
-export type ChangeSteps={
+export type ChangeSteps = {
   fromX: number;
   fromY: number;
   toX: number;
   toY: number;
   stationId: number;
-}
+};
 export class UserDataType {
   stations!: Map<number | string, StationProps>;
   lines!: Map<number | string, LineProps>;
@@ -148,7 +148,9 @@ export const dataProcessor = (
     setStationPosition: (x: number, y: number) => {
       setData((state) => {
         const station = stations.get(id);
-        station!.position = [x, y].map(x=>Number.isInteger(x)?x:0);
+        station!.position = [x, y].map((x) =>
+          Number.isNaN(x) ? 0 : Math.round(x)
+        );
         return { ...state };
       });
     },
@@ -217,7 +219,9 @@ export const addNewStation = (
   x: number,
   y: number,
   record: StationProps[],
-  setRecord: React.Dispatch<React.SetStateAction<StationProps[]|ChangeSteps[]>>,
+  setRecord: React.Dispatch<
+    React.SetStateAction<StationProps[] | ChangeSteps[]>
+  >,
   currentRecordIndex: number,
   setCurrentRecordIndex: React.Dispatch<React.SetStateAction<number>>
 ) => {

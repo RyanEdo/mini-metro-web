@@ -10,7 +10,13 @@ import EditIcon from "../../Resource/Icon/edit.svg";
 
 import classNames from "classnames";
 import { LineProps, UserDataType, dataProcessor } from "../../Data/UserData";
-import { browserInfo, mapToArr, onWheelX, onWheelY, scrollOptimize } from "../../Common/util";
+import {
+  browserInfo,
+  mapToArr,
+  onWheelX,
+  onWheelY,
+  scrollOptimize,
+} from "../../Common/util";
 import { AutoGrowthInput } from "../../Common/AutoGrowthInput";
 import { colorSH, colorSHMap } from "../../Common/color";
 import { showConfirmationInterface } from "../Delete/DeleteConfirmation";
@@ -68,13 +74,11 @@ export function LineCard({
     switch (tab) {
       case "name": {
         return (
-          <div
-            className="name-detail"
-            onWheel={onWheelX}
-          >
+          <div className="name-detail" onWheel={onWheelX}>
             <div className="name-item sign">
-                    
-              <div className="title" style={{ color: colorSelected }}>标识</div>
+              <div className="title" style={{ color: colorSelected }}>
+                标识
+              </div>
 
               <AutoGrowthInput
                 className="sign-input"
@@ -84,7 +88,9 @@ export function LineCard({
               />
             </div>
             <div className="name-item line-name-item">
-              <div className="title" style={{ color: colorSelected }}>名称</div>
+              <div className="title" style={{ color: colorSelected }}>
+                名称
+              </div>
               <AutoGrowthInput
                 onInput={(e) => setLineName(e.currentTarget.value)}
                 className="line-name-input"
@@ -92,7 +98,9 @@ export function LineCard({
               />
             </div>
             <div className="name-item order">
-              <div className="title" style={{ color: colorSelected }}>排序</div>
+              <div className="title" style={{ color: colorSelected }}>
+                排序
+              </div>
 
               <AutoGrowthInput
                 className="order-input"
@@ -170,11 +178,13 @@ export function LineCard({
   return (
     <div
       className={classNames({ "line-card": 1, "expend-card": expend })}
-      style={expend ? { width: expendWidth } :      
-        engine.name === "WebKit"
-          ? { boxShadow: "0 4px 59px 7px rgba(0, 0, 0, 0.25)" }
-          : {}
-      }
+      style={{
+        width: expend ? expendWidth : undefined,
+        boxShadow:
+          engine.name === "WebKit"
+            ? "0 4px 59px 7px rgba(0, 0, 0, 0.25)"
+            : undefined,
+      }}
     >
       <div className="tools">
         {expend || edit ? (
@@ -223,7 +233,7 @@ export function LineCard({
           >
             <div className="add-first"></div>
             {getStationsInThisLine().map((station, index) => {
-              const { stationName} = station!;
+              const { stationName } = station!;
               const bendFirst = getBendFirst(index);
               return (
                 <div className="station-block">

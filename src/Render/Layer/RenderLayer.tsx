@@ -135,17 +135,80 @@ function RenderLayer({
       }
     }
   };
+
+  const touchMove = (e: Event) => {
+    if (stationBeingDrag) {
+      const { displayStation } = stationBeingDrag;
+      const { stationId } = displayStation!;
+      const { setStationPosition } = dataProcessor(stationId, setData, data);
+      if (funtionMode === FunctionMode.dragingStation && mouseDown) {
+        const { touches } = e as TouchEvent;
+        if (touches.length === 1) {
+          e.stopPropagation();
+          const touch = touches[0];
+          const { clientX, clientY } = touch;
+          console.log(clientX,clientY);
+          const x = (clientX - translateX) / scale;
+          const y = (clientY - translateY) / scale;
+          setStationPosition(x, y);
+        }
+      }
+    }
+  };
+
+  const touchEnd = (e: Event) => {
+    setMouseDown(false);
+    if (stationBeingDrag) {
+      const { displayStation, position } = stationBeingDrag;
+      const { stationId } = displayStation!;
+      const { x: fromX, y: fromY } = position;
+      const { setStationPosition } = dataProcessor(stationId, setData, data);
+      if (funtionMode === FunctionMode.dragingStation && mouseDown) {
+        const { changedTouches } = e as TouchEvent;
+        if (changedTouches.length === 1) {
+          e.stopPropagation();
+          const touch = changedTouches[0];
+          const { clientX, clientY } = touch;
+          const toX = (clientX - translateX) / scale;
+          const toY = (clientY - translateY) / scale;
+          console.log('touch end:',clientX, clientY);
+          setStationPosition(toX, toY);
+          const newRecord = record.slice(
+            0,
+            currentRecordIndex + 1
+          ) as ChangeSteps[];
+          setRecord(newRecord.concat([{ stationId, fromX, fromY, toX, toY }]));
+          setCurrentRecordIndex(currentRecordIndex + 1);
+        }
+      }
+      setStationBeingDrag(undefined);
+    }
+  };
   useEffect(() => {
     const scaleLayer = document.querySelector(".ScaleLayer");
     scaleLayer?.addEventListener("mouseup", mouseUp);
     scaleLayer?.addEventListener("mouseleave", mouseUp);
     scaleLayer?.addEventListener("mousemove", mouseMove);
+    scaleLayer?.addEventListener("touchmove", touchMove);
+    scaleLayer?.addEventListener("touchend", touchEnd);
     return () => {
       scaleLayer?.removeEventListener("mouseup", mouseUp);
       scaleLayer?.removeEventListener("mouseleave", mouseUp);
       scaleLayer?.removeEventListener("mousemove", mouseMove);
+      scaleLayer?.removeEventListener("touchmove", touchMove);
+      scaleLayer?.removeEventListener("touchend", touchEnd);
     };
   }, [stationBeingDrag]);
+  const operationStart = (
+    e: React.MouseEvent | React.TouchEvent,
+    station: Station
+  ) => {
+    if (funtionMode === FunctionMode.dragingStation) {
+      e.stopPropagation();
+      setMouseDown(true);
+      setStationBeingDrag(station);
+    }
+  };
   const renderStations = (allStationsList: Station[]) => {
     return (
       <div>
@@ -154,13 +217,8 @@ function RenderLayer({
           const { stationName, shape } = displayStation!;
           return (
             <div
-              onMouseDown={(e) => {
-                if (funtionMode === FunctionMode.dragingStation) {
-                  e.stopPropagation();
-                  setMouseDown(true);
-                  setStationBeingDrag(station);
-                }
-              }}
+              onMouseDown={(e) => operationStart(e, station)}
+              onTouchStart={(e) => operationStart(e, station)}
               style={{
                 position: "absolute",
                 left: station.position.x - 15,

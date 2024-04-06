@@ -53,7 +53,7 @@ export const Menu = forwardRef(function (
   const [toolsDisPlay, setToolsDisPlay] = useState("none");
   const undoCondition = currentRecordIndex >= 0;
   const redoCondition = currentRecordIndex < record.length - 1;
-  console.log(record, data.stations);
+  // console.log(record, data.stations);
   const backToTitle = () => {
     setPage("title");
     setTitleEditable(false);
