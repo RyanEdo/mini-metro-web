@@ -256,7 +256,10 @@ function RenderLayer({
                   shapes[shape]
                 }
               </div>
-              <div className="station-name">{stationName}</div>
+              <div className="station-name" 
+              style={scale<0.65?{display: 'none'}:{}}
+              // style={{transform: `scale(${1/scale})`}}
+              >{stationName}</div>
               {/* {String.fromCharCode("A".charCodeAt(0) + index)} */}
             </div>
           );

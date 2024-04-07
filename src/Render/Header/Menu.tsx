@@ -64,15 +64,7 @@ export const Menu = forwardRef(function (
     setTitleEditable(false);
     setFunctionMode(FunctionMode.normal);
   };
-  useImperativeHandle(
-    ref,
-    () => {
-      return {
-        backToTitle,
-      };
-    },
-    []
-  );
+
   const showTools = (e: React.MouseEvent, functionMode: FunctionMode) => {
     e.stopPropagation();
     setRecord([]);
@@ -82,7 +74,16 @@ export const Menu = forwardRef(function (
     setToolsDisPlay(window.innerWidth >= 710 ? "inline-block" : "block");
     setTimeout(() => setPage("tools"));
   };
-
+  useImperativeHandle(
+    ref,
+    () => {
+      return {
+        backToTitle,
+        showTools,
+      };
+    },
+    []
+  );
   const tools = () => {
     switch (functionMode) {
       case FunctionMode.addingStation: {

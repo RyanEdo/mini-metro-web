@@ -1,4 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
+import { mapToArr } from "../Common/util";
+import { colorSH } from "../Common/color";
 export class StationProps {
   stationId!: number;
   stationName!: string;
@@ -119,10 +121,14 @@ export const deleteStation = (
     const { stationIds, bendFirst } = line!;
     stationIds.forEach((id, index) => {
       if (stationId !== id) {
-        newStationIds.push(id);
-        newBendFirst.push(bendFirst[index]);
+        // break the cicle
+        if (id !== newStationIds[newStationIds.length - 1]){
+          newStationIds.push(id);
+          newBendFirst.push(bendFirst[index]);
+        }
       }
     });
+
     lines.set(lineId, {
       ...line!,
       stationIds: newStationIds,
@@ -133,7 +139,33 @@ export const deleteStation = (
   stations.delete(stationId);
   setData({ ...data });
 };
-
+export const deleteLine = (
+  data: UserDataType,
+  setData: Dispatch<SetStateAction<UserDataType>>,
+  lineId: number
+) => {
+  const { stations, lines } = data;
+  const line = lines.get(lineId);
+  const { stationIds } = line!;
+  //detele stations in line
+  stationIds.forEach((stationId) => {
+    const newLineIds: number[] = [];
+    const station = stations.get(stationId);
+    const { lineIds } = station!;
+    lineIds.forEach((id) => {
+      if (lineId !== id) {
+        newLineIds.push(id);
+      }
+    });
+    stations.set(stationId, {
+      ...station!,
+      lineIds: newLineIds,
+    });
+  });
+  // delete line
+  lines.delete(lineId);
+  setData({ ...data });
+};
 export const dataProcessor = (
   id: number,
   setData: Dispatch<SetStateAction<UserDataType>>,
@@ -213,21 +245,48 @@ export const dataProcessor = (
       });
     },
     deleteStation: () => deleteStation(state, setData, id),
-    removeStationFromLine: (lineId: number, stationIndex:number)=>{
+    deleteLine: ()=>deleteLine(state, setData, id),
+    removeStationFromLine: (lineId: number, stationIndex: number) => {
       setData((state) => {
         const station = stations.get(id);
         const line = lines.get(lineId);
-        const {stationIds, bendFirst} = line!;
-        if(stationIds[stationIndex]===id){
-          stationIds.splice(stationIndex,1);
-          bendFirst.splice(stationIndex,1);
-          if(!stationIds.some(stationId=>stationId===id)){
-            const {lineIds} = station!;
-            station!.lineIds = lineIds.filter(id=>lineId!==id);
+        const { stationIds, bendFirst } = line!;
+        if (stationIds[stationIndex] === id) {
+          stationIds.splice(stationIndex, 1);
+          bendFirst.splice(stationIndex, 1);
+          if (!stationIds.some((stationId) => stationId === id)) {
+            const { lineIds } = station!;
+            station!.lineIds = lineIds.filter((id) => lineId !== id);
+          }
+          if (stationIds[stationIndex - 1] === stationIds[stationIndex]) {
+            stationIds.splice(stationIndex, 1);
+            bendFirst.splice(stationIndex, 1);
           }
         }
         return { ...state };
       });
+    },
+    addNewLine: () => {
+      let newLine = new LineProps();
+      setData((state) => {
+        const maxId = mapToArr(lines).reduce(
+          (pre, cur) => Math.max(pre, cur.lineId),
+          0
+        );
+        const lineId = maxId + 1;
+        newLine = {
+          lineId: lineId,
+          lineName: lineId + "号线",
+          color: colorSH[lineId - 1] ? colorSH[lineId - 1].color : "#EA0B2A",
+          stationIds: [id],
+          sign: lineId.toString(),
+          order: lineId,
+          bendFirst: [true],
+        };
+        lines.set(lineId, newLine);
+        return { ...state };
+      });
+      return newLine;
     },
     addStationToLine: (stationId: number, stationIndex: number) => {
       setData((state) => {
@@ -240,7 +299,7 @@ export const dataProcessor = (
           stationIds.splice(stationIndex, 0, stationId);
           bendFirst.splice(stationIndex, 0, true);
           const station = stations.get(stationId);
-          const {lineIds} = station!;
+          const { lineIds } = station!;
           station!.lineIds = [...new Set(lineIds.concat([id]))];
         }
         return { ...state };
@@ -262,7 +321,7 @@ export const addNewStation = (
   setCurrentRecordIndex: React.Dispatch<React.SetStateAction<number>>
 ) => {
   const { stations } = data;
-  let max = -Infinity;
+  let max = 0;
   stations.forEach((station) => {
     max = Math.max(station.stationId, max);
   });
@@ -286,7 +345,7 @@ export const addStationFromRecord = (
   station: StationProps
 ) => {
   const { stations } = data;
-  let max = -Infinity;
+  let max = 0;
   stations.forEach((station) => {
     max = Math.max(station.stationId, max);
   });

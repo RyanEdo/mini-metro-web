@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { Dispatch, RefObject, SetStateAction, useEffect, useState } from "react";
 import { Line } from "../../DataStructure/Line";
 import { Station } from "../../DataStructure/Station";
 import { DisplayStation } from "../../DataStructure/Display";
@@ -39,6 +39,8 @@ export function LineCard({
   setFunctionMode,
   insertInfo,
   setInsertInfo,
+  menuRef,
+
 }: {
   line: LineProps;
   setData: Dispatch<SetStateAction<UserDataType>>;
@@ -47,7 +49,9 @@ export function LineCard({
   functionMode: FunctionMode;
   setFunctionMode: React.Dispatch<React.SetStateAction<FunctionMode>>;
   insertInfo?: InsertInfo;
-  setInsertInfo: React.Dispatch<React.SetStateAction<InsertInfo|undefined>>;
+  setInsertInfo: React.Dispatch<React.SetStateAction<InsertInfo | undefined>>;
+  menuRef: RefObject<any>;
+
 }) {
   const {
     lineId,
@@ -66,17 +70,22 @@ export function LineCard({
     setColor,
     getBendFirst,
     setBendFirst,
+    deleteLine
   } = dataProcessor(lineId, setData, data);
   const colorName = colorSHMap.get(colorSelected)?.color_name || colorSelected;
   const firstStation = getStationById(stationIds[0]);
   const lastStation = getStationById(stationIds[stationIds.length - 1]);
+  // if (!firstStation) {
+  //   firstStation = new StationProps();
+  //   lastStation = firstStation;
+  // }
   const [expend, setExpend] = useState(false);
   const [edit, setEdit] = useState(false);
   const [expendWidth, setExpendWidth] = useState(455);
   const [tab, setTab] = useState("name");
   const addingStation =
     functionMode === FunctionMode.selectingStation ||
-    functionMode === FunctionMode.lineEditing;
+    functionMode === FunctionMode.lineEditing || !firstStation;
   const getExpendWidth = () => {
     const expected = 33 + 161 * stationIds.length;
     const width =
@@ -185,7 +194,7 @@ export function LineCard({
             <div
               className="operation-item delete"
               onClick={() => {
-                showConfirmation!({ line });
+                showConfirmation!({ line },deleteLine);
               }}
             >
               删除线路...
@@ -249,8 +258,11 @@ export function LineCard({
       ) : (
         <>
           <div className="from-to">
-            从{firstStation!.stationName}开往{lastStation!.stationName}
+            {firstStation
+              ? `从${firstStation!.stationName}开往${lastStation!.stationName}`
+              : "尚未开通"}
           </div>
+
           <div
             className="station-bar"
             style={expend ? { width: expendWidth } : {}}
@@ -269,12 +281,16 @@ export function LineCard({
                   </div>
                   <div
                     className="bend-first"
-                    onClick={() => {
+                    onClick={(e) => {
                       if (addingStation) {
-                        setInsertInfo({insertIndex: index, line});
+                        if(!firstStation){
+                          if (menuRef?.current?.showTools) {
+                            menuRef.current.showTools(e,FunctionMode.selectingStation);
+                          }
+                        }
+                        setInsertInfo({ insertIndex: index, line });
                         setFunctionMode(FunctionMode.selectingStation);
-                      }
-                      else setBendFirst(index, !bendFirst);
+                      } else setBendFirst(index, !bendFirst);
                     }}
                   >
                     <div

@@ -9,7 +9,7 @@ import React, {
 import "./StationCard.scss";
 import classNames from "classnames";
 import { Point } from "../../DataStructure/Point";
-import { StationProps, UserDataType, dataProcessor } from "../../Data/UserData";
+import { InsertInfo, StationProps, UserDataType, dataProcessor } from "../../Data/UserData";
 import shapes from "../../Resource/Shape/shape";
 import { Shape } from "../../Data/Shape";
 import { AutoGrowthInput } from "../../Common/AutoGrowthInput";
@@ -27,12 +27,21 @@ export function StationCard({
   data,
   showConfirmation,
   menuRef,
+  functionMode,
+  setFunctionMode,
+  insertInfo,
+  setInsertInfo,
+  
 }: {
   station: StationProps;
   setData: Dispatch<SetStateAction<UserDataType>>;
   data: UserDataType;
   showConfirmation?: showConfirmationInterface;
   menuRef: RefObject<any>;
+  functionMode: FunctionMode;
+  setFunctionMode: React.Dispatch<React.SetStateAction<FunctionMode>>;
+  insertInfo?: InsertInfo;
+  setInsertInfo: React.Dispatch<React.SetStateAction<InsertInfo|undefined>>;
 }) {
   const {
     stationName,
@@ -40,6 +49,7 @@ export function StationCard({
     position,
     shape: shapeSelected,
     stationId,
+    
   } = station;
   const {
     setStationName,
@@ -47,7 +57,8 @@ export function StationCard({
     setStationShape,
     getLineById,
     deleteStation,
-    removeStationFromLine
+    removeStationFromLine,
+    addNewLine
   } = dataProcessor(stationId, setData, data);
   const [x, y] = position;
   const setX = (x: number) => setStationPosition(x, y);
@@ -125,7 +136,14 @@ export function StationCard({
       case "operation": {
         return (
           <div className="operation-detail">
-            <div className="operation-item">以此为起点新建线路...</div>
+            <div className="operation-item" onClick={(e)=>{
+              const newLine = addNewLine();
+              setInsertInfo({insertIndex:1,line: newLine!})
+              // setFunctionMode(FunctionMode.selectingStation);
+              if (menuRef?.current?.showTools) {
+                menuRef.current.showTools(e,FunctionMode.selectingStation);
+              }
+              }}>以此为起点新建线路...</div>
             {lineIds.map((lineId) => {
               const line = getLineById(lineId);
               const stationIndexes: number[] = [];

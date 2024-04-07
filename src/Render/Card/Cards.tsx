@@ -50,6 +50,7 @@ export function Cards({
             setFunctionMode={setFunctionMode}
             insertInfo={insertInfo}
             setInsertInfo={setInsertInfo}
+            menuRef={menuRef}
           />
         </div>
       ))}
@@ -62,6 +63,10 @@ export function Cards({
             key={"station-card-" + station.stationId}
             showConfirmation={showConfirmation}
             menuRef={menuRef}
+            functionMode={functionMode}
+            setFunctionMode={setFunctionMode}
+            insertInfo={insertInfo}
+            setInsertInfo={setInsertInfo}
           />
         </div>
       ))}
