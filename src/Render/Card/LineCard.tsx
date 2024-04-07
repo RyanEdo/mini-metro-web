@@ -36,7 +36,7 @@ export function LineCard({
   data,
   showConfirmation,
   functionMode,
-  setFuntionMode,
+  setFunctionMode,
   insertInfo,
   setInsertInfo,
 }: {
@@ -45,7 +45,7 @@ export function LineCard({
   data: UserDataType;
   showConfirmation?: showConfirmationInterface;
   functionMode: FunctionMode;
-  setFuntionMode: React.Dispatch<React.SetStateAction<FunctionMode>>;
+  setFunctionMode: React.Dispatch<React.SetStateAction<FunctionMode>>;
   insertInfo?: InsertInfo;
   setInsertInfo: React.Dispatch<React.SetStateAction<InsertInfo|undefined>>;
 }) {
@@ -272,7 +272,7 @@ export function LineCard({
                     onClick={() => {
                       if (addingStation) {
                         setInsertInfo({insertIndex: index, line});
-                        setFuntionMode(FunctionMode.selectingStation);
+                        setFunctionMode(FunctionMode.selectingStation);
                       }
                       else setBendFirst(index, !bendFirst);
                     }}

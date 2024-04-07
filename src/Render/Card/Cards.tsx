@@ -16,7 +16,7 @@ export function Cards({
   showConfirmation,
   menuRef,
   functionMode,
-  setFuntionMode,
+  setFunctionMode,
   insertInfo,
   setInsertInfo,
 }: {
@@ -25,7 +25,7 @@ export function Cards({
   showConfirmation?: showConfirmationInterface;
   menuRef: RefObject<any>;
   functionMode: FunctionMode;
-  setFuntionMode: React.Dispatch<React.SetStateAction<FunctionMode>>;
+  setFunctionMode: React.Dispatch<React.SetStateAction<FunctionMode>>;
   insertInfo?: InsertInfo;
   setInsertInfo: React.Dispatch<React.SetStateAction<InsertInfo|undefined>>;
 }) {
@@ -47,7 +47,7 @@ export function Cards({
             key={"line-card-" + line.lineId}
             showConfirmation={showConfirmation}
             functionMode={functionMode}
-            setFuntionMode={setFuntionMode}
+            setFunctionMode={setFunctionMode}
             insertInfo={insertInfo}
             setInsertInfo={setInsertInfo}
           />

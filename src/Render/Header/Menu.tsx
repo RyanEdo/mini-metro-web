@@ -24,7 +24,7 @@ import {
 type MenuType = {
   setEditingMode: React.Dispatch<React.SetStateAction<Mode>>;
   functionMode: FunctionMode;
-  setFuntionMode: React.Dispatch<React.SetStateAction<FunctionMode>>;
+  setFunctionMode: React.Dispatch<React.SetStateAction<FunctionMode>>;
   record: StationProps[] | ChangeSteps[];
   setRecord: React.Dispatch<React.SetStateAction<StationProps[]|ChangeSteps[]>>;
   currentRecordIndex: number;
@@ -38,7 +38,7 @@ export const Menu = forwardRef(function (
   {
     setEditingMode,
     functionMode,
-    setFuntionMode,
+    setFunctionMode,
     record,
     setRecord,
     currentRecordIndex,
@@ -62,7 +62,7 @@ export const Menu = forwardRef(function (
   const backToTitle = () => {
     setPage("title");
     setTitleEditable(false);
-    setFuntionMode(FunctionMode.normal);
+    setFunctionMode(FunctionMode.normal);
   };
   useImperativeHandle(
     ref,
@@ -77,7 +77,7 @@ export const Menu = forwardRef(function (
     e.stopPropagation();
     setRecord([]);
     setCurrentRecordIndex(-1);
-    setFuntionMode(functionMode);
+    setFunctionMode(functionMode);
     setTitleEditable(false);
     setToolsDisPlay(window.innerWidth >= 710 ? "inline-block" : "block");
     setTimeout(() => setPage("tools"));
@@ -264,7 +264,7 @@ export const Menu = forwardRef(function (
           onTransitionEnd={() => {
             if (page !== "tools") {
               setToolsDisPlay("none");
-              setFuntionMode(FunctionMode.normal);
+              setFunctionMode(FunctionMode.normal);
             }
           }}
         >

@@ -34,7 +34,7 @@ function App() {
       <Menu
         setEditingMode={setEditingMode}
         functionMode={functionMode}
-        setFuntionMode={setFunctionMode}
+        setFunctionMode={setFunctionMode}
         record={record}
         setRecord={setRecord}
         currentRecordIndex={currentRecordIndex}
@@ -62,7 +62,7 @@ function App() {
       />
       <Cards
         functionMode={functionMode}
-        setFuntionMode={setFunctionMode}
+        setFunctionMode={setFunctionMode}
         data={data}
         setData={setData}
         showConfirmation={showConfirmation}
