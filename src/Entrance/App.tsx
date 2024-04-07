@@ -17,7 +17,7 @@ import "./App.scss";
 import React, { useEffect, useRef, useState } from "react";
 function App() {
   const [editingMode, setEditingMode] = useState(Mode.normal);
-  const [funtionMode, setFunctionMode] = useState(FunctionMode.normal);
+  const [functionMode, setFunctionMode] = useState(FunctionMode.normal);
   const [record, setRecord] = useState<StationProps[] | ChangeSteps[]>([]);
   const [currentRecordIndex, setCurrentRecordIndex] = useState(-1);
   const [insertInfo, setInsertInfo] = useState<InsertInfo>();
@@ -33,7 +33,7 @@ function App() {
     <div className="App">
       <Menu
         setEditingMode={setEditingMode}
-        funtionMode={funtionMode}
+        functionMode={functionMode}
         setFuntionMode={setFunctionMode}
         record={record}
         setRecord={setRecord}
@@ -51,7 +51,7 @@ function App() {
         setEditingMode={setEditingMode}
         data={data}
         setData={setData}
-        funtionMode={funtionMode}
+        functionMode={functionMode}
         setFunctionMode={setFunctionMode}
         record={record}
         setRecord={setRecord}
@@ -61,7 +61,7 @@ function App() {
         setInsertInfo={setInsertInfo}
       />
       <Cards
-        funtionMode={funtionMode}
+        functionMode={functionMode}
         setFuntionMode={setFunctionMode}
         data={data}
         setData={setData}

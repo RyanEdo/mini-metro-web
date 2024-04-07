@@ -20,7 +20,7 @@ class ScaleLayerProp {
   setEditingMode!: React.Dispatch<React.SetStateAction<Mode>>;
   data!: UserDataType;
   setData!: Dispatch<SetStateAction<UserDataType>>;
-  funtionMode!: FunctionMode;
+  functionMode!: FunctionMode;
   setFunctionMode!: React.Dispatch<React.SetStateAction<FunctionMode>>;
   record!: StationProps[] | ChangeSteps[];
   setRecord!: React.Dispatch<
@@ -36,7 +36,7 @@ function ScaleLayer({
   setEditingMode,
   data,
   setData,
-  funtionMode,
+  functionMode,
   setFunctionMode,
   record,
   setRecord,
@@ -107,7 +107,7 @@ function ScaleLayer({
           event,
           setEditingMode,
           editingMode,
-          funtionMode,
+          functionMode,
           data,
           setData,
           moved,
@@ -169,7 +169,7 @@ function ScaleLayer({
           event,
           setEditingMode,
           editingMode,
-          funtionMode,
+          functionMode,
           data,
           setData,
           moved,
@@ -191,7 +191,7 @@ function ScaleLayer({
           translateX={translateX}
           translateY={translateY}
           scale={scale}
-          funtionMode={funtionMode}
+          functionMode={functionMode}
           setFunctionMode={setFunctionMode}
           record={record}
           setRecord={setRecord}

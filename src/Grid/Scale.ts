@@ -94,7 +94,7 @@ export const onMouseUp = (
   event: MouseEvent<HTMLDivElement>,
   setEditingMode: Dispatch<SetStateAction<Mode>>,
   editingMode: Mode,
-  funtionMode: FunctionMode,
+  functionMode: FunctionMode,
   data: UserDataType,
   setData: Dispatch<SetStateAction<UserDataType>>,
   moved: boolean,
@@ -108,7 +108,7 @@ export const onMouseUp = (
 ) => {
   // console.log(event);
   setEditingMode(Mode.normal);
-  if (funtionMode === FunctionMode.addingStation && !moved) {
+  if (functionMode === FunctionMode.addingStation && !moved) {
     console.log({ translateX, translateY, scale });
     const { clientX, clientY } = event;
     const x = (clientX - translateX) / scale;
@@ -244,7 +244,7 @@ export const onTouchEnd = (
   event: TouchEvent<HTMLDivElement>,
   setEditingMode: Dispatch<SetStateAction<Mode>>,
   editingMode: Mode,
-  funtionMode: FunctionMode,
+  functionMode: FunctionMode,
   data: UserDataType,
   setData: Dispatch<SetStateAction<UserDataType>>,
   moved: boolean,
@@ -260,7 +260,7 @@ export const onTouchEnd = (
   const { changedTouches } = event;
   // console.log(event,editingMode);
   if (
-    funtionMode === FunctionMode.addingStation &&
+    functionMode === FunctionMode.addingStation &&
     !moved &&
     changedTouches.length === 1
   ) {

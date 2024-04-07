@@ -27,7 +27,7 @@ import { FunctionMode } from "../../DataStructure/Mode";
 class RenderProps {
   data!: UserDataType;
   setData!: Dispatch<SetStateAction<UserDataType>>;
-  funtionMode!: FunctionMode;
+  functionMode!: FunctionMode;
   record!: StationProps[] | ChangeSteps[];
   setRecord!: React.Dispatch<
     React.SetStateAction<StationProps[] | ChangeSteps[]>
@@ -88,7 +88,7 @@ const renderLines = (allLinesList: Line[]) => {
 function RenderLayer({
   data,
   setData,
-  funtionMode,
+  functionMode,
   setFunctionMode,
   record,
   setRecord,
@@ -114,7 +114,7 @@ function RenderLayer({
       const { stationId } = displayStation!;
       const { x: fromX, y: fromY } = position;
       const { setStationPosition } = dataProcessor(stationId, setData, data);
-      if (funtionMode === FunctionMode.dragingStation && mouseDown) {
+      if (functionMode === FunctionMode.dragingStation && mouseDown) {
         const { clientX, clientY } = e as MouseEvent;
         const toX = (clientX - translateX) / scale;
         const toY = (clientY - translateY) / scale;
@@ -134,7 +134,7 @@ function RenderLayer({
       const { displayStation } = stationBeingDrag;
       const { stationId } = displayStation!;
       const { setStationPosition } = dataProcessor(stationId, setData, data);
-      if (funtionMode === FunctionMode.dragingStation && mouseDown) {
+      if (functionMode === FunctionMode.dragingStation && mouseDown) {
         const { clientX, clientY } = e as MouseEvent;
         const x = (clientX - translateX) / scale;
         const y = (clientY - translateY) / scale;
@@ -148,7 +148,7 @@ function RenderLayer({
       const { displayStation } = stationBeingDrag;
       const { stationId } = displayStation!;
       const { setStationPosition } = dataProcessor(stationId, setData, data);
-      if (funtionMode === FunctionMode.dragingStation && mouseDown) {
+      if (functionMode === FunctionMode.dragingStation && mouseDown) {
         const { touches } = e as TouchEvent;
         if (touches.length === 1) {
           e.stopPropagation();
@@ -170,7 +170,7 @@ function RenderLayer({
       const { stationId } = displayStation!;
       const { x: fromX, y: fromY } = position;
       const { setStationPosition } = dataProcessor(stationId, setData, data);
-      if (funtionMode === FunctionMode.dragingStation && mouseDown) {
+      if (functionMode === FunctionMode.dragingStation && mouseDown) {
         const { changedTouches } = e as TouchEvent;
         if (changedTouches.length === 1) {
           e.stopPropagation();
@@ -210,7 +210,7 @@ function RenderLayer({
     e: React.MouseEvent | React.TouchEvent,
     station: Station
   ) => {
-    if (funtionMode === FunctionMode.dragingStation) {
+    if (functionMode === FunctionMode.dragingStation) {
       e.stopPropagation();
       setMouseDown(true);
       setStationBeingDrag(station);
@@ -235,7 +235,7 @@ function RenderLayer({
               }}
               className="station-render"
               onClick={() => {
-                if (funtionMode === FunctionMode.selectingStation) {
+                if (functionMode === FunctionMode.selectingStation) {
                   const { insertIndex, line } = insertInfo!;
                   const {lineId} = line;
                   const {addStationToLine} = dataProcessor(lineId,setData,data);

@@ -35,7 +35,7 @@ export function LineCard({
   setData,
   data,
   showConfirmation,
-  funtionMode,
+  functionMode,
   setFuntionMode,
   insertInfo,
   setInsertInfo,
@@ -44,7 +44,7 @@ export function LineCard({
   setData: Dispatch<SetStateAction<UserDataType>>;
   data: UserDataType;
   showConfirmation?: showConfirmationInterface;
-  funtionMode: FunctionMode;
+  functionMode: FunctionMode;
   setFuntionMode: React.Dispatch<React.SetStateAction<FunctionMode>>;
   insertInfo?: InsertInfo;
   setInsertInfo: React.Dispatch<React.SetStateAction<InsertInfo|undefined>>;
@@ -75,8 +75,8 @@ export function LineCard({
   const [expendWidth, setExpendWidth] = useState(455);
   const [tab, setTab] = useState("name");
   const addingStation =
-    funtionMode === FunctionMode.selectingStation ||
-    funtionMode === FunctionMode.lineEditing;
+    functionMode === FunctionMode.selectingStation ||
+    functionMode === FunctionMode.lineEditing;
   const getExpendWidth = () => {
     const expected = 33 + 161 * stationIds.length;
     const width =

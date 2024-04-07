@@ -23,7 +23,7 @@ import {
 } from "../../Data/UserData";
 type MenuType = {
   setEditingMode: React.Dispatch<React.SetStateAction<Mode>>;
-  funtionMode: FunctionMode;
+  functionMode: FunctionMode;
   setFuntionMode: React.Dispatch<React.SetStateAction<FunctionMode>>;
   record: StationProps[] | ChangeSteps[];
   setRecord: React.Dispatch<React.SetStateAction<StationProps[]|ChangeSteps[]>>;
@@ -37,7 +37,7 @@ type MenuType = {
 export const Menu = forwardRef(function (
   {
     setEditingMode,
-    funtionMode,
+    functionMode,
     setFuntionMode,
     record,
     setRecord,
@@ -84,7 +84,7 @@ export const Menu = forwardRef(function (
   };
 
   const tools = () => {
-    switch (funtionMode) {
+    switch (functionMode) {
       case FunctionMode.addingStation: {
         const stationRecords = record as StationProps[];
         return (
