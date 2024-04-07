@@ -24,7 +24,7 @@ export type ChangeSteps = {
   stationId: number;
 };
 
-export type InsertInfo = {insertIndex: number, line: LineProps};
+export type InsertInfo = { insertIndex: number; line: LineProps };
 
 export class UserDataType {
   stations!: Map<number | string, StationProps>;
@@ -213,15 +213,39 @@ export const dataProcessor = (
       });
     },
     deleteStation: () => deleteStation(state, setData, id),
-    addStationToLine: (stationId: number, stationIndex: number)=>{
+    removeStationFromLine: (lineId: number, stationIndex:number)=>{
       setData((state) => {
-        const line = lines.get(id);
+        const station = stations.get(id);
+        const line = lines.get(lineId);
         const {stationIds, bendFirst} = line!;
-        stationIds.splice(stationIndex,0,stationId);
-        bendFirst.splice(stationIndex,0,true);
+        if(stationIds[stationIndex]===id){
+          stationIds.splice(stationIndex,1);
+          bendFirst.splice(stationIndex,1);
+          if(!stationIds.some(stationId=>stationId===id)){
+            const {lineIds} = station!;
+            station!.lineIds = lineIds.filter(id=>lineId!==id);
+          }
+        }
         return { ...state };
       });
-    }
+    },
+    addStationToLine: (stationId: number, stationIndex: number) => {
+      setData((state) => {
+        const line = lines.get(id);
+        const { stationIds, bendFirst } = line!;
+        if (
+          stationIds[stationIndex] !== stationId &&
+          stationIds[stationIndex - 1] !== stationId
+        ) {
+          stationIds.splice(stationIndex, 0, stationId);
+          bendFirst.splice(stationIndex, 0, true);
+          const station = stations.get(stationId);
+          const {lineIds} = station!;
+          station!.lineIds = [...new Set(lineIds.concat([id]))];
+        }
+        return { ...state };
+      });
+    },
   };
 };
 
@@ -270,4 +294,3 @@ export const addStationFromRecord = (
   stations.set(max + 1, newStation);
   setData({ ...data });
 };
-

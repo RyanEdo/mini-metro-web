@@ -223,6 +223,19 @@ function RenderLayer({
         {allStationsList.map((station, index) => {
           const { displayStation } = station;
           const { stationName, shape, stationId } = displayStation!;
+          const add = () => {
+            if (functionMode === FunctionMode.selectingStation) {
+              const { insertIndex, line } = insertInfo!;
+              const { lineId } = line;
+              const { addStationToLine } = dataProcessor(lineId, setData, data);
+              addStationToLine(stationId, insertIndex);
+              setInsertInfo({
+                insertIndex: insertIndex ? insertIndex + 1 : 0,
+                line,
+              });
+              // setFunctionMode(FunctionMode.lineEditing);
+            }
+          };
           return (
             <div
               onMouseDown={(e) => operationStart(e, station)}
@@ -234,15 +247,8 @@ function RenderLayer({
                 whiteSpace: "nowrap",
               }}
               className="station-render"
-              onClick={() => {
-                if (functionMode === FunctionMode.selectingStation) {
-                  const { insertIndex, line } = insertInfo!;
-                  const {lineId} = line;
-                  const {addStationToLine} = dataProcessor(lineId,setData,data);
-                  addStationToLine(stationId, insertIndex);
-                  setFunctionMode(FunctionMode.lineEditing);
-                }
-              }}
+              onTouchEnd={add}
+              onClick={add}
             >
               <div className="station-shape">
                 {

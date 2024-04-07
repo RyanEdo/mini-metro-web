@@ -47,6 +47,7 @@ export function StationCard({
     setStationShape,
     getLineById,
     deleteStation,
+    removeStationFromLine
   } = dataProcessor(stationId, setData, data);
   const [x, y] = position;
   const setX = (x: number) => setStationPosition(x, y);
@@ -136,7 +137,9 @@ export function StationCard({
                 <div
                   className="operation-item delete"
                   onClick={() => {
-                    showConfirmation!({ line, station, stationIndex });
+                    showConfirmation!({ line, station, stationIndex },()=>{
+                      removeStationFromLine(lineId, stationIndex);
+                    });
                   }}
                 >
                   从{lineName}的第{stationIndex! + 1}站移除...
