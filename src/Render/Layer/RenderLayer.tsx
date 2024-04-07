@@ -10,6 +10,7 @@ import { LineCard } from "../Card/LineCard";
 import { Cards } from "../Card/Cards";
 import {
   ChangeSteps,
+  InsertInfo,
   LineProps,
   StationProps,
   UserDataType,
@@ -36,6 +37,9 @@ class RenderProps {
   translateX!: number;
   translateY!: number;
   scale!: number;
+  insertInfo?: InsertInfo;
+  setInsertInfo!: React.Dispatch<React.SetStateAction<InsertInfo | undefined>>;
+  setFunctionMode!: React.Dispatch<React.SetStateAction<FunctionMode>>;
 }
 const buildStations = (
   stations: Map<string | number, StationProps>
@@ -85,6 +89,7 @@ function RenderLayer({
   data,
   setData,
   funtionMode,
+  setFunctionMode,
   record,
   setRecord,
   currentRecordIndex,
@@ -92,6 +97,8 @@ function RenderLayer({
   translateX,
   translateY,
   scale,
+  insertInfo,
+  setInsertInfo,
 }: RenderProps) {
   const { lines, stations } = data;
   const stationMap = buildStations(stations);
@@ -147,7 +154,7 @@ function RenderLayer({
           e.stopPropagation();
           const touch = touches[0];
           const { clientX, clientY } = touch;
-          console.log(clientX,clientY);
+          console.log(clientX, clientY);
           const x = (clientX - translateX) / scale;
           const y = (clientY - translateY) / scale;
           setStationPosition(x, y);
@@ -171,7 +178,7 @@ function RenderLayer({
           const { clientX, clientY } = touch;
           const toX = (clientX - translateX) / scale;
           const toY = (clientY - translateY) / scale;
-          console.log('touch end:',clientX, clientY);
+          console.log("touch end:", clientX, clientY);
           setStationPosition(toX, toY);
           const newRecord = record.slice(
             0,
@@ -209,12 +216,13 @@ function RenderLayer({
       setStationBeingDrag(station);
     }
   };
+
   const renderStations = (allStationsList: Station[]) => {
     return (
       <div>
         {allStationsList.map((station, index) => {
           const { displayStation } = station;
-          const { stationName, shape } = displayStation!;
+          const { stationName, shape, stationId } = displayStation!;
           return (
             <div
               onMouseDown={(e) => operationStart(e, station)}
@@ -226,6 +234,15 @@ function RenderLayer({
                 whiteSpace: "nowrap",
               }}
               className="station-render"
+              onClick={() => {
+                if (funtionMode === FunctionMode.selectingStation) {
+                  const { insertIndex, line } = insertInfo!;
+                  const {lineId} = line;
+                  const {addStationToLine} = dataProcessor(lineId,setData,data);
+                  addStationToLine(stationId, insertIndex);
+                  setFunctionMode(FunctionMode.lineEditing);
+                }
+              }}
             >
               <div className="station-shape">
                 {

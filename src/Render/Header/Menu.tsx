@@ -19,6 +19,7 @@ import {
   addStationFromRecord,
   deleteStation,
   dataProcessor,
+  InsertInfo,
 } from "../../Data/UserData";
 type MenuType = {
   setEditingMode: React.Dispatch<React.SetStateAction<Mode>>;
@@ -30,6 +31,8 @@ type MenuType = {
   setCurrentRecordIndex: React.Dispatch<React.SetStateAction<number>>;
   data: UserDataType;
   setData: Dispatch<SetStateAction<UserDataType>>;
+  insertInfo?: InsertInfo;
+  setInsertInfo: React.Dispatch<React.SetStateAction<InsertInfo|undefined>>;
 };
 export const Menu = forwardRef(function (
   {
@@ -42,6 +45,8 @@ export const Menu = forwardRef(function (
     setCurrentRecordIndex,
     data,
     setData,
+    insertInfo,
+    setInsertInfo,
   }: MenuType,
   ref
 ) {
@@ -179,6 +184,44 @@ export const Menu = forwardRef(function (
           </>
         );
       }
+      case FunctionMode.lineEditing: {
+        return (
+          <>
+            <div className="tool disabled">
+              站点插入模式
+            </div>
+            <div
+              className="tool"
+              onClick={() => {
+                setPage("title");
+                setTitleEditable(false);
+              }}
+            >
+              完成
+            </div>
+          </>
+        );
+      }
+      case FunctionMode.selectingStation:{
+        const {insertIndex, line} = insertInfo!;
+        const {lineName} = line;
+        return (
+          <>
+            <div className="tool disabled">
+              点击站点将它插入到{lineName}的第{insertIndex+1}站
+            </div>
+            <div
+              className="tool"
+              onClick={() => {
+                setPage("title");
+                setTitleEditable(false);
+              }}
+            >
+              完成
+            </div>
+          </>
+        );
+      }
     }
   };
   return (
@@ -253,7 +296,9 @@ export const Menu = forwardRef(function (
           <div className="column">
             <div className="column-title">线路</div>
             <div className="column-items">
-              <div className="column-item">调整线路图...</div>
+              <div className="column-item"
+                onClick={(e) => showTools(e, FunctionMode.lineEditing)}
+              >插入站点...</div>
             </div>
           </div>
           <div className="column">

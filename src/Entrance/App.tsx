@@ -1,4 +1,10 @@
-import { ChangeSteps, StationProps, initData } from "../Data/UserData";
+import {
+  ChangeSteps,
+  InsertInfo,
+  LineProps,
+  StationProps,
+  initData,
+} from "../Data/UserData";
 import { FunctionMode, Mode } from "../DataStructure/Mode";
 import { Cards } from "../Render/Card/Cards";
 import {
@@ -9,12 +15,12 @@ import { Menu } from "../Render/Header/Menu";
 import ScaleLayer from "../Render/Layer/ScaleLayer";
 import "./App.scss";
 import React, { useEffect, useRef, useState } from "react";
-
 function App() {
   const [editingMode, setEditingMode] = useState(Mode.normal);
-  const [funtionMode, setFuntionMode] = useState(FunctionMode.normal);
-  const [record, setRecord] = useState<StationProps[]|ChangeSteps[]>([]);
+  const [funtionMode, setFunctionMode] = useState(FunctionMode.normal);
+  const [record, setRecord] = useState<StationProps[] | ChangeSteps[]>([]);
   const [currentRecordIndex, setCurrentRecordIndex] = useState(-1);
+  const [insertInfo, setInsertInfo] = useState<InsertInfo>();
   const [data, setData] = useState(initData);
   const ref = useRef<any>();
   const menuRef = useRef();
@@ -28,7 +34,7 @@ function App() {
       <Menu
         setEditingMode={setEditingMode}
         funtionMode={funtionMode}
-        setFuntionMode={setFuntionMode}
+        setFuntionMode={setFunctionMode}
         record={record}
         setRecord={setRecord}
         currentRecordIndex={currentRecordIndex}
@@ -36,6 +42,8 @@ function App() {
         data={data}
         setData={setData}
         ref={menuRef}
+        insertInfo={insertInfo}
+        setInsertInfo={setInsertInfo}
       />
       <DeleteConfirmation ref={ref} />
       <ScaleLayer
@@ -44,16 +52,23 @@ function App() {
         data={data}
         setData={setData}
         funtionMode={funtionMode}
+        setFunctionMode={setFunctionMode}
         record={record}
         setRecord={setRecord}
         currentRecordIndex={currentRecordIndex}
         setCurrentRecordIndex={setCurrentRecordIndex}
+        insertInfo={insertInfo}
+        setInsertInfo={setInsertInfo}
       />
       <Cards
+        funtionMode={funtionMode}
+        setFuntionMode={setFunctionMode}
         data={data}
         setData={setData}
         showConfirmation={showConfirmation}
         menuRef={menuRef}
+        insertInfo={insertInfo}
+        setInsertInfo={setInsertInfo}
       />
     </div>
   );

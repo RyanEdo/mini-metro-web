@@ -3,13 +3,21 @@ import { Line } from "../../DataStructure/Line";
 import { Station } from "../../DataStructure/Station";
 import { DisplayStation } from "../../DataStructure/Display";
 import "./LineCard.scss";
-import arrowIcon from "../../Resource/Icon/arrow.right.circle.fill.svg";
+import ArrowIcon from "../../Resource/Icon/arrow";
+import PlusIcon from "../../Resource/Icon/plus";
+
 import expendIcon from "../../Resource/Icon/expend-icon.svg";
 import shrinkIcon from "../../Resource/Icon/shrink-icon.svg";
 import EditIcon from "../../Resource/Icon/edit.svg";
 
 import classNames from "classnames";
-import { LineProps, UserDataType, dataProcessor } from "../../Data/UserData";
+import {
+  InsertInfo,
+  LineProps,
+  StationProps,
+  UserDataType,
+  dataProcessor,
+} from "../../Data/UserData";
 import {
   browserInfo,
   mapToArr,
@@ -20,16 +28,26 @@ import {
 import { AutoGrowthInput } from "../../Common/AutoGrowthInput";
 import { colorSH, colorSHMap } from "../../Common/color";
 import { showConfirmationInterface } from "../Delete/DeleteConfirmation";
+import { FunctionMode } from "../../DataStructure/Mode";
+import { Point } from "../../DataStructure/Point";
 export function LineCard({
   line,
   setData,
   data,
   showConfirmation,
+  funtionMode,
+  setFuntionMode,
+  insertInfo,
+  setInsertInfo,
 }: {
   line: LineProps;
   setData: Dispatch<SetStateAction<UserDataType>>;
   data: UserDataType;
   showConfirmation?: showConfirmationInterface;
+  funtionMode: FunctionMode;
+  setFuntionMode: React.Dispatch<React.SetStateAction<FunctionMode>>;
+  insertInfo?: InsertInfo;
+  setInsertInfo: React.Dispatch<React.SetStateAction<InsertInfo|undefined>>;
 }) {
   const {
     lineId,
@@ -56,6 +74,9 @@ export function LineCard({
   const [edit, setEdit] = useState(false);
   const [expendWidth, setExpendWidth] = useState(455);
   const [tab, setTab] = useState("name");
+  const addingStation =
+    funtionMode === FunctionMode.selectingStation ||
+    funtionMode === FunctionMode.lineEditing;
   const getExpendWidth = () => {
     const expected = 33 + 161 * stationIds.length;
     const width =
@@ -175,6 +196,10 @@ export function LineCard({
     }
   };
   const { engine } = browserInfo;
+  const stationsInThisLine = getStationsInThisLine();
+  if (addingStation) {
+    stationsInThisLine.unshift(new StationProps());
+  }
   return (
     <div
       className={classNames({ "line-card": 1, "expend-card": expend })}
@@ -232,7 +257,7 @@ export function LineCard({
             onWheel={onWheelX}
           >
             <div className="add-first"></div>
-            {getStationsInThisLine().map((station, index) => {
+            {stationsInThisLine.map((station, index) => {
               const { stationName } = station!;
               const bendFirst = getBendFirst(index);
               return (
@@ -244,17 +269,28 @@ export function LineCard({
                   </div>
                   <div
                     className="bend-first"
-                    onClick={() => setBendFirst(index, !bendFirst)}
+                    onClick={() => {
+                      if (addingStation) {
+                        setInsertInfo({insertIndex: index, line});
+                        setFuntionMode(FunctionMode.selectingStation);
+                      }
+                      else setBendFirst(index, !bendFirst);
+                    }}
                   >
-                    <img
-                      src={arrowIcon}
+                    <div
                       className={classNames({
                         "bend-icon": 1,
-                        bend: bendFirst,
+                        bend: bendFirst && !addingStation,
                       })}
-                    ></img>
+                    >
+                      {addingStation ? <PlusIcon /> : <ArrowIcon />}
+                    </div>
                     <div className="bend-des">
-                      {bendFirst ? "斜向优先" : "直线优先"}
+                      {addingStation
+                        ? "插入站点"
+                        : bendFirst
+                        ? "斜向优先"
+                        : "直线优先"}
                     </div>
                   </div>
                   <div

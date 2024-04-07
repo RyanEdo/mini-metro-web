@@ -209,6 +209,7 @@
             height: 78.22px;
             border-left: 1px solid #cccccc;
             position: relative;
+            vertical-align: top;
             .track {
                 display: flex;
                 background-color: #f0f0f0;
@@ -234,13 +235,20 @@
                 align-items: center;
                 cursor: pointer;
                 .bend-icon {
+                    svg {
+                        width: 16px;
+                        height: 16px;
+                        transform-origin: center;
+                    }
                     width: 16px;
                     height: 16px;
                     display: inline-block;
-                    margin: 0 13px 0 18.5px;
+                    margin: -1px 13px 0 18.5px;
 
                     &.bend {
-                        transform: rotate(-45deg);
+                        svg {
+                            transform: rotate(-45deg);
+                        }
                     }
                 }
                 .bend-des {

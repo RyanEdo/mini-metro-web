@@ -23,6 +23,9 @@ export type ChangeSteps = {
   toY: number;
   stationId: number;
 };
+
+export type InsertInfo = {insertIndex: number, line: LineProps};
+
 export class UserDataType {
   stations!: Map<number | string, StationProps>;
   lines!: Map<number | string, LineProps>;
@@ -210,6 +213,15 @@ export const dataProcessor = (
       });
     },
     deleteStation: () => deleteStation(state, setData, id),
+    addStationToLine: (stationId: number, stationIndex: number)=>{
+      setData((state) => {
+        const line = lines.get(id);
+        const {stationIds, bendFirst} = line!;
+        stationIds.splice(stationIndex,0,stationId);
+        bendFirst.splice(stationIndex,0,true);
+        return { ...state };
+      });
+    }
   };
 };
 
@@ -258,3 +270,4 @@ export const addStationFromRecord = (
   stations.set(max + 1, newStation);
   setData({ ...data });
 };
+

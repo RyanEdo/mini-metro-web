@@ -5,7 +5,7 @@ import { DisplayStation } from "../../DataStructure/Display";
 import { LineCard } from "./LineCard";
 import "./Cards.scss";
 import { StationCard } from "./StationCard";
-import { UserDataType } from "../../Data/UserData";
+import { InsertInfo, UserDataType } from "../../Data/UserData";
 import { browserInfo, mapToArr, onWheelX, onWheelY } from "../../Common/util";
 import { showConfirmationInterface } from "../Delete/DeleteConfirmation";
 import { FunctionMode } from "../../DataStructure/Mode";
@@ -15,11 +15,19 @@ export function Cards({
   setData,
   showConfirmation,
   menuRef,
+  funtionMode,
+  setFuntionMode,
+  insertInfo,
+  setInsertInfo,
 }: {
   data: UserDataType;
   setData: Dispatch<SetStateAction<UserDataType>>;
   showConfirmation?: showConfirmationInterface;
   menuRef: RefObject<any>;
+  funtionMode: FunctionMode;
+  setFuntionMode: React.Dispatch<React.SetStateAction<FunctionMode>>;
+  insertInfo?: InsertInfo;
+  setInsertInfo: React.Dispatch<React.SetStateAction<InsertInfo|undefined>>;
 }) {
   const { lines, stations } = data;
   const { engine } = browserInfo;
@@ -30,13 +38,18 @@ export function Cards({
       style={engine.name === "WebKit" ? { pointerEvents: "auto", height: 370, paddingTop:70 } : {}}
     >
       {mapToArr(lines).map((line) => (
-        <div className="card-container">
+        <div className="card-container"
+        >
           <LineCard
             setData={setData}
             line={line}
             data={data}
             key={"line-card-" + line.lineId}
             showConfirmation={showConfirmation}
+            funtionMode={funtionMode}
+            setFuntionMode={setFuntionMode}
+            insertInfo={insertInfo}
+            setInsertInfo={setInsertInfo}
           />
         </div>
       ))}

@@ -14,19 +14,22 @@ import {
 import "./ScaleLayer.scss";
 import { getCursor } from "../../Style/Cursor";
 import { Point } from "../../DataStructure/Point";
-import { ChangeSteps, StationProps, UserDataType } from "../../Data/UserData";
+import { ChangeSteps, InsertInfo, StationProps, UserDataType } from "../../Data/UserData";
 class ScaleLayerProp {
   editingMode!: Mode;
   setEditingMode!: React.Dispatch<React.SetStateAction<Mode>>;
   data!: UserDataType;
   setData!: Dispatch<SetStateAction<UserDataType>>;
   funtionMode!: FunctionMode;
+  setFunctionMode!: React.Dispatch<React.SetStateAction<FunctionMode>>;
   record!: StationProps[] | ChangeSteps[];
   setRecord!: React.Dispatch<
     React.SetStateAction<StationProps[] | ChangeSteps[]>
   >;
   currentRecordIndex!: number;
   setCurrentRecordIndex!: React.Dispatch<React.SetStateAction<number>>;
+  insertInfo?: InsertInfo;
+  setInsertInfo!: React.Dispatch<React.SetStateAction<InsertInfo|undefined>>;
 }
 function ScaleLayer({
   editingMode,
@@ -34,10 +37,13 @@ function ScaleLayer({
   data,
   setData,
   funtionMode,
+  setFunctionMode,
   record,
   setRecord,
   currentRecordIndex,
   setCurrentRecordIndex,
+  insertInfo,
+  setInsertInfo,
 }: ScaleLayerProp) {
   const [translateX, setTranslateX] = useState(0);
   const [translateY, setTranslateY] = useState(0);
@@ -186,10 +192,13 @@ function ScaleLayer({
           translateY={translateY}
           scale={scale}
           funtionMode={funtionMode}
+          setFunctionMode={setFunctionMode}
           record={record}
           setRecord={setRecord}
           currentRecordIndex={currentRecordIndex}
           setCurrentRecordIndex={setCurrentRecordIndex}
+          insertInfo={insertInfo}
+          setInsertInfo={setInsertInfo}
         />
       </div>
     </div>

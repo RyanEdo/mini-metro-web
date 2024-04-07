@@ -10,5 +10,6 @@ export enum Mode {
     normal,
     addingStation,
     dragingStation,
+    lineEditing,
     selectingStation,
   }
