@@ -45,7 +45,7 @@ export class Line {
       B.addLineRecord(bLineRecord);
       this.departureRecord = bLineRecord;
     }
-    let cLineRecord = C.getJoint(this);
+    let cLineRecord// = C.getJoint(this);
     if (!cLineRecord) {
       cLineRecord = new LineRecord(C, this);
       // register cLineRecord in C station
