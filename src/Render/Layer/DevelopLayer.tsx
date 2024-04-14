@@ -4,6 +4,7 @@ import { Point } from "../../DataStructure/Point";
 import { Station } from "../../DataStructure/Station";
 import { Line } from "../../DataStructure/Line";
 import LineRender from "../Component/LineRender";
+import { CardShowing } from "../../Data/UserData";
 
 function DevelopLayer() {
   // test line and station
@@ -61,15 +62,16 @@ function DevelopLayer() {
     );
   };
 
-  const renderLines = (allLinesList: Line[]) => {
-    return (
-      <div>
-        {allLinesList.map((line) => {
-          return <LineRender line={line} />;
-        })}
-      </div>
-    );
-  };
+  // const renderLines = (allLinesList: Line[], cardShowing: CardShowing, setCardShowing: Dispatch<SetStateAction<CardShowing>>) => {
+  //   return (
+  //     <div>
+  //       {allLinesList.map((line) => {
+  //         return <LineRender line={line}           cardShowing={cardShowing}
+  //         setCardShowing={setCardShowing}/>;
+  //       })}
+  //     </div>
+  //   );
+  // };
 
 
   return (
@@ -80,7 +82,7 @@ function DevelopLayer() {
         ))}
       </div> */}
       {renderStations(allStationsList)}
-      {renderLines(allLinesList)}
+      {/* {renderLines(allLinesList)} */}
 
     </div>
   );

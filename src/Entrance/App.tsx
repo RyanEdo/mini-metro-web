@@ -1,4 +1,5 @@
 import {
+  CardShowing,
   ChangeSteps,
   InsertInfo,
   LineProps,
@@ -29,6 +30,7 @@ function App() {
   useEffect(() => {
     setShowConfirmation(() => ref.current?.showConfirmation);
   }, [ref.current?.showConfirmation]);
+  const [cardShowing, setCardShowing] = useState(new CardShowing);
   return (
     <div className="App">
       <Menu
@@ -59,6 +61,8 @@ function App() {
         setCurrentRecordIndex={setCurrentRecordIndex}
         insertInfo={insertInfo}
         setInsertInfo={setInsertInfo}
+        cardShowing={cardShowing}
+        setCardShowing={setCardShowing}
       />
       <Cards
         functionMode={functionMode}
@@ -69,6 +73,8 @@ function App() {
         menuRef={menuRef}
         insertInfo={insertInfo}
         setInsertInfo={setInsertInfo}
+        cardShowing={cardShowing}
+        setCardShowing={setCardShowing}
       />
     </div>
   );

@@ -9,7 +9,7 @@ import React, {
 import "./StationCard.scss";
 import classNames from "classnames";
 import { Point } from "../../DataStructure/Point";
-import { InsertInfo, StationProps, UserDataType, dataProcessor } from "../../Data/UserData";
+import { CardShowing, InsertInfo, StationProps, UserDataType, dataProcessor } from "../../Data/UserData";
 import shapes from "../../Resource/Shape/shape";
 import { Shape } from "../../Data/Shape";
 import { AutoGrowthInput } from "../../Common/AutoGrowthInput";
@@ -31,7 +31,8 @@ export function StationCard({
   setFunctionMode,
   insertInfo,
   setInsertInfo,
-  
+  cardShowing,
+  setCardShowing,
 }: {
   station: StationProps;
   setData: Dispatch<SetStateAction<UserDataType>>;
@@ -42,6 +43,8 @@ export function StationCard({
   setFunctionMode: React.Dispatch<React.SetStateAction<FunctionMode>>;
   insertInfo?: InsertInfo;
   setInsertInfo: React.Dispatch<React.SetStateAction<InsertInfo|undefined>>;
+  cardShowing: CardShowing;
+  setCardShowing: Dispatch<SetStateAction<CardShowing>>;
 }) {
   const {
     stationName,
@@ -192,7 +195,9 @@ export function StationCard({
           : {}
       }
     >
-      <div className="line-count">{lineCount}条线路</div>
+      <div className="line-count" onClick={()=>{
+        setCardShowing({stationIds: [stationId], lineIds, stationFirst: true})
+      }}>{lineCount}条线路</div>
       <AutoGrowthInput
         onInput={(e) => setStationName(e.currentTarget.value)}
         className="station-name"

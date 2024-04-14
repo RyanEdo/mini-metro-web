@@ -9,6 +9,7 @@ import DevelopLayer from "./DevelopLayer";
 import { LineCard } from "../Card/LineCard";
 import { Cards } from "../Card/Cards";
 import {
+  CardShowing,
   ChangeSteps,
   InsertInfo,
   LineProps,
@@ -23,7 +24,7 @@ import { Line } from "../../DataStructure/Line";
 import LineRender from "../Component/LineRender";
 import shapes from "../../Resource/Shape/shape";
 import "./RenderLayer.scss";
-import { FunctionMode } from "../../DataStructure/Mode";
+import { FunctionMode, Mode } from "../../DataStructure/Mode";
 class RenderProps {
   data!: UserDataType;
   setData!: Dispatch<SetStateAction<UserDataType>>;
@@ -40,6 +41,9 @@ class RenderProps {
   insertInfo?: InsertInfo;
   setInsertInfo!: React.Dispatch<React.SetStateAction<InsertInfo | undefined>>;
   setFunctionMode!: React.Dispatch<React.SetStateAction<FunctionMode>>;
+  cardShowing!: CardShowing;
+  setCardShowing!: Dispatch<SetStateAction<CardShowing>>;
+  editingMode!: Mode;
 }
 const buildStations = (
   stations: Map<string | number, StationProps>
@@ -75,11 +79,21 @@ const buildLines = (
   return lineMap;
 };
 
-const renderLines = (allLinesList: Line[]) => {
+const renderLines = (
+  allLinesList: Line[],
+  cardShowing: CardShowing,
+  setCardShowing: Dispatch<SetStateAction<CardShowing>>
+) => {
   return (
     <div>
       {allLinesList.map((line) => {
-        return <LineRender line={line} />;
+        return (
+          <LineRender
+            line={line}
+            cardShowing={cardShowing}
+            setCardShowing={setCardShowing}
+          />
+        );
       })}
     </div>
   );
@@ -99,6 +113,9 @@ function RenderLayer({
   scale,
   insertInfo,
   setInsertInfo,
+  cardShowing,
+  setCardShowing,
+  editingMode,
 }: RenderProps) {
   const { lines, stations } = data;
   const stationMap = buildStations(stations);
@@ -135,6 +152,7 @@ function RenderLayer({
       const { stationId } = displayStation!;
       const { setStationPosition } = dataProcessor(stationId, setData, data);
       if (functionMode === FunctionMode.dragingStation && mouseDown) {
+        setCardShowing({ stationIds: [stationId] });
         const { clientX, clientY } = e as MouseEvent;
         const x = (clientX - translateX) / scale;
         const y = (clientY - translateY) / scale;
@@ -206,17 +224,18 @@ function RenderLayer({
       scaleLayer?.removeEventListener("touchend", touchEnd);
     };
   }, [stationBeingDrag]);
+  const [moved, setMoved] = useState(false);
   const operationStart = (
     e: React.MouseEvent | React.TouchEvent,
     station: Station
   ) => {
+    setMoved(false);
     if (functionMode === FunctionMode.dragingStation) {
       e.stopPropagation();
       setMouseDown(true);
       setStationBeingDrag(station);
     }
   };
-
   const renderStations = (allStationsList: Station[]) => {
     return (
       <div>
@@ -224,6 +243,8 @@ function RenderLayer({
           const { displayStation } = station;
           const { stationName, shape, stationId } = displayStation!;
           const add = () => {
+            if (!moved)
+              setCardShowing({ stationIds: [stationId] });
             if (functionMode === FunctionMode.selectingStation) {
               const { insertIndex, line } = insertInfo!;
               const { lineId } = line;
@@ -233,6 +254,8 @@ function RenderLayer({
                 insertIndex: insertIndex ? insertIndex + 1 : 0,
                 line,
               });
+              setCardShowing({ stationIds: [stationId], lineIds: [lineId] });
+
               // setFunctionMode(FunctionMode.lineEditing);
             }
           };
@@ -247,6 +270,10 @@ function RenderLayer({
                 whiteSpace: "nowrap",
               }}
               className="station-render"
+
+              onTouchMove={()=>setMoved(true)}
+              onMouseMove={()=>setMoved(true)}
+
               onTouchEnd={add}
               onClick={add}
             >
@@ -256,10 +283,13 @@ function RenderLayer({
                   shapes[shape]
                 }
               </div>
-              <div className="station-name" 
-              style={scale<0.65?{display: 'none'}:{}}
-              // style={{transform: `scale(${1/scale})`}}
-              >{stationName}</div>
+              <div
+                className="station-name"
+                style={scale < 0.65 ? { display: "none" } : {}}
+                // style={{transform: `scale(${1/scale})`}}
+              >
+                {stationName}
+              </div>
               {/* {String.fromCharCode("A".charCodeAt(0) + index)} */}
             </div>
           );
@@ -269,7 +299,7 @@ function RenderLayer({
   };
   return (
     <div className="RenderLayer">
-      {renderLines(allLinesList)}
+      {renderLines(allLinesList, cardShowing, setCardShowing)}
 
       {renderStations(allStationsList)}
       {/* <DevelopLayer /> */}

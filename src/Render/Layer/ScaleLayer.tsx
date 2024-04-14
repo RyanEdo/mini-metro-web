@@ -14,7 +14,7 @@ import {
 import "./ScaleLayer.scss";
 import { getCursor } from "../../Style/Cursor";
 import { Point } from "../../DataStructure/Point";
-import { ChangeSteps, InsertInfo, StationProps, UserDataType } from "../../Data/UserData";
+import { CardShowing, ChangeSteps, InsertInfo, StationProps, UserDataType } from "../../Data/UserData";
 class ScaleLayerProp {
   editingMode!: Mode;
   setEditingMode!: React.Dispatch<React.SetStateAction<Mode>>;
@@ -30,6 +30,8 @@ class ScaleLayerProp {
   setCurrentRecordIndex!: React.Dispatch<React.SetStateAction<number>>;
   insertInfo?: InsertInfo;
   setInsertInfo!: React.Dispatch<React.SetStateAction<InsertInfo|undefined>>;
+  cardShowing!: CardShowing;
+  setCardShowing!: Dispatch<SetStateAction<CardShowing>>;
 }
 function ScaleLayer({
   editingMode,
@@ -44,6 +46,8 @@ function ScaleLayer({
   setCurrentRecordIndex,
   insertInfo,
   setInsertInfo,
+  cardShowing,
+  setCardShowing,
 }: ScaleLayerProp) {
   const [translateX, setTranslateX] = useState(0);
   const [translateY, setTranslateY] = useState(0);
@@ -117,7 +121,9 @@ function ScaleLayer({
           record,
           setRecord,
           currentRecordIndex,
-          setCurrentRecordIndex
+          setCurrentRecordIndex,
+          cardShowing,
+          setCardShowing,
         )
       }
       onMouseLeave={(event) => onMouseLeave(event, setEditingMode)}
@@ -179,7 +185,9 @@ function ScaleLayer({
           record,
           setRecord,
           currentRecordIndex,
-          setCurrentRecordIndex
+          setCurrentRecordIndex,
+          cardShowing,
+          setCardShowing,
         )
       }
       style={{ cursor: getCursor(editingMode) }}
@@ -199,6 +207,9 @@ function ScaleLayer({
           setCurrentRecordIndex={setCurrentRecordIndex}
           insertInfo={insertInfo}
           setInsertInfo={setInsertInfo}
+          cardShowing={cardShowing}
+          setCardShowing={setCardShowing}
+          editingMode={editingMode}
         />
       </div>
     </div>

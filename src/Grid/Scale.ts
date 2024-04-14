@@ -1,4 +1,4 @@
-import { ChangeSteps, StationProps, UserDataType, addNewStation } from "./../Data/UserData";
+import { CardShowing, ChangeSteps, StationProps, UserDataType, addNewStation } from "./../Data/UserData";
 import {
   WheelEvent,
   Dispatch,
@@ -77,12 +77,14 @@ export const onMouseMove = (
   mouseStartTranslate: Point,
   setMoved: Dispatch<SetStateAction<boolean>>
 ) => {
-  setMoved(true);
+  // setMoved(true);
   switch (editingMode) {
     case Mode.moving: {
       // console.log(event);
       const point = Point.getPointFromMouse(event);
       const displacement = point.displacementTo(mouseRefPoint);
+      const distance = point.distanceTo(mouseRefPoint);
+      if(distance>5) setMoved(true);  
       setTranslateX(mouseStartTranslate.x + displacement.x);
       setTranslateY(mouseStartTranslate.y + displacement.y);
       break;
@@ -104,7 +106,9 @@ export const onMouseUp = (
   record: StationProps[]|ChangeSteps[],
   setRecord: React.Dispatch<React.SetStateAction<StationProps[]|ChangeSteps[]>>,
   currentRecordIndex: number,
-  setCurrentRecordIndex: React.Dispatch<React.SetStateAction<number>>
+  setCurrentRecordIndex: React.Dispatch<React.SetStateAction<number>>,
+  cardShowing: CardShowing,
+  setCardShowing: Dispatch<SetStateAction<CardShowing>>,
 ) => {
   // console.log(event);
   setEditingMode(Mode.normal);
@@ -121,7 +125,9 @@ export const onMouseUp = (
       record as StationProps[],
       setRecord,
       currentRecordIndex,
-      setCurrentRecordIndex
+      setCurrentRecordIndex,
+      cardShowing,
+      setCardShowing,
     );
   }
 };
@@ -254,7 +260,9 @@ export const onTouchEnd = (
   record: StationProps[] | ChangeSteps[],
   setRecord: React.Dispatch<React.SetStateAction<StationProps[]|ChangeSteps[]>>,
   currentRecordIndex: number,
-  setCurrentRecordIndex: React.Dispatch<React.SetStateAction<number>>
+  setCurrentRecordIndex: React.Dispatch<React.SetStateAction<number>>,
+  cardShowing: CardShowing,
+  setCardShowing: Dispatch<SetStateAction<CardShowing>>,
 ) => {
   event.preventDefault();
   const { changedTouches } = event;
@@ -277,7 +285,9 @@ export const onTouchEnd = (
       record as StationProps[],
       setRecord,
       currentRecordIndex,
-      setCurrentRecordIndex
+      setCurrentRecordIndex,
+      cardShowing,
+      setCardShowing,
     );
   }
   setEditingMode(Mode.normal);

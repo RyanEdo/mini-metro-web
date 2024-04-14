@@ -1,4 +1,10 @@
-import React, { Dispatch, RefObject, SetStateAction, useEffect, useState } from "react";
+import React, {
+  Dispatch,
+  RefObject,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import { Line } from "../../DataStructure/Line";
 import { Station } from "../../DataStructure/Station";
 import { DisplayStation } from "../../DataStructure/Display";
@@ -12,6 +18,7 @@ import EditIcon from "../../Resource/Icon/edit.svg";
 
 import classNames from "classnames";
 import {
+  CardShowing,
   InsertInfo,
   LineProps,
   StationProps,
@@ -40,7 +47,8 @@ export function LineCard({
   insertInfo,
   setInsertInfo,
   menuRef,
-
+  cardShowing,
+  setCardShowing,
 }: {
   line: LineProps;
   setData: Dispatch<SetStateAction<UserDataType>>;
@@ -51,7 +59,8 @@ export function LineCard({
   insertInfo?: InsertInfo;
   setInsertInfo: React.Dispatch<React.SetStateAction<InsertInfo | undefined>>;
   menuRef: RefObject<any>;
-
+  cardShowing: CardShowing;
+  setCardShowing: Dispatch<SetStateAction<CardShowing>>;
 }) {
   const {
     lineId,
@@ -70,7 +79,7 @@ export function LineCard({
     setColor,
     getBendFirst,
     setBendFirst,
-    deleteLine
+    deleteLine,
   } = dataProcessor(lineId, setData, data);
   const colorName = colorSHMap.get(colorSelected)?.color_name || colorSelected;
   const firstStation = getStationById(stationIds[0]);
@@ -85,18 +94,24 @@ export function LineCard({
   const [tab, setTab] = useState("name");
   const addingStation =
     functionMode === FunctionMode.selectingStation ||
-    functionMode === FunctionMode.lineEditing || !firstStation;
+    functionMode === FunctionMode.lineEditing ||
+    !firstStation;
   const getExpendWidth = () => {
-    const expected = 33 + 161 * stationIds.length;
+    const { stationIds: stations } = cardShowing;
+    const expected =
+      33 + 161 * (addingStation ? stationIds.length + 1 : stationIds.length);
+    const hasStation = stations && stations.length;
+
     const width =
-      expected > window.innerWidth ? window.innerWidth - 100 : expected;
+      expected > window.innerWidth ? window.innerWidth -(hasStation?505: 100) : expected;
     // console.log(width);
     setExpendWidth(width);
   };
   useEffect(() => {
+    getExpendWidth();
     window.addEventListener("resize", getExpendWidth);
     return () => window.removeEventListener("resize", getExpendWidth);
-  }, [stationIds]);
+  }, [stationIds, addingStation, cardShowing]);
   useEffect(() => {
     getExpendWidth();
   }, [expend]);
@@ -194,7 +209,7 @@ export function LineCard({
             <div
               className="operation-item delete"
               onClick={() => {
-                showConfirmation!({ line },deleteLine);
+                showConfirmation!({ line }, deleteLine);
               }}
             >
               删除线路...
@@ -245,7 +260,14 @@ export function LineCard({
           </div>
         )}
       </div>
-      <div className="stations-count">{stationIds.length}个站点</div>
+      <div
+        className="stations-count"
+        onClick={() => {
+          setCardShowing({ lineIds: [lineId], stationIds });
+        }}
+      >
+        {stationIds.length}个站点
+      </div>
 
       <AutoGrowthInput
         onInput={(e) => setLineName(e.currentTarget.value)}
@@ -270,8 +292,9 @@ export function LineCard({
           >
             <div className="add-first"></div>
             {stationsInThisLine.map((station, index) => {
-              const { stationName } = station!;
+              const { stationName, stationId } = station!;
               const bendFirst = getBendFirst(index);
+              const last = index === stationsInThisLine.length - 1;
               return (
                 <div className="station-block">
                   <div className="track">
@@ -283,26 +306,39 @@ export function LineCard({
                     className="bend-first"
                     onClick={(e) => {
                       if (addingStation) {
-                        if(!firstStation){
+                        if (!firstStation) {
                           if (menuRef?.current?.showTools) {
-                            menuRef.current.showTools(e,FunctionMode.selectingStation);
+                            menuRef.current.showTools(
+                              e,
+                              FunctionMode.selectingStation
+                            );
                           }
                         }
                         setInsertInfo({ insertIndex: index, line });
                         setFunctionMode(FunctionMode.selectingStation);
-                      } else setBendFirst(index, !bendFirst);
+                      } else if (last) {
+                        setInsertInfo({ insertIndex: index+1, line });
+                        if (menuRef?.current?.showTools) {
+                          menuRef.current.showTools(
+                            e,
+                            FunctionMode.selectingStation
+                          );
+                        }
+                      } else {
+                        setBendFirst(index, !bendFirst);
+                      }
                     }}
                   >
                     <div
                       className={classNames({
                         "bend-icon": 1,
-                        bend: bendFirst && !addingStation,
+                        bend: bendFirst && !addingStation &&!last,
                       })}
                     >
-                      {addingStation ? <PlusIcon /> : <ArrowIcon />}
+                      {addingStation||last ? <PlusIcon /> : <ArrowIcon />}
                     </div>
                     <div className="bend-des">
-                      {addingStation
+                      {addingStation||last
                         ? "插入站点"
                         : bendFirst
                         ? "斜向优先"
@@ -312,6 +348,12 @@ export function LineCard({
                   <div
                     className="station-name"
                     style={{ color: colorSelected }}
+                    onClick={() => {
+                      setCardShowing({
+                        lineIds: [lineId],
+                        stationIds: [stationId],
+                      });
+                    }}
                   >
                     {stationName}
                   </div>

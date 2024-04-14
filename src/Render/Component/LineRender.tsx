@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Line } from "../../DataStructure/Line";
 import { Point } from "../../DataStructure/Point";
 
@@ -9,11 +9,21 @@ import {
 } from "../../Line/LinePoints";
 import { clearHandle, getHandleCommand } from "../../Line/Handle";
 import { gauge } from "../../Common/const";
+import { CardShowing } from "../../Data/UserData";
 
-function LineRender({ line }: { line: Line }) {
-  const {displayLine} = line;
-  const {color} = displayLine!;
-  let command = "", allKeyPoints: Point[] = [];
+function LineRender({
+  line,
+  cardShowing,
+  setCardShowing,
+}: {
+  line: Line;
+  cardShowing: CardShowing;
+  setCardShowing: Dispatch<SetStateAction<CardShowing>>;
+}) {
+  const { displayLine } = line;
+  const { color, lineId } = displayLine!;
+  let command = "",
+    allKeyPoints: Point[] = [];
   if (line.departureRecord?.nextLineRecord) {
     allKeyPoints = getAllKeyPoints(line);
     clearHandle(line);
@@ -48,12 +58,33 @@ function LineRender({ line }: { line: Line }) {
       </div>
     );
   };
+  const [moved, setMoved] = useState(false);
+  const onClick = ()=>{
+    if(!moved){
+      setCardShowing({lineIds:[lineId]})
+
+    }
+}
   return (
     <>
       <div style={{ position: "absolute" }}>
         <svg width="200" height="200" style={{ overflow: "visible" }}>
           {/* <path fill="transparent" stroke="black" d={MCommand + LCommand} /> */}
-          <path fill="transparent" stroke={`${color}`} d={command} stroke-width={gauge} />
+          <path
+            // fill="transparent"
+            // stroke-linecap="round" 
+            fill="none" 
+            stroke={`${color}`}
+            d={command}
+            stroke-width={gauge}
+            style={{cursor: "pointer"}}
+            onMouseDown={()=>setMoved(false)}
+            onTouchStart={()=>setMoved(false)}
+            onTouchMove={()=>setMoved(true)}
+            onMouseMove={()=>setMoved(true)}
+            onMouseUp={onClick}
+            onTouchEnd={onClick}
+          />
 
           {/* <circle cx="10" cy="10" r="2" fill="red" /> */}
         </svg>

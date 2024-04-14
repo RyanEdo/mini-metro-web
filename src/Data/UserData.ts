@@ -26,6 +26,17 @@ export type ChangeSteps = {
   stationId: number;
 };
 
+
+export class CardShowing {
+  constructor(){
+    this.stationIds = [];
+    this.lineIds = [];
+  }
+  stationIds?: number[];
+  lineIds?: number[];
+  stationFirst?: boolean;
+}
+
 export type InsertInfo = { insertIndex: number; line: LineProps };
 
 export class UserDataType {
@@ -267,14 +278,14 @@ export const dataProcessor = (
       });
     },
     addNewLine: () => {
-      let newLine = new LineProps();
+      const newLine = new LineProps();
       setData((state) => {
         const maxId = mapToArr(lines).reduce(
           (pre, cur) => Math.max(pre, cur.lineId),
           0
         );
         const lineId = maxId + 1;
-        newLine = {
+        Object.assign(newLine, {
           lineId: lineId,
           lineName: lineId + "号线",
           color: colorSH[lineId - 1] ? colorSH[lineId - 1].color : "#EA0B2A",
@@ -282,7 +293,10 @@ export const dataProcessor = (
           sign: lineId.toString(),
           order: lineId,
           bendFirst: [true],
-        };
+        });
+        const station = stations.get(id);
+        const {lineIds} = station!;
+        station!.lineIds = [...new Set(lineIds.concat([lineId]))]
         lines.set(lineId, newLine);
         return { ...state };
       });
@@ -291,6 +305,7 @@ export const dataProcessor = (
     addStationToLine: (stationId: number, stationIndex: number) => {
       setData((state) => {
         const line = lines.get(id);
+        if(!line) debugger
         const { stationIds, bendFirst } = line!;
         if (
           stationIds[stationIndex] !== stationId &&
@@ -318,20 +333,24 @@ export const addNewStation = (
     React.SetStateAction<StationProps[] | ChangeSteps[]>
   >,
   currentRecordIndex: number,
-  setCurrentRecordIndex: React.Dispatch<React.SetStateAction<number>>
+  setCurrentRecordIndex: React.Dispatch<React.SetStateAction<number>>,
+  cardShowing: CardShowing,
+  setCardShowing: Dispatch<SetStateAction<CardShowing>>,
 ) => {
   const { stations } = data;
   let max = 0;
   stations.forEach((station) => {
     max = Math.max(station.stationId, max);
   });
+  const stationId = max +1;
   const newStation = {
-    stationId: max + 1,
+    stationId,
     stationName: `新增站点 ${max + 1}`,
     position: [x, y].map(Math.round),
     shape: "square",
     lineIds: [],
   };
+  setCardShowing({stationIds:[stationId]})
   const newRecord = record.slice(0, currentRecordIndex + 1);
   setRecord(newRecord.concat([newStation]));
   setCurrentRecordIndex(currentRecordIndex + 1);
