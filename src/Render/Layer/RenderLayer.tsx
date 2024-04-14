@@ -12,7 +12,9 @@ import {
   CardShowing,
   ChangeSteps,
   InsertInfo,
+  LineChanges,
   LineProps,
+  RecordType,
   StationProps,
   UserDataType,
   dataProcessor,
@@ -29,9 +31,9 @@ class RenderProps {
   data!: UserDataType;
   setData!: Dispatch<SetStateAction<UserDataType>>;
   functionMode!: FunctionMode;
-  record!: StationProps[] | ChangeSteps[];
+  record!: RecordType;
   setRecord!: React.Dispatch<
-    React.SetStateAction<StationProps[] | ChangeSteps[]>
+    React.SetStateAction<RecordType>
   >;
   currentRecordIndex!: number;
   setCurrentRecordIndex!: React.Dispatch<React.SetStateAction<number>>;
@@ -254,6 +256,12 @@ function RenderLayer({
                 insertIndex: insertIndex ? insertIndex + 1 : 0,
                 line,
               });
+              const newRecord = record.slice(
+                0,
+                currentRecordIndex + 1
+              )  as LineChanges[];
+              setRecord(newRecord.concat([{stationId,lineId,stationIndex:insertIndex}]));
+              setCurrentRecordIndex(currentRecordIndex+1);
               setCardShowing({ stationIds: [stationId], lineIds: [lineId] });
 
               // setFunctionMode(FunctionMode.lineEditing);

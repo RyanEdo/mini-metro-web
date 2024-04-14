@@ -2,7 +2,9 @@ import {
   CardShowing,
   ChangeSteps,
   InsertInfo,
+  LineChanges,
   LineProps,
+  RecordType,
   StationProps,
   initData,
 } from "../Data/UserData";
@@ -19,7 +21,7 @@ import React, { useEffect, useRef, useState } from "react";
 function App() {
   const [editingMode, setEditingMode] = useState(Mode.normal);
   const [functionMode, setFunctionMode] = useState(FunctionMode.normal);
-  const [record, setRecord] = useState<StationProps[] | ChangeSteps[]>([]);
+  const [record, setRecord] = useState<RecordType>([]);
   const [currentRecordIndex, setCurrentRecordIndex] = useState(-1);
   const [insertInfo, setInsertInfo] = useState<InsertInfo>();
   const [data, setData] = useState(initData);
@@ -31,6 +33,7 @@ function App() {
     setShowConfirmation(() => ref.current?.showConfirmation);
   }, [ref.current?.showConfirmation]);
   const [cardShowing, setCardShowing] = useState(new CardShowing);
+  console.log(record, currentRecordIndex)
   return (
     <div className="App">
       <Menu

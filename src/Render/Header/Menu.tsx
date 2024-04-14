@@ -20,19 +20,21 @@ import {
   deleteStation,
   dataProcessor,
   InsertInfo,
+  RecordType,
+  LineChanges,
 } from "../../Data/UserData";
 type MenuType = {
   setEditingMode: React.Dispatch<React.SetStateAction<Mode>>;
   functionMode: FunctionMode;
   setFunctionMode: React.Dispatch<React.SetStateAction<FunctionMode>>;
-  record: StationProps[] | ChangeSteps[];
-  setRecord: React.Dispatch<React.SetStateAction<StationProps[]|ChangeSteps[]>>;
+  record: RecordType;
+  setRecord: React.Dispatch<React.SetStateAction<RecordType>>;
   currentRecordIndex: number;
   setCurrentRecordIndex: React.Dispatch<React.SetStateAction<number>>;
   data: UserDataType;
   setData: Dispatch<SetStateAction<UserDataType>>;
   insertInfo?: InsertInfo;
-  setInsertInfo: React.Dispatch<React.SetStateAction<InsertInfo|undefined>>;
+  setInsertInfo: React.Dispatch<React.SetStateAction<InsertInfo | undefined>>;
 };
 export const Menu = forwardRef(function (
   {
@@ -150,7 +152,11 @@ export const Menu = forwardRef(function (
                 if (undoCondition) {
                   const change = changeRecords[currentRecordIndex];
                   const { stationId, fromX, fromY } = change;
-                  const {setStationPosition} = dataProcessor(stationId, setData, data);
+                  const { setStationPosition } = dataProcessor(
+                    stationId,
+                    setData,
+                    data
+                  );
                   setStationPosition(fromX, fromY);
                   setCurrentRecordIndex(currentRecordIndex - 1);
                 }
@@ -163,9 +169,13 @@ export const Menu = forwardRef(function (
               onClick={(e) => {
                 e.stopPropagation();
                 if (redoCondition) {
-                  const change = changeRecords[currentRecordIndex+1];
+                  const change = changeRecords[currentRecordIndex + 1];
                   const { stationId, toX, toY } = change;
-                  const {setStationPosition} = dataProcessor(stationId, setData, data);
+                  const { setStationPosition } = dataProcessor(
+                    stationId,
+                    setData,
+                    data
+                  );
                   setStationPosition(toX, toY);
                   setCurrentRecordIndex(currentRecordIndex + 1);
                 }
@@ -188,9 +198,7 @@ export const Menu = forwardRef(function (
       case FunctionMode.lineEditing: {
         return (
           <>
-            <div className="tool disabled">
-              站点插入模式
-            </div>
+            <div className="tool disabled">站点插入模式</div>
             <div
               className="tool"
               onClick={() => {
@@ -203,13 +211,61 @@ export const Menu = forwardRef(function (
           </>
         );
       }
-      case FunctionMode.selectingStation:{
-        const {insertIndex, line} = insertInfo!;
-        const {lineName} = line;
+      case FunctionMode.selectingStation: {
+        const { insertIndex, line } = insertInfo!;
+        const { lineName } = line;
+        const changeRecords = record as LineChanges[];
+
         return (
           <>
             <div className="tool disabled">
-              点击站点将它插入到{lineName}的第{insertIndex+1}站
+              点击站点将它插入到{lineName}的第{insertIndex + 1}站
+            </div>
+            <div
+              className={classNames({ tool: 1, disabled: !undoCondition })}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (undoCondition) {
+                  const change = changeRecords[currentRecordIndex];
+                  const { stationId, lineId, stationIndex } = change;
+                  const { removeStationFromLine } = dataProcessor(
+                    stationId,
+                    setData,
+                    data
+                  );
+                  removeStationFromLine(lineId, stationIndex);
+                  setInsertInfo({
+                    insertIndex: insertIndex === 0 ? 0 : insertIndex - 1,
+                    line,
+                  });
+                  setCurrentRecordIndex(currentRecordIndex - 1);
+                }
+              }}
+            >
+              撤销
+            </div>
+            <div
+              className={classNames({ tool: 1, disabled: !redoCondition })}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (redoCondition) {
+                  const change = changeRecords[currentRecordIndex + 1];
+                  const { stationId, lineId, stationIndex } = change;
+                  const { addStationToLine } = dataProcessor(
+                    lineId,
+                    setData,
+                    data
+                  );
+                  addStationToLine(stationId, stationIndex);
+                  setCurrentRecordIndex(currentRecordIndex + 1);
+                  setInsertInfo({
+                    insertIndex: insertIndex === 0 ? 0 : insertIndex + 1,
+                    line,
+                  });
+                }
+              }}
+            >
+              重做
             </div>
             <div
               className="tool"
@@ -297,9 +353,12 @@ export const Menu = forwardRef(function (
           <div className="column">
             <div className="column-title">线路</div>
             <div className="column-items">
-              <div className="column-item"
+              <div
+                className="column-item"
                 onClick={(e) => showTools(e, FunctionMode.lineEditing)}
-              >插入站点...</div>
+              >
+                插入站点...
+              </div>
             </div>
           </div>
           <div className="column">

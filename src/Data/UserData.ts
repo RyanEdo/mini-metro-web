@@ -26,6 +26,13 @@ export type ChangeSteps = {
   stationId: number;
 };
 
+export type LineChanges = {
+  stationId: number;
+  lineId: number;
+  stationIndex: number;
+}
+
+export type RecordType = StationProps[] | ChangeSteps[] | LineChanges[];
 
 export class CardShowing {
   constructor(){
@@ -330,7 +337,7 @@ export const addNewStation = (
   y: number,
   record: StationProps[],
   setRecord: React.Dispatch<
-    React.SetStateAction<StationProps[] | ChangeSteps[]>
+    React.SetStateAction<RecordType>
   >,
   currentRecordIndex: number,
   setCurrentRecordIndex: React.Dispatch<React.SetStateAction<number>>,

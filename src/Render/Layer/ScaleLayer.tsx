@@ -14,7 +14,7 @@ import {
 import "./ScaleLayer.scss";
 import { getCursor } from "../../Style/Cursor";
 import { Point } from "../../DataStructure/Point";
-import { CardShowing, ChangeSteps, InsertInfo, StationProps, UserDataType } from "../../Data/UserData";
+import { CardShowing, ChangeSteps, InsertInfo, RecordType, StationProps, UserDataType } from "../../Data/UserData";
 class ScaleLayerProp {
   editingMode!: Mode;
   setEditingMode!: React.Dispatch<React.SetStateAction<Mode>>;
@@ -22,9 +22,9 @@ class ScaleLayerProp {
   setData!: Dispatch<SetStateAction<UserDataType>>;
   functionMode!: FunctionMode;
   setFunctionMode!: React.Dispatch<React.SetStateAction<FunctionMode>>;
-  record!: StationProps[] | ChangeSteps[];
+  record!: RecordType;
   setRecord!: React.Dispatch<
-    React.SetStateAction<StationProps[] | ChangeSteps[]>
+    React.SetStateAction<RecordType>
   >;
   currentRecordIndex!: number;
   setCurrentRecordIndex!: React.Dispatch<React.SetStateAction<number>>;

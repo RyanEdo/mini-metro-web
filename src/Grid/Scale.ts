@@ -1,4 +1,4 @@
-import { CardShowing, ChangeSteps, StationProps, UserDataType, addNewStation } from "./../Data/UserData";
+import { CardShowing, ChangeSteps, RecordType, StationProps, UserDataType, addNewStation } from "./../Data/UserData";
 import {
   WheelEvent,
   Dispatch,
@@ -103,8 +103,8 @@ export const onMouseUp = (
   translateX: number,
   translateY: number,
   scale: number,
-  record: StationProps[]|ChangeSteps[],
-  setRecord: React.Dispatch<React.SetStateAction<StationProps[]|ChangeSteps[]>>,
+  record: RecordType,
+  setRecord: React.Dispatch<React.SetStateAction<RecordType>>,
   currentRecordIndex: number,
   setCurrentRecordIndex: React.Dispatch<React.SetStateAction<number>>,
   cardShowing: CardShowing,
@@ -257,8 +257,8 @@ export const onTouchEnd = (
   translateX: number,
   translateY: number,
   scale: number,
-  record: StationProps[] | ChangeSteps[],
-  setRecord: React.Dispatch<React.SetStateAction<StationProps[]|ChangeSteps[]>>,
+  record: RecordType,
+  setRecord: React.Dispatch<React.SetStateAction<RecordType>>,
   currentRecordIndex: number,
   setCurrentRecordIndex: React.Dispatch<React.SetStateAction<number>>,
   cardShowing: CardShowing,
