@@ -1,8 +1,10 @@
 import React, {
+  CSSProperties,
   Dispatch,
   MouseEventHandler,
   SetStateAction,
   useEffect,
+  useLayoutEffect,
   useState,
 } from "react";
 import DevelopLayer from "./DevelopLayer";
@@ -27,14 +29,13 @@ import LineRender from "../Component/LineRender";
 import shapes from "../../Resource/Shape/shape";
 import "./RenderLayer.scss";
 import { FunctionMode, Mode } from "../../DataStructure/Mode";
+import { Direct } from "../../DataStructure/Direction";
 class RenderProps {
   data!: UserDataType;
   setData!: Dispatch<SetStateAction<UserDataType>>;
   functionMode!: FunctionMode;
   record!: RecordType;
-  setRecord!: React.Dispatch<
-    React.SetStateAction<RecordType>
-  >;
+  setRecord!: React.Dispatch<React.SetStateAction<RecordType>>;
   currentRecordIndex!: number;
   setCurrentRecordIndex!: React.Dispatch<React.SetStateAction<number>>;
   translateX!: number;
@@ -242,11 +243,11 @@ function RenderLayer({
     return (
       <div>
         {allStationsList.map((station, index) => {
-          const { displayStation } = station;
+          const { displayStation, position } = station;
+          const {x,y} = position;
           const { stationName, shape, stationId } = displayStation!;
           const add = () => {
-            if (!moved)
-              setCardShowing({ stationIds: [stationId] });
+            if (!moved) setCardShowing({ stationIds: [stationId] });
             if (functionMode === FunctionMode.selectingStation) {
               const { insertIndex, line } = insertInfo!;
               const { lineId } = line;
@@ -259,33 +260,65 @@ function RenderLayer({
               const newRecord = record.slice(
                 0,
                 currentRecordIndex + 1
-              )  as LineChanges[];
-              setRecord(newRecord.concat([{stationId,lineId,stationIndex:insertIndex}]));
-              setCurrentRecordIndex(currentRecordIndex+1);
+              ) as LineChanges[];
+              setRecord(
+                newRecord.concat([
+                  { stationId, lineId, stationIndex: insertIndex },
+                ])
+              );
+              setCurrentRecordIndex(currentRecordIndex + 1);
               setCardShowing({ stationIds: [stationId], lineIds: [lineId] });
 
               // setFunctionMode(FunctionMode.lineEditing);
             }
           };
+          const nameDirection: Direct = station.getBestDirectionForName();
+          const SQRT1_2 = Math.SQRT1_2;
+          const directionOffset = [
+            [0, -1],
+            [SQRT1_2, -SQRT1_2],
+            [1, 0],
+            [SQRT1_2, SQRT1_2],
+            [0, 1],
+            [-SQRT1_2, SQRT1_2],
+            [-1, 0],
+            [-SQRT1_2, -SQRT1_2],
+          ];
+          const k = 20; // distance from station to name
+          const namePosition = directionOffset[nameDirection];
+          const [dX,dY] = namePosition;
+          const nameX = dX*k+x;
+          const nameY = dY*k+y;
+          const translate = [
+            [-1,-2],
+            [0,-2],
+            [0,-1],
+            [0,0],
+            [-1,0],
+            [-2,0],
+            [-2,-1],
+            [-2,-2]
+          ]
+          const [tX,tY] = translate[nameDirection];
+          
+          const nameStyle:CSSProperties = {position: "absolute",left: nameX, top: nameY, transform: `translate(${50*tX}%,${50*tY}%)`}
           return (
             <div
               onMouseDown={(e) => operationStart(e, station)}
               onTouchStart={(e) => operationStart(e, station)}
-              style={{
+
+              className="station-render"
+              onTouchMove={() => setMoved(true)}
+              onMouseMove={() => setMoved(true)}
+              onTouchEnd={add}
+              onClick={add}
+            >
+              <div className="station-shape"               style={{
                 position: "absolute",
                 left: station.position.x - 15,
                 top: station.position.y - 15,
                 whiteSpace: "nowrap",
-              }}
-              className="station-render"
-
-              onTouchMove={()=>setMoved(true)}
-              onMouseMove={()=>setMoved(true)}
-
-              onTouchEnd={add}
-              onClick={add}
-            >
-              <div className="station-shape">
+              }}>
                 {
                   //@ts-ignore
                   shapes[shape]
@@ -293,7 +326,7 @@ function RenderLayer({
               </div>
               <div
                 className="station-name"
-                style={scale < 0.65 ? { display: "none" } : {}}
+                style={scale < 0.65 ? { display: "none" } : nameStyle}
                 // style={{transform: `scale(${1/scale})`}}
               >
                 {stationName}
@@ -305,11 +338,15 @@ function RenderLayer({
       </div>
     );
   };
+  const lineComp = renderLines(allLinesList, cardShowing, setCardShowing);
+  const stationComp = renderStations(allStationsList);
+  useLayoutEffect(()=>{
+    console.log(allStationsList[0].handlers)
+  })
   return (
     <div className="RenderLayer">
-      {renderLines(allLinesList, cardShowing, setCardShowing)}
-
-      {renderStations(allStationsList)}
+      {lineComp}
+      {stationComp}
       {/* <DevelopLayer /> */}
     </div>
   );

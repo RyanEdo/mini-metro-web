@@ -130,6 +130,10 @@ export const onMouseUp = (
       setCardShowing,
     );
   }
+  const {currentTarget, target} = event;
+  if(currentTarget === target && !moved){
+    setCardShowing({});
+  }
 };
 
 export const onMouseLeave = (
@@ -289,6 +293,10 @@ export const onTouchEnd = (
       cardShowing,
       setCardShowing,
     );
+  }
+  const {currentTarget, target} = event;
+  if(currentTarget === target && !moved){
+    setCardShowing({});
   }
   setEditingMode(Mode.normal);
 };

@@ -66,3 +66,4 @@ export const onWheelY: WheelEventHandler = (event) => {
 
 const parser = new UAParser(navigator.userAgent);
 export const browserInfo = parser.getResult(); //{engine:{name:''}} //
+

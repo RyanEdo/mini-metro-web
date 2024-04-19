@@ -11,7 +11,7 @@ export class Station {
   tracks: Track[];
   lineRecords: Map<Line, LineRecord[]>;
   _dev_tag: string | undefined;
-  handlers: (Line|undefined|null)[];
+  handlers: (Line | undefined | null)[];
   displayStation?: StationProps;
   constructor(position: Point) {
     this.position = position;
@@ -22,33 +22,68 @@ export class Station {
     this.handlers = new Array(8);
   }
 
-
-
-  addLineRecord(lineRecord: LineRecord){
-    const {line, station} = lineRecord;
-    if(!line){
-      throw new Error('line is undefined while add line record to statation');
+  getBestDirectionForName() {
+    let space = 0,
+      endIndex = 0,
+      maxSpace = 0,
+      firstSpace;
+    for (let i = 0; i < 8; i++) {
+      const empty = !this.handlers[i] && this.tracks[i].isEmpty();
+      if (empty) {
+        space++;
+        if (space > maxSpace) {
+          maxSpace = space;
+          endIndex = i;
+        }
+      } else {
+        if (firstSpace === undefined) firstSpace = space;
+        space = 0;
+      }
     }
-    if(station !== this){
-      throw new Error('you are adding a line record which not belongs to this station');
+    // all empty // typescript not that smart haha
+    if (space === 8) {
+      return Direct.right;
+    }
+    if(firstSpace === undefined) firstSpace =0;
+    if (space + firstSpace >= maxSpace) {
+      // max space containing 0
+      if (firstSpace >= space) {
+        return Math.floor((firstSpace - space) / 2);
+      } else if (space > firstSpace) {
+        return 7 - Math.floor((space - firstSpace) / 2);
+      }
+    }
+
+      // max space not containing 0
+      return endIndex - Math.floor(maxSpace / 2);
+
+  }
+
+  addLineRecord(lineRecord: LineRecord) {
+    const { line, station } = lineRecord;
+    if (!line) {
+      throw new Error("line is undefined while add line record to statation");
+    }
+    if (station !== this) {
+      throw new Error(
+        "you are adding a line record which not belongs to this station"
+      );
     }
     // this lineRecords is the array saving linerecords
     const lineRecordsArr = this.lineRecords.get(line) || [];
-    lineRecordsArr.push(lineRecord)
+    lineRecordsArr.push(lineRecord);
     // this.lineRecords is the map Line=>Line
     // containing all the information of the lines go through this station
-    this.lineRecords.set(line,lineRecordsArr);
+    this.lineRecords.set(line, lineRecordsArr);
   }
-
 
   getTrack(direction: Direction) {
     return this.tracks[direction.direct];
   }
 
-  getRail(direction: Direction, index: number){
+  getRail(direction: Direction, index: number) {
     return this.getTrack(direction).getRail(index);
   }
-
 
   // getBestRail(direction: Direction){
   //   return this.getTrack(direction).getBestRail();
@@ -57,11 +92,13 @@ export class Station {
   // find the start or end of the Line
   // if no records find, this station must be the departure station
   // if both start and end exist, this station is the loop line joint
-  getJoint(line: Line){
-    const terminal = this.lineRecords.get(line)?.find(lineRecord=>!lineRecord.lastLineRecord);
-    const departure = this.lineRecords.get(line)?.find(lineRecord=>!lineRecord.nextLineRecord);
+  getJoint(line: Line) {
+    const terminal = this.lineRecords
+      .get(line)
+      ?.find((lineRecord) => !lineRecord.lastLineRecord);
+    const departure = this.lineRecords
+      .get(line)
+      ?.find((lineRecord) => !lineRecord.nextLineRecord);
     return departure || terminal;
   }
-
-
 }
