@@ -25,6 +25,16 @@
             //   &.pentagon {
             //     zoom: 1.1;
             //   }
+
+            &.shadow{
+              position: absolute;
+              transform: scale(1.5);
+              transform-origin: center;
+              *{
+                fill: inherit;
+                stroke: inherit;
+              }
+            }
         }
     }
     .station-name {
@@ -33,5 +43,7 @@
         font-weight: 500;
         vertical-align: top;
         // margin-left: 5px;
+        white-space: nowrap;
+
     }
 }

@@ -51,6 +51,10 @@ export class Station {
     if(maxSpace <= 2) {
       if(this.isEmpty(2)) return 2;
       if(this.isEmpty(6)) return 6;
+      if(this.isEmpty(1)) return 1;
+      if(this.isEmpty(3)) return 3;
+      if(this.isEmpty(5)) return 5;
+      if(this.isEmpty(7)) return 7;
     }
     if(firstSpace === undefined) firstSpace =0;
     if (space + firstSpace >= maxSpace) {

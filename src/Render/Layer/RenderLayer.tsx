@@ -26,12 +26,16 @@ import { Point } from "../../DataStructure/Point";
 import { mapToArr } from "../../Common/util";
 import { Line } from "../../DataStructure/Line";
 import LineRender from "../Component/LineRender";
-import shapes from "../../Resource/Shape/shape";
+import shapes, { shapesWithStyle } from "../../Resource/Shape/shape";
 import "./RenderLayer.scss";
 import { FunctionMode, Mode } from "../../DataStructure/Mode";
 import { Direct } from "../../DataStructure/Direction";
 import { clearHandle, getHandleCommand } from "../../Line/Handle";
-import { getAllKeyPoints, getRoundedPoints, generateLineCommand } from "../../Line/LinePoints";
+import {
+  getAllKeyPoints,
+  getRoundedPoints,
+  generateLineCommand,
+} from "../../Line/LinePoints";
 class RenderProps {
   data!: UserDataType;
   setData!: Dispatch<SetStateAction<UserDataType>>;
@@ -85,7 +89,11 @@ const buildLines = (
 };
 
 const renderLines = (
-allLinesList: Line[], cardShowing: CardShowing, setCardShowing: Dispatch<SetStateAction<CardShowing>>, commandMap: Map<Line,string>) => {
+  allLinesList: Line[],
+  cardShowing: CardShowing,
+  setCardShowing: Dispatch<SetStateAction<CardShowing>>,
+  commandMap: Map<Line, string>
+) => {
   return (
     <div>
       {allLinesList.map((line) => {
@@ -245,8 +253,13 @@ function RenderLayer({
       <div>
         {allStationsList.map((station, index) => {
           const { displayStation, position } = station;
-          const {x,y} = position;
-          const { stationName, shape, stationId } = displayStation!;
+          const { x, y } = position;
+          const {
+            stationName,
+            shape,
+            stationId,
+            lineIds: stationLineIds,
+          } = displayStation!;
           const add = () => {
             if (!moved) setCardShowing({ stationIds: [stationId] });
             if (functionMode === FunctionMode.selectingStation) {
@@ -287,42 +300,67 @@ function RenderLayer({
           ];
           const k = 20; // distance from station to name
           const namePosition = directionOffset[nameDirection];
-          const [dX,dY] = namePosition;
-          const nameX = dX*k+x;
-          const nameY = dY*k+y;
+          const [dX, dY] = namePosition;
+          const nameX = dX * k + x;
+          const nameY = dY * k + y;
           const translate = [
-            [-1,-2],
-            [0,-2],
-            [0,-1],
-            [0,0],
-            [-1,0],
-            [-2,0],
-            [-2,-1],
-            [-2,-2]
-          ]
-          const [tX,tY] = translate[nameDirection];
-          
-          const nameStyle:CSSProperties = {position: "absolute",left: nameX, top: nameY, transform: `translate(${50*tX}%,${50*tY}%)`}
+            [-1, -2],
+            [0, -2],
+            [0, -1],
+            [0, 0],
+            [-1, 0],
+            [-2, 0],
+            [-2, -1],
+            [-2, -2],
+          ];
+          const [tX, tY] = translate[nameDirection];
+          const { lineIds, stationIds } = cardShowing;
+          const emphasis = stationIds?.includes(stationId);
+          const getEmphasisColor = (lineIds?: number[]) =>
+            Array.isArray(lineIds) &&
+            lineIds.length &&
+            lines.get(lineIds[0])?.color;
+          const emphasisColor =
+            getEmphasisColor(lineIds) ||
+            getEmphasisColor(stationLineIds) ||
+            "#00000055";
+          const nameStyle: CSSProperties = {
+            position: "absolute",
+            left: nameX,
+            top: nameY,
+            transform: `translate(${50 * tX}%,${50 * tY}%)`,
+          };
           return (
             <div
               onMouseDown={(e) => operationStart(e, station)}
               onTouchStart={(e) => operationStart(e, station)}
-
               className="station-render"
               onTouchMove={() => setMoved(true)}
               onMouseMove={() => setMoved(true)}
               onTouchEnd={add}
               onClick={add}
             >
-              <div className="station-shape"               style={{
-                position: "absolute",
-                left: station.position.x - 15,
-                top: station.position.y - 15,
-                whiteSpace: "nowrap",
-              }}>
+              <div
+                className="station-shape"
+                style={{
+                  position: "absolute",
+                  left: station.position.x - 15,
+                  top: station.position.y - 15,
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {emphasis && //@ts-ignore
+                  shapesWithStyle(
+                    {
+                      fill: emphasisColor,
+                      stroke: emphasisColor,
+                    },
+                    "shadow"
+                  )[shape]}
+
                 {
                   //@ts-ignore
-                  shapes[shape]
+                  shapesWithStyle({ zIndex: 100 })[shape]
                 }
               </div>
               <div
@@ -339,8 +377,8 @@ function RenderLayer({
       </div>
     );
   };
-  const commandMap = new Map<Line,string>();
-  const calculateCommand = allLinesList.map((line)=>{
+  const commandMap = new Map<Line, string>();
+  const calculateCommand = allLinesList.map((line) => {
     const { displayLine } = line;
     const { color, lineId } = displayLine!;
     let command = "",
@@ -353,14 +391,19 @@ function RenderLayer({
       const roundedPoints = getRoundedPoints(LQLPoints);
       const pathCommand = generateLineCommand(roundedPoints);
       command = startHandleCommand + pathCommand + endHandleCommand;
-      commandMap.set(line,command);
+      commandMap.set(line, command);
     }
-  })
+  });
   const stationComp = renderStations(allStationsList);
-  useLayoutEffect(()=>{
-    console.log(allStationsList[0].handlers)
-  })
-  const lineComp = renderLines(allLinesList, cardShowing, setCardShowing, commandMap);
+  useLayoutEffect(() => {
+    console.log(allStationsList[0].handlers);
+  });
+  const lineComp = renderLines(
+    allLinesList,
+    cardShowing,
+    setCardShowing,
+    commandMap
+  );
 
   return (
     <div className="RenderLayer">
