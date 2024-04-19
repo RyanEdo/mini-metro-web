@@ -22,6 +22,10 @@ export class Station {
     this.handlers = new Array(8);
   }
 
+  isEmpty(direct: Direct){
+    return !this.handlers[direct] && this.tracks[direct].isEmpty();
+  }
+
   getBestDirectionForName() {
     let space = 0,
       endIndex = 0,
@@ -44,6 +48,10 @@ export class Station {
     if (space === 8) {
       return Direct.right;
     }
+    if(maxSpace <= 2) {
+      if(this.isEmpty(2)) return 2;
+      if(this.isEmpty(6)) return 6;
+    }
     if(firstSpace === undefined) firstSpace =0;
     if (space + firstSpace >= maxSpace) {
       // max space containing 0
@@ -63,6 +71,11 @@ export class Station {
       return best;
 
   }
+
+
+  getBestDirectionForName2(){
+  }
+  
 
   addLineRecord(lineRecord: LineRecord) {
     const { line, station } = lineRecord;

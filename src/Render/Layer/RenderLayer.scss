@@ -10,21 +10,21 @@
         align-items: center;
         svg {
             fill: white;
-            &.square {
-                zoom: 0.9;
-              }
-              &.triangle {
-                zoom: 1.05;
-              }
-              &.start {
-                zoom: 1.15;
-              }
-              &.hexagon {
-                zoom: 0.9;
-              }
-              &.pentagon {
-                zoom: 1.1;
-              }
+            // &.square {
+            //     zoom: 0.9;
+            //   }
+            //   &.triangle {
+            //     zoom: 1.05;
+            //   }
+            //   &.start {
+            //     zoom: 1.15;
+            //   }
+            //   &.hexagon {
+            //     zoom: 0.9;
+            //   }
+            //   &.pentagon {
+            //     zoom: 1.1;
+            //   }
         }
     }
     .station-name {
