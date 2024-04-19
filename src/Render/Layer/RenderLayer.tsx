@@ -30,6 +30,8 @@ import shapes from "../../Resource/Shape/shape";
 import "./RenderLayer.scss";
 import { FunctionMode, Mode } from "../../DataStructure/Mode";
 import { Direct } from "../../DataStructure/Direction";
+import { clearHandle, getHandleCommand } from "../../Line/Handle";
+import { getAllKeyPoints, getRoundedPoints, generateLineCommand } from "../../Line/LinePoints";
 class RenderProps {
   data!: UserDataType;
   setData!: Dispatch<SetStateAction<UserDataType>>;
@@ -83,15 +85,14 @@ const buildLines = (
 };
 
 const renderLines = (
-  allLinesList: Line[],
-  cardShowing: CardShowing,
-  setCardShowing: Dispatch<SetStateAction<CardShowing>>
-) => {
+allLinesList: Line[], cardShowing: CardShowing, setCardShowing: Dispatch<SetStateAction<CardShowing>>, commandMap: Map<Line,string>) => {
   return (
     <div>
       {allLinesList.map((line) => {
+        const command = commandMap.get(line);
         return (
           <LineRender
+            command={command!}
             line={line}
             cardShowing={cardShowing}
             setCardShowing={setCardShowing}
@@ -338,11 +339,29 @@ function RenderLayer({
       </div>
     );
   };
-  const lineComp = renderLines(allLinesList, cardShowing, setCardShowing);
+  const commandMap = new Map<Line,string>();
+  const calculateCommand = allLinesList.map((line)=>{
+    const { displayLine } = line;
+    const { color, lineId } = displayLine!;
+    let command = "",
+      allKeyPoints: Point[] = [];
+    if (line.departureRecord?.nextLineRecord) {
+      allKeyPoints = getAllKeyPoints(line);
+      clearHandle(line);
+      const { startHandleCommand, LQLPoints, endHandleCommand } =
+        getHandleCommand(line, allKeyPoints);
+      const roundedPoints = getRoundedPoints(LQLPoints);
+      const pathCommand = generateLineCommand(roundedPoints);
+      command = startHandleCommand + pathCommand + endHandleCommand;
+      commandMap.set(line,command);
+    }
+  })
   const stationComp = renderStations(allStationsList);
   useLayoutEffect(()=>{
     console.log(allStationsList[0].handlers)
   })
+  const lineComp = renderLines(allLinesList, cardShowing, setCardShowing, commandMap);
+
   return (
     <div className="RenderLayer">
       {lineComp}

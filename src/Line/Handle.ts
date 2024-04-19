@@ -46,10 +46,10 @@ const addHandleForStation = (station: Station, line: Line, direct: Direct) => {
 };
 const getBestDirectionForHandle = (station: Station, direction: Direction) => {
   let min = Infinity,
-    bestChoice;
+    bestChoice=0;
   for (let i = 0; i < station.handlers.length; i++) {
-    const handle = station.handlers[i];
-    if (!handle) {
+    const notEmpty = station.handlers[i] || !station.tracks[i].isEmpty();
+    if (!notEmpty) {
       const delta = direction.opposite().delta(i);
       if (delta < min) {
         bestChoice = i;

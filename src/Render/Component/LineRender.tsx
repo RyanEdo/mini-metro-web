@@ -15,30 +15,32 @@ function LineRender({
   line,
   cardShowing,
   setCardShowing,
+  command,
 }: {
   line: Line;
   cardShowing: CardShowing;
   setCardShowing: Dispatch<SetStateAction<CardShowing>>;
+  command: string;
 }) {
   const { displayLine } = line;
   const { color, lineId } = displayLine!;
-  let command = "",
-    allKeyPoints: Point[] = [];
-  if (line.departureRecord?.nextLineRecord) {
-    allKeyPoints = getAllKeyPoints(line);
-    clearHandle(line);
-    const { startHandleCommand, LQLPoints, endHandleCommand } =
-      getHandleCommand(line, allKeyPoints);
-    const roundedPoints = getRoundedPoints(LQLPoints);
-    const pathCommand = generateLineCommand(roundedPoints);
-    command = startHandleCommand + pathCommand + endHandleCommand;
-  }
+  // let command = "",
+  //   allKeyPoints: Point[] = [];
+  // if (line.departureRecord?.nextLineRecord) {
+  //   allKeyPoints = getAllKeyPoints(line);
+  //   clearHandle(line);
+  //   const { startHandleCommand, LQLPoints, endHandleCommand } =
+  //     getHandleCommand(line, allKeyPoints);
+  //   const roundedPoints = getRoundedPoints(LQLPoints);
+  //   const pathCommand = generateLineCommand(roundedPoints);
+  //   command = startHandleCommand + pathCommand + endHandleCommand;
+  // }
 
-  useEffect(() => {
-    return () => {
-      clearHandle(line);
-    };
-  }, []);
+  // useEffect(() => {
+  //   return () => {
+  //     clearHandle(line);
+  //   };
+  // }, []);
   const renderPoints = (keyPoints: Point[]) => {
     return (
       <div>
@@ -89,7 +91,7 @@ function LineRender({
           {/* <circle cx="10" cy="10" r="2" fill="red" /> */}
         </svg>
       </div>
-      {renderPoints(allKeyPoints)}
+      {/* {renderPoints(allKeyPoints)} */}
     </>
   );
 }

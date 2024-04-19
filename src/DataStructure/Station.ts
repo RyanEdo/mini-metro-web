@@ -53,9 +53,14 @@ export class Station {
         return 7 - Math.floor((space - firstSpace) / 2);
       }
     }
-
+      const best = endIndex - Math.floor(maxSpace / 2)
       // max space not containing 0
-      return endIndex - Math.floor(maxSpace / 2);
+      if(maxSpace%2===0){
+        if(best%2===0){
+          return best+1;
+        }
+      }
+      return best;
 
   }
 

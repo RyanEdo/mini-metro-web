@@ -4,7 +4,10 @@
         height: 30px;
         width: 30px;
         // transform: translate(-50%,-50%);
-        display: inline-block;
+        display: inline-flex;
+        // align-content: center;
+        justify-content: center;
+        align-items: center;
         svg {
             fill: white;
             &.square {
@@ -29,6 +32,6 @@
         font-size: 18px;
         font-weight: 500;
         vertical-align: top;
-        margin-left: 5px;
+        // margin-left: 5px;
     }
 }
