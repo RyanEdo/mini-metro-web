@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { mapToArr } from "../Common/util";
+import { generateRandomColor, mapToArr } from "../Common/util";
 import { colorSH } from "../Common/color";
 export class StationProps {
   stationId!: number;
@@ -295,7 +295,7 @@ export const dataProcessor = (
         Object.assign(newLine, {
           lineId: lineId,
           lineName: lineId + "号线",
-          color: colorSH[lineId - 1] ? colorSH[lineId - 1].color : "#EA0B2A",
+          color: colorSH[lineId - 1] ? colorSH[lineId - 1].color : generateRandomColor(),
           stationIds: [id],
           sign: lineId.toString(),
           order: lineId,

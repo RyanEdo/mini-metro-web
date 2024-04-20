@@ -66,4 +66,15 @@ export const onWheelY: WheelEventHandler = (event) => {
 
 const parser = new UAParser(navigator.userAgent);
 export const browserInfo = parser.getResult(); //{engine:{name:''}} //
-
+export function generateRandomColor(): string {
+    // Generate a random hexadecimal color
+    const hex = Math.floor(Math.random() * 16777216).toString(16);
+    // Ensure the color has sufficient contrast relative to white
+    const luminance = (parseInt(hex, 16) >> 16) * 0.299 + ((parseInt(hex, 16) >> 8) & 0xff) * 0.587 + (parseInt(hex, 16) & 0xff) * 0.114;
+    const isLightColor = luminance > 128; // Determine if the color is light
+    // Adjust the color to be darker if it's light, or lighter if it's dark
+    const adjustedHex = isLightColor ? (parseInt(hex, 16) - 0x333333).toString(16) : (parseInt(hex, 16) + 0x333333).toString(16);
+    // Ensure the color is 6 digits long
+    const finalHex = adjustedHex.padStart(6, '0');
+    return `#${finalHex}`;
+}

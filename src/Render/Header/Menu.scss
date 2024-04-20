@@ -150,6 +150,17 @@
                 &.disabled {
                     color: #ea0b2a55;
                 }
+                svg{
+                    vertical-align: text-bottom;
+                    line-height: 26px;
+                    height: 26px;
+                    [fill="black"]{
+                        fill: rgba(234, 11, 42, 0.3333333333) !important;
+                        fill-opacity: 1 !important;
+                    }
+                }
+                    
+           
             }
         }
     }

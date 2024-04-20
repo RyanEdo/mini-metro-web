@@ -23,6 +23,8 @@ import {
   RecordType,
   LineChanges,
 } from "../../Data/UserData";
+import PlusIcon from "../../Resource/Icon/plus";
+
 type MenuType = {
   setEditingMode: React.Dispatch<React.SetStateAction<Mode>>;
   functionMode: FunctionMode;
@@ -198,7 +200,7 @@ export const Menu = forwardRef(function (
       case FunctionMode.lineEditing: {
         return (
           <>
-            <div className="tool disabled">站点插入模式</div>
+            <div className="tool disabled">先选择一条线路，再点击线路卡片上的“<PlusIcon className="tool-plus"/>”</div>
             <div
               className="tool"
               onClick={() => {
@@ -272,6 +274,7 @@ export const Menu = forwardRef(function (
               onClick={() => {
                 setPage("title");
                 setTitleEditable(false);
+                setInsertInfo({insertIndex:-1,line});
               }}
             >
               完成

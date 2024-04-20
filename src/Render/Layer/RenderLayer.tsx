@@ -92,7 +92,9 @@ const renderLines = (
   allLinesList: Line[],
   cardShowing: CardShowing,
   setCardShowing: Dispatch<SetStateAction<CardShowing>>,
-  commandMap: Map<Line, string>
+  commandMap: Map<Line, string>,
+  data: UserDataType,
+  setData: Dispatch<SetStateAction<UserDataType>>
 ) => {
   return (
     <div>
@@ -104,6 +106,8 @@ const renderLines = (
             line={line}
             cardShowing={cardShowing}
             setCardShowing={setCardShowing}
+            data={data}
+            setData={setData}
           />
         );
       })}
@@ -395,14 +399,14 @@ function RenderLayer({
     }
   });
   const stationComp = renderStations(allStationsList);
-  useLayoutEffect(() => {
-    console.log(allStationsList[0].handlers);
-  });
+
   const lineComp = renderLines(
     allLinesList,
     cardShowing,
     setCardShowing,
-    commandMap
+    commandMap,
+    data,
+    setData
   );
 
   return (

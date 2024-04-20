@@ -44,8 +44,8 @@ export class Station {
         space = 0;
       }
     }
-    // all empty // typescript not that smart haha
-    if (space === 8) {
+    // all empty
+    if (space === 8 || space===0) {
       return Direct.right;
     }
     if(maxSpace <= 2) {

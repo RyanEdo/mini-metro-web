@@ -295,6 +295,13 @@ export function LineCard({
               const { stationName, stationId } = station!;
               const bendFirst = getBendFirst(index);
               const last = index === stationsInThisLine.length - 1;
+              let currentInserting = false;
+              if(insertInfo){
+                const {insertIndex, line:insertLine} = insertInfo;
+                if(insertIndex === index && insertLine === line){
+                  currentInserting = true;
+                }
+              }
               return (
                 <div className="station-block">
                   <div className="track">
@@ -303,7 +310,7 @@ export function LineCard({
                     <div className="sleeper"></div>
                   </div>
                   <div
-                    className="bend-first"
+                    className={classNames({"bend-first":1,"current-inserting": currentInserting})}
                     onClick={(e) => {
                       if (addingStation) {
                         if (!firstStation) {
@@ -339,7 +346,7 @@ export function LineCard({
                     </div>
                     <div className="bend-des">
                       {addingStation||last
-                        ? "插入站点"
+                        ? currentInserting?"插入到这": "插入站点"
                         : bendFirst
                         ? "斜向优先"
                         : "直线优先"}

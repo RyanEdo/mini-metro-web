@@ -108,7 +108,9 @@
                     }
                 }
                 .order-input {
-                    width: 30px;
+                    // width: 30px;
+                    // white-space: nowrap;
+                    vertical-align: top;
                 }
             }
         }
@@ -234,6 +236,10 @@
                 display: flex;
                 align-items: center;
                 cursor: pointer;
+                transition: ease-in-out 0.3s background-color;
+                &.current-inserting {
+                    background-color: #c3c3c3;
+                }
                 .bend-icon {
                     svg {
                         width: 16px;

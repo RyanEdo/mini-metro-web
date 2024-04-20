@@ -9,21 +9,29 @@ import {
 } from "../../Line/LinePoints";
 import { clearHandle, getHandleCommand } from "../../Line/Handle";
 import { gauge } from "../../Common/const";
-import { CardShowing } from "../../Data/UserData";
+import { CardShowing, UserDataType } from "../../Data/UserData";
 
 function LineRender({
   line,
   cardShowing,
   setCardShowing,
   command,
+  data,
+  setData,
 }: {
   line: Line;
   cardShowing: CardShowing;
   setCardShowing: Dispatch<SetStateAction<CardShowing>>;
   command: string;
+  data: UserDataType;
+  setData: Dispatch<SetStateAction<UserDataType>>;
 }) {
+  const {stations} =data;
   const { displayLine } = line;
   const { color, lineId } = displayLine!;
+  const {lineIds, stationIds} = cardShowing;
+  const showing = lineIds?.length || stationIds?.length;
+  const emphasis = lineIds?.includes(lineId) || stationIds&&stationIds.length===1&&stationIds[0]&&stations.get(stationIds[0])&&stations.get(stationIds[0])?.lineIds.includes(lineId);
   // let command = "",
   //   allKeyPoints: Point[] = [];
   // if (line.departureRecord?.nextLineRecord) {
@@ -76,7 +84,7 @@ function LineRender({
             // fill="transparent"
             // stroke-linecap="round" 
             fill="none" 
-            stroke={`${color}`}
+            stroke={showing&&!emphasis?`${color}55`:`${color}`}
             d={command}
             stroke-width={gauge}
             style={{cursor: "pointer"}}
