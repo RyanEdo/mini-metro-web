@@ -49,8 +49,10 @@ export type InsertInfo = { insertIndex: number; line: LineProps };
 export class UserDataType {
   stations!: Map<number | string, StationProps>;
   lines!: Map<number | string, LineProps>;
+  title?: string;
 }
 const initDataMock: UserDataType = {
+  title:"提瓦特",
   stations: [
     {
       stationId: 1,

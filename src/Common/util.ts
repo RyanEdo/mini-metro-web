@@ -78,3 +78,54 @@ export function generateRandomColor(): string {
     const finalHex = adjustedHex.padStart(6, '0');
     return `#${finalHex}`;
 }
+
+
+export function exportJson(content: string, filename: string) {
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(new Blob([content], { type: 'application/json'}));
+  link.download = filename;
+  link.style.display = 'none';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+
+
+export function importFromFile() {
+  const input = document.createElement('input');
+  const promise = parseSelectedFile(input);
+  input.type = 'file'; 
+  input.accept = '.json';
+  // document.body.appendChild(input);
+  input.click();
+  return promise.then(data=>{
+    // document.body.removeChild(input);
+    console.log(data);
+    return data;
+  })
+}
+
+
+function parseSelectedFile(input: HTMLInputElement): Promise<any> {
+  return new Promise((resolve, reject) => {
+    input.addEventListener('change', () => {
+      const file = input.files?.[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          try {
+            const jsonContent = event.target?.result as string;
+            const parsedData = JSON.parse(jsonContent);
+            resolve(parsedData);
+          } catch (error) {
+            reject(error);
+          }
+        };
+        reader.readAsText(file);
+      } else {
+        reject(new Error('No file selected.'));
+      }
+    });
+  });
+}

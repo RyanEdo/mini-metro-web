@@ -1,3 +1,4 @@
+import { mapToArr } from "../Common/util";
 import {
   CardShowing,
   ChangeSteps,
@@ -6,6 +7,7 @@ import {
   LineProps,
   RecordType,
   StationProps,
+  UserDataType,
   initData,
 } from "../Data/UserData";
 import { FunctionMode, Mode } from "../DataStructure/Mode";
@@ -24,16 +26,46 @@ function App() {
   const [record, setRecord] = useState<RecordType>([]);
   const [currentRecordIndex, setCurrentRecordIndex] = useState(-1);
   const [insertInfo, setInsertInfo] = useState<InsertInfo>();
-  const [data, setData] = useState(initData);
+  const [data, setDataOriginal] = useState(initData);
   const ref = useRef<any>();
   const menuRef = useRef();
   const [showConfirmation, setShowConfirmation] =
     useState<showConfirmationInterface>();
+  // keep latest data if crash happend
+  const setLocalStorage = (data: UserDataType) => {
+    const last = localStorage.getItem("current");
+    const current = localStorage.getItem("current");
+
+    const { stations: stationsMap, lines: linesMap, title } = data;
+    const stations = mapToArr(stationsMap);
+    const lines = mapToArr(linesMap);
+      const latest = JSON.stringify({ stations, lines, title });
+      if (latest !== current) {
+        if (current) {
+          localStorage.setItem("last", current);
+        }
+        localStorage.setItem("current", latest);
+      }
+  };
+  const setData = (
+    data: React.SetStateAction<UserDataType>
+  ) => {
+    if (typeof data === "function") {
+      setDataOriginal((state) => {
+        const newState = data(state);
+        setLocalStorage(newState);
+        return newState;
+      });
+    } else {
+      setLocalStorage(data);
+      setDataOriginal(data);
+    }
+  };
   useEffect(() => {
     setShowConfirmation(() => ref.current?.showConfirmation);
   }, [ref.current?.showConfirmation]);
-  const [cardShowing, setCardShowing] = useState(new CardShowing);
-  console.log(record, currentRecordIndex)
+  const [cardShowing, setCardShowing] = useState(new CardShowing());
+
   return (
     <div className="App">
       <Menu
@@ -49,6 +81,8 @@ function App() {
         ref={menuRef}
         insertInfo={insertInfo}
         setInsertInfo={setInsertInfo}
+        // title={title}
+        // setTitle={setTitle}
       />
       <DeleteConfirmation ref={ref} />
       <ScaleLayer

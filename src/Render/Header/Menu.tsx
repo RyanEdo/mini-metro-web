@@ -22,8 +22,11 @@ import {
   InsertInfo,
   RecordType,
   LineChanges,
+  LineProps,
 } from "../../Data/UserData";
 import PlusIcon from "../../Resource/Icon/plus";
+import { exportJson, importFromFile } from "../../Common/util";
+import moment from "moment";
 
 type MenuType = {
   setEditingMode: React.Dispatch<React.SetStateAction<Mode>>;
@@ -37,6 +40,8 @@ type MenuType = {
   setData: Dispatch<SetStateAction<UserDataType>>;
   insertInfo?: InsertInfo;
   setInsertInfo: React.Dispatch<React.SetStateAction<InsertInfo | undefined>>;
+  // title: string;
+  // setTitle: (title: string|undefined)=>void;
 };
 export const Menu = forwardRef(function (
   {
@@ -51,18 +56,20 @@ export const Menu = forwardRef(function (
     setData,
     insertInfo,
     setInsertInfo,
+    // title,
+    // setTitle,
   }: MenuType,
   ref
 ) {
   const [page, setPage] = useState("title");
   const [titleEditable, setTitleEditable] = useState(false);
   const [display, setDisplay] = useState("none");
-  const [title, setTitle] = useState("提瓦特");
   const inputRef = useRef<HTMLInputElement>(null);
   const [toolsDisPlay, setToolsDisPlay] = useState("none");
   const undoCondition = currentRecordIndex >= 0;
   const redoCondition = currentRecordIndex < record.length - 1;
-  // console.log(record, data.stations);
+  const {title} = data;
+  const setTitle = (title: string)=> setData({...data, title})
   const backToTitle = () => {
     setPage("title");
     setTitleEditable(false);
@@ -200,7 +207,10 @@ export const Menu = forwardRef(function (
       case FunctionMode.lineEditing: {
         return (
           <>
-            <div className="tool disabled">先选择一条线路，再点击线路卡片上的“<PlusIcon className="tool-plus"/>”</div>
+            <div className="tool disabled">
+              先选择一条线路，再点击线路卡片上的“
+              <PlusIcon className="tool-plus" />”
+            </div>
             <div
               className="tool"
               onClick={() => {
@@ -274,7 +284,7 @@ export const Menu = forwardRef(function (
               onClick={() => {
                 setPage("title");
                 setTitleEditable(false);
-                setInsertInfo({insertIndex:-1,line});
+                setInsertInfo({ insertIndex: -1, line });
               }}
             >
               完成
@@ -369,10 +379,61 @@ export const Menu = forwardRef(function (
             <div className="column-items">
               <div className="column-item">新建空白地图...</div>
               <div className="column-item">从已有地图新建...</div>
-              <div className="column-item">导入文件...</div>
+              <div
+                className="column-item"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  importFromFile().then((res) => {
+                    const {
+                      stations: stationsArr,
+                      lines: linesArr,
+                      title
+                    }: { stations: StationProps[]; lines: LineProps[]; title: string } = res;
+                    const stations = stationsArr.reduce((map, cur) => {
+                      map.set(cur.stationId, cur);
+                      return map;
+                    }, new Map());
+                    const lines = linesArr.reduce((map, cur) => {
+                      map.set(cur.lineId, cur);
+                      return map;
+                    }, new Map());
+                    setData({stations,lines});
+                    if(title)setTitle(title);
+                  });
+                }}
+              >
+                导入文件...
+              </div>
               <div className="column-item">作为图片导出...</div>
               <div className="column-item">作为矢量图片导出...</div>
-              <div className="column-item">作为文件导出...</div>
+              <div
+                className="column-item"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  const current = localStorage.getItem("current");
+                  exportJson(
+                    current!,
+                    `${title}-${moment().format("YYYY-MM-DD_HH-mm-ss")}.json`
+                  );
+                }}
+              >
+                作为文件导出...
+              </div>
+              <div
+                className="column-item"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  const current = localStorage.getItem("last");
+                  exportJson(
+                    current!,
+                    `${title}-recovery-${moment().format(
+                      "YYYY-MM-DD_HH-mm-ss"
+                    )}.json`
+                  );
+                }}
+              >
+                恢复数据...
+              </div>
             </div>
           </div>
         </div>

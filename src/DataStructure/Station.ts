@@ -45,7 +45,7 @@ export class Station {
       }
     }
     // all empty
-    if (space === 8 || space===0) {
+    if (space === 8 || maxSpace===0) {
       return Direct.right;
     }
     if(maxSpace <= 2) {
