@@ -41,7 +41,7 @@ type MenuType = {
   setData: Dispatch<SetStateAction<UserDataType>>;
   insertInfo?: InsertInfo;
   setInsertInfo: React.Dispatch<React.SetStateAction<InsertInfo | undefined>>;
-} & ShowNameProps ;
+} & ShowNameProps;
 export const Menu = forwardRef(function (
   {
     setEditingMode,
@@ -55,6 +55,10 @@ export const Menu = forwardRef(function (
     setData,
     insertInfo,
     setInsertInfo,
+    showName,
+    setShowName,
+    autoHiddenName,
+    setAutoHiddenName,
   }: MenuType,
   ref
 ) {
@@ -358,7 +362,28 @@ export const Menu = forwardRef(function (
               >
                 调整站点位置...
               </div>
-              <div className="column-item">隐藏站点名称...</div>
+              <div
+                className="column-item"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowName(!showName);
+                }}
+              >
+                {showName ? "隐藏" : "显示"}站点名称...
+              </div>
+              {showName ? (
+                <div
+                  className="column-item"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setAutoHiddenName(!autoHiddenName);
+                  }}
+                >
+                  {autoHiddenName ? "关闭" : "启用"}自动隐藏...
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
           <div className="column">
@@ -392,7 +417,6 @@ export const Menu = forwardRef(function (
                     title: "新地图",
                   });
                   showTools(e, FunctionMode.addingStation);
-                  
                 }}
               >
                 新建空白地图...

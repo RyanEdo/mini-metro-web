@@ -374,7 +374,7 @@ function RenderLayer({
               </div>
               <div
                 className="station-name"
-                style={scale < 0.65 ? { display: "none" } : nameStyle}
+                style={ showName? autoHiddenName? scale < 0.65 ? { display: "none" } : nameStyle:nameStyle:{display:"none"}}
                 // style={{transform: `scale(${1/scale})`}}
               >
                 {stationName}

@@ -204,6 +204,13 @@
                         font-weight: 500;
                         color: #ea0b2a;
                         cursor: pointer;
+                        &.sub-menu{
+                            margin-top: 10px;
+                            margin-left: 10px;
+                            .sub-item{
+                                margin-right: 10px;
+                            }
+                        }
                     }
                 }
             }
