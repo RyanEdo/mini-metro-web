@@ -17,6 +17,7 @@ import {
   LineChanges,
   LineProps,
   RecordType,
+  ShowNameProps,
   StationProps,
   UserDataType,
   dataProcessor,
@@ -36,24 +37,24 @@ import {
   getRoundedPoints,
   generateLineCommand,
 } from "../../Line/LinePoints";
-class RenderProps {
-  data!: UserDataType;
-  setData!: Dispatch<SetStateAction<UserDataType>>;
-  functionMode!: FunctionMode;
-  record!: RecordType;
-  setRecord!: React.Dispatch<React.SetStateAction<RecordType>>;
-  currentRecordIndex!: number;
-  setCurrentRecordIndex!: React.Dispatch<React.SetStateAction<number>>;
-  translateX!: number;
-  translateY!: number;
-  scale!: number;
+type RenderProps ={
+  data: UserDataType;
+  setData: Dispatch<SetStateAction<UserDataType>>;
+  functionMode: FunctionMode;
+  record: RecordType;
+  setRecord: React.Dispatch<React.SetStateAction<RecordType>>;
+  currentRecordIndex: number;
+  setCurrentRecordIndex: React.Dispatch<React.SetStateAction<number>>;
+  translateX: number;
+  translateY: number;
+  scale: number;
   insertInfo?: InsertInfo;
-  setInsertInfo!: React.Dispatch<React.SetStateAction<InsertInfo | undefined>>;
-  setFunctionMode!: React.Dispatch<React.SetStateAction<FunctionMode>>;
-  cardShowing!: CardShowing;
-  setCardShowing!: Dispatch<SetStateAction<CardShowing>>;
-  editingMode!: Mode;
-}
+  setInsertInfo: React.Dispatch<React.SetStateAction<InsertInfo | undefined>>;
+  setFunctionMode: React.Dispatch<React.SetStateAction<FunctionMode>>;
+  cardShowing: CardShowing;
+  setCardShowing: Dispatch<SetStateAction<CardShowing>>;
+  editingMode: Mode;
+} & ShowNameProps;
 const buildStations = (
   stations: Map<string | number, StationProps>
 ): Map<number, Station> => {
@@ -132,6 +133,10 @@ function RenderLayer({
   cardShowing,
   setCardShowing,
   editingMode,
+  showName,
+  setShowName,
+  autoHiddenName,
+  setAutoHiddenName,
 }: RenderProps) {
   const { lines, stations } = data;
   const stationMap = buildStations(stations);

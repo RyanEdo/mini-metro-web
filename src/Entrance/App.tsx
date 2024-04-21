@@ -27,6 +27,8 @@ function App() {
   const [currentRecordIndex, setCurrentRecordIndex] = useState(-1);
   const [insertInfo, setInsertInfo] = useState<InsertInfo>();
   const [data, setDataOriginal] = useState(initData);
+  const [showName, setShowName] = useState(true);
+  const [autoHiddenName, setAutoHiddenName] = useState(true);
   const ref = useRef<any>();
   const menuRef = useRef();
   const [showConfirmation, setShowConfirmation] =
@@ -64,6 +66,10 @@ function App() {
         ref={menuRef}
         insertInfo={insertInfo}
         setInsertInfo={setInsertInfo}
+        showName={showName}
+        setShowName={setShowName}
+        autoHiddenName={autoHiddenName}
+        setAutoHiddenName={setAutoHiddenName}
       />
       <DeleteConfirmation ref={ref} />
       <ScaleLayer
@@ -81,6 +87,10 @@ function App() {
         setInsertInfo={setInsertInfo}
         cardShowing={cardShowing}
         setCardShowing={setCardShowing}
+        showName={showName}
+        setShowName={setShowName}
+        autoHiddenName={autoHiddenName}
+        setAutoHiddenName={setAutoHiddenName}
       />
       <Cards
         functionMode={functionMode}

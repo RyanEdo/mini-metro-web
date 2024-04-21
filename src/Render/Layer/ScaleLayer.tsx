@@ -14,25 +14,25 @@ import {
 import "./ScaleLayer.scss";
 import { getCursor } from "../../Style/Cursor";
 import { Point } from "../../DataStructure/Point";
-import { CardShowing, ChangeSteps, InsertInfo, RecordType, StationProps, UserDataType } from "../../Data/UserData";
-class ScaleLayerProp {
-  editingMode!: Mode;
-  setEditingMode!: React.Dispatch<React.SetStateAction<Mode>>;
-  data!: UserDataType;
-  setData!: Dispatch<SetStateAction<UserDataType>>;
-  functionMode!: FunctionMode;
-  setFunctionMode!: React.Dispatch<React.SetStateAction<FunctionMode>>;
-  record!: RecordType;
-  setRecord!: React.Dispatch<
+import { CardShowing, ChangeSteps, InsertInfo, RecordType, ShowNameProps, StationProps, UserDataType } from "../../Data/UserData";
+type ScaleLayerProp = {
+  editingMode: Mode;
+  setEditingMode: React.Dispatch<React.SetStateAction<Mode>>;
+  data: UserDataType;
+  setData: Dispatch<SetStateAction<UserDataType>>;
+  functionMode: FunctionMode;
+  setFunctionMode: React.Dispatch<React.SetStateAction<FunctionMode>>;
+  record: RecordType;
+  setRecord: React.Dispatch<
     React.SetStateAction<RecordType>
   >;
-  currentRecordIndex!: number;
-  setCurrentRecordIndex!: React.Dispatch<React.SetStateAction<number>>;
+  currentRecordIndex: number;
+  setCurrentRecordIndex: React.Dispatch<React.SetStateAction<number>>;
   insertInfo?: InsertInfo;
-  setInsertInfo!: React.Dispatch<React.SetStateAction<InsertInfo|undefined>>;
-  cardShowing!: CardShowing;
-  setCardShowing!: Dispatch<SetStateAction<CardShowing>>;
-}
+  setInsertInfo: React.Dispatch<React.SetStateAction<InsertInfo|undefined>>;
+  cardShowing: CardShowing;
+  setCardShowing: Dispatch<SetStateAction<CardShowing>>;
+} & ShowNameProps;
 function ScaleLayer({
   editingMode,
   setEditingMode,
@@ -48,6 +48,10 @@ function ScaleLayer({
   setInsertInfo,
   cardShowing,
   setCardShowing,
+  showName,
+  setShowName,
+  autoHiddenName,
+  setAutoHiddenName,
 }: ScaleLayerProp) {
   const [translateX, setTranslateX] = useState(0);
   const [translateY, setTranslateY] = useState(0);
@@ -210,6 +214,10 @@ function ScaleLayer({
           cardShowing={cardShowing}
           setCardShowing={setCardShowing}
           editingMode={editingMode}
+          showName={showName}
+          setShowName={setShowName}
+          autoHiddenName={autoHiddenName}
+          setAutoHiddenName={setAutoHiddenName}
         />
       </div>
     </div>

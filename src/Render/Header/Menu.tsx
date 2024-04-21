@@ -23,6 +23,7 @@ import {
   RecordType,
   LineChanges,
   LineProps,
+  ShowNameProps,
 } from "../../Data/UserData";
 import PlusIcon from "../../Resource/Icon/plus";
 import { exportJson, importFromFile, stringifyData } from "../../Common/util";
@@ -40,9 +41,7 @@ type MenuType = {
   setData: Dispatch<SetStateAction<UserDataType>>;
   insertInfo?: InsertInfo;
   setInsertInfo: React.Dispatch<React.SetStateAction<InsertInfo | undefined>>;
-  // title: string;
-  // setTitle: (title: string|undefined)=>void;
-};
+} & ShowNameProps ;
 export const Menu = forwardRef(function (
   {
     setEditingMode,
@@ -56,9 +55,7 @@ export const Menu = forwardRef(function (
     setData,
     insertInfo,
     setInsertInfo,
-  }: // title,
-  // setTitle,
-  MenuType,
+  }: MenuType,
   ref
 ) {
   const [page, setPage] = useState("title");
@@ -85,6 +82,7 @@ export const Menu = forwardRef(function (
     setToolsDisPlay(window.innerWidth >= 710 ? "inline-block" : "block");
     setTimeout(() => setPage("tools"));
   };
+
   useImperativeHandle(
     ref,
     () => {

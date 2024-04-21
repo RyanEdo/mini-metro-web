@@ -30,12 +30,12 @@ export type LineChanges = {
   stationId: number;
   lineId: number;
   stationIndex: number;
-}
+};
 
 export type RecordType = StationProps[] | ChangeSteps[] | LineChanges[];
 
 export class CardShowing {
-  constructor(){
+  constructor() {
     this.stationIds = [];
     this.lineIds = [];
   }
@@ -51,8 +51,15 @@ export class UserDataType {
   lines!: Map<number | string, LineProps>;
   title?: string;
 }
+
+export type ShowNameProps ={
+  showName: boolean;
+  setShowName: React.Dispatch<React.SetStateAction<boolean>>;
+  autoHiddenName: boolean;
+  setAutoHiddenName: React.Dispatch<React.SetStateAction<boolean>>;
+}
 const initDataMock: UserDataType = {
-  title:"提瓦特",
+  title: "提瓦特",
   stations: [
     {
       stationId: 1,
@@ -142,7 +149,7 @@ export const deleteStation = (
     stationIds.forEach((id, index) => {
       if (stationId !== id) {
         // break the cicle
-        if (id !== newStationIds[newStationIds.length - 1]){
+        if (id !== newStationIds[newStationIds.length - 1]) {
           newStationIds.push(id);
           newBendFirst.push(bendFirst[index]);
         }
@@ -265,7 +272,7 @@ export const dataProcessor = (
       });
     },
     deleteStation: () => deleteStation(state, setData, id),
-    deleteLine: ()=>deleteLine(state, setData, id),
+    deleteLine: () => deleteLine(state, setData, id),
     removeStationFromLine: (lineId: number, stationIndex: number) => {
       setData((state) => {
         const station = stations.get(id);
@@ -297,15 +304,17 @@ export const dataProcessor = (
         Object.assign(newLine, {
           lineId: lineId,
           lineName: lineId + "号线",
-          color: colorSH[lineId - 1] ? colorSH[lineId - 1].color : generateRandomColor(),
+          color: colorSH[lineId - 1]
+            ? colorSH[lineId - 1].color
+            : generateRandomColor(),
           stationIds: [id],
           sign: lineId.toString(),
           order: lineId,
           bendFirst: [true],
         });
         const station = stations.get(id);
-        const {lineIds} = station!;
-        station!.lineIds = [...new Set(lineIds.concat([lineId]))]
+        const { lineIds } = station!;
+        station!.lineIds = [...new Set(lineIds.concat([lineId]))];
         lines.set(lineId, newLine);
         return { ...state };
       });
@@ -314,7 +323,7 @@ export const dataProcessor = (
     addStationToLine: (stationId: number, stationIndex: number) => {
       setData((state) => {
         const line = lines.get(id);
-        if(!line) debugger
+        if (!line) debugger;
         const { stationIds, bendFirst } = line!;
         if (
           stationIds[stationIndex] !== stationId &&
@@ -338,20 +347,18 @@ export const addNewStation = (
   x: number,
   y: number,
   record: StationProps[],
-  setRecord: React.Dispatch<
-    React.SetStateAction<RecordType>
-  >,
+  setRecord: React.Dispatch<React.SetStateAction<RecordType>>,
   currentRecordIndex: number,
   setCurrentRecordIndex: React.Dispatch<React.SetStateAction<number>>,
   cardShowing: CardShowing,
-  setCardShowing: Dispatch<SetStateAction<CardShowing>>,
+  setCardShowing: Dispatch<SetStateAction<CardShowing>>
 ) => {
   const { stations } = data;
   let max = 0;
   stations.forEach((station) => {
     max = Math.max(station.stationId, max);
   });
-  const stationId = max +1;
+  const stationId = max + 1;
   const newStation = {
     stationId,
     stationName: `新增站点 ${max + 1}`,
@@ -359,7 +366,7 @@ export const addNewStation = (
     shape: "square",
     lineIds: [],
   };
-  setCardShowing({stationIds:[stationId]})
+  setCardShowing({ stationIds: [stationId] });
   const newRecord = record.slice(0, currentRecordIndex + 1);
   setRecord(newRecord.concat([newStation]));
   setCurrentRecordIndex(currentRecordIndex + 1);
