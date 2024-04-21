@@ -25,7 +25,7 @@ import {
   LineProps,
 } from "../../Data/UserData";
 import PlusIcon from "../../Resource/Icon/plus";
-import { exportJson, importFromFile } from "../../Common/util";
+import { exportJson, importFromFile, stringifyData } from "../../Common/util";
 import moment from "moment";
 
 type MenuType = {
@@ -56,9 +56,9 @@ export const Menu = forwardRef(function (
     setData,
     insertInfo,
     setInsertInfo,
-    // title,
-    // setTitle,
-  }: MenuType,
+  }: // title,
+  // setTitle,
+  MenuType,
   ref
 ) {
   const [page, setPage] = useState("title");
@@ -68,8 +68,8 @@ export const Menu = forwardRef(function (
   const [toolsDisPlay, setToolsDisPlay] = useState("none");
   const undoCondition = currentRecordIndex >= 0;
   const redoCondition = currentRecordIndex < record.length - 1;
-  const {title} = data;
-  const setTitle = (title: string)=> setData({...data, title})
+  const { title } = data;
+  const setTitle = (title: string) => setData({ ...data, title });
   const backToTitle = () => {
     setPage("title");
     setTitleEditable(false);
@@ -377,7 +377,28 @@ export const Menu = forwardRef(function (
           <div className="column">
             <div className="column-title">数据</div>
             <div className="column-items">
-              <div className="column-item">新建空白地图...</div>
+              <div
+                className="column-item"
+                onClick={(e) => {
+                  const current = localStorage.getItem("current");
+                  if (current)
+                    exportJson(
+                      current!,
+                      `${title}-autosave-${moment().format(
+                        "YYYY-MM-DD_HH-mm-ss"
+                      )}.json`
+                    );
+                  setData({
+                    stations: new Map(),
+                    lines: new Map(),
+                    title: "新地图",
+                  });
+                  showTools(e, FunctionMode.addingStation);
+                  
+                }}
+              >
+                新建空白地图...
+              </div>
               <div className="column-item">从已有地图新建...</div>
               <div
                 className="column-item"
@@ -387,8 +408,12 @@ export const Menu = forwardRef(function (
                     const {
                       stations: stationsArr,
                       lines: linesArr,
-                      title
-                    }: { stations: StationProps[]; lines: LineProps[]; title: string } = res;
+                      title,
+                    }: {
+                      stations: StationProps[];
+                      lines: LineProps[];
+                      title: string;
+                    } = res;
                     const stations = stationsArr.reduce((map, cur) => {
                       map.set(cur.stationId, cur);
                       return map;
@@ -397,8 +422,7 @@ export const Menu = forwardRef(function (
                       map.set(cur.lineId, cur);
                       return map;
                     }, new Map());
-                    setData({stations,lines});
-                    if(title)setTitle(title);
+                    setData({ stations, lines, title });
                   });
                 }}
               >
@@ -410,7 +434,7 @@ export const Menu = forwardRef(function (
                 className="column-item"
                 onClick={(e) => {
                   e.stopPropagation();
-                  const current = localStorage.getItem("current");
+                  const current = stringifyData(data);
                   exportJson(
                     current!,
                     `${title}-${moment().format("YYYY-MM-DD_HH-mm-ss")}.json`
@@ -432,7 +456,7 @@ export const Menu = forwardRef(function (
                   );
                 }}
               >
-                恢复数据...
+                导出恢复数据...
               </div>
             </div>
           </div>

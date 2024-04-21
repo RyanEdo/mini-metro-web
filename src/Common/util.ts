@@ -1,5 +1,6 @@
 import { MouseEvent, WheelEventHandler } from "react";
 import UAParser from "ua-parser-js";
+import { UserDataType } from "../Data/UserData";
 
 export const mapToArr = <K, V>(map: Map<K, V>) => {
   const arr: V[] = [];
@@ -67,49 +68,52 @@ export const onWheelY: WheelEventHandler = (event) => {
 const parser = new UAParser(navigator.userAgent);
 export const browserInfo = parser.getResult(); //{engine:{name:''}} //
 export function generateRandomColor(): string {
-    // Generate a random hexadecimal color
-    const hex = Math.floor(Math.random() * 16777216).toString(16);
-    // Ensure the color has sufficient contrast relative to white
-    const luminance = (parseInt(hex, 16) >> 16) * 0.299 + ((parseInt(hex, 16) >> 8) & 0xff) * 0.587 + (parseInt(hex, 16) & 0xff) * 0.114;
-    const isLightColor = luminance > 128; // Determine if the color is light
-    // Adjust the color to be darker if it's light, or lighter if it's dark
-    const adjustedHex = isLightColor ? (parseInt(hex, 16) - 0x333333).toString(16) : (parseInt(hex, 16) + 0x333333).toString(16);
-    // Ensure the color is 6 digits long
-    const finalHex = adjustedHex.padStart(6, '0');
-    return `#${finalHex}`;
+  // Generate a random hexadecimal color
+  const hex = Math.floor(Math.random() * 16777216).toString(16);
+  // Ensure the color has sufficient contrast relative to white
+  const luminance =
+    (parseInt(hex, 16) >> 16) * 0.299 +
+    ((parseInt(hex, 16) >> 8) & 0xff) * 0.587 +
+    (parseInt(hex, 16) & 0xff) * 0.114;
+  const isLightColor = luminance > 128; // Determine if the color is light
+  // Adjust the color to be darker if it's light, or lighter if it's dark
+  const adjustedHex = isLightColor
+    ? (parseInt(hex, 16) - 0x333333).toString(16)
+    : (parseInt(hex, 16) + 0x333333).toString(16);
+  // Ensure the color is 6 digits long
+  const finalHex = adjustedHex.padStart(6, "0");
+  return `#${finalHex}`;
 }
 
-
 export function exportJson(content: string, filename: string) {
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(new Blob([content], { type: 'application/json'}));
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(
+    new Blob([content], { type: "application/json" })
+  );
   link.download = filename;
-  link.style.display = 'none';
+  link.style.display = "none";
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
 }
 
-
-
 export function importFromFile() {
-  const input = document.createElement('input');
+  const input = document.createElement("input");
   const promise = parseSelectedFile(input);
-  input.type = 'file'; 
-  input.accept = '.json';
+  input.type = "file";
+  input.accept = ".json";
   // document.body.appendChild(input);
   input.click();
-  return promise.then(data=>{
+  return promise.then((data) => {
     // document.body.removeChild(input);
     console.log(data);
     return data;
-  })
+  });
 }
-
 
 function parseSelectedFile(input: HTMLInputElement): Promise<any> {
   return new Promise((resolve, reject) => {
-    input.addEventListener('change', () => {
+    input.addEventListener("change", () => {
       const file = input.files?.[0];
       if (file) {
         const reader = new FileReader();
@@ -124,8 +128,30 @@ function parseSelectedFile(input: HTMLInputElement): Promise<any> {
         };
         reader.readAsText(file);
       } else {
-        reject(new Error('No file selected.'));
+        reject(new Error("No file selected."));
       }
     });
   });
 }
+
+export const stringifyData = (data: UserDataType) => {
+  const { stations: stationsMap, lines: linesMap, title } = data;
+  const stations = mapToArr(stationsMap);
+  const lines = mapToArr(linesMap);
+  return JSON.stringify({ stations, lines, title });
+};
+
+
+export const setLocalStorage = (data: UserDataType) => {
+  const last = localStorage.getItem("current");
+  const current = localStorage.getItem("current");
+  const latest = stringifyData(data);
+  if (latest !== current) {
+    if (current) {
+      localStorage.setItem("last", current);
+    }
+    localStorage.setItem("current", latest);
+  }
+};
+
+

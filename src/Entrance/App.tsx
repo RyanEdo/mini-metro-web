@@ -1,4 +1,4 @@
-import { mapToArr } from "../Common/util";
+import { mapToArr, setLocalStorage } from "../Common/util";
 import {
   CardShowing,
   ChangeSteps,
@@ -32,24 +32,7 @@ function App() {
   const [showConfirmation, setShowConfirmation] =
     useState<showConfirmationInterface>();
   // keep latest data if crash happend
-  const setLocalStorage = (data: UserDataType) => {
-    const last = localStorage.getItem("current");
-    const current = localStorage.getItem("current");
-
-    const { stations: stationsMap, lines: linesMap, title } = data;
-    const stations = mapToArr(stationsMap);
-    const lines = mapToArr(linesMap);
-      const latest = JSON.stringify({ stations, lines, title });
-      if (latest !== current) {
-        if (current) {
-          localStorage.setItem("last", current);
-        }
-        localStorage.setItem("current", latest);
-      }
-  };
-  const setData = (
-    data: React.SetStateAction<UserDataType>
-  ) => {
+  const setData = (data: React.SetStateAction<UserDataType>) => {
     if (typeof data === "function") {
       setDataOriginal((state) => {
         const newState = data(state);
@@ -81,8 +64,6 @@ function App() {
         ref={menuRef}
         insertInfo={insertInfo}
         setInsertInfo={setInsertInfo}
-        // title={title}
-        // setTitle={setTitle}
       />
       <DeleteConfirmation ref={ref} />
       <ScaleLayer
