@@ -115,10 +115,11 @@ function ScaleLayer({
   });
   const drawerX = maxX - minX + 400;
   const drawerY = maxY - minY + 400;
-  const style = {
-    transform:drawing?undefined: `translate(${translateX}px,${translateY}px) scale(${scale})`,
-    width:drawing?  drawerX: undefined,
-    height:drawing? drawerY: undefined,
+  const style:CSSProperties = {
+    backgroundColor:"white",
+    transform:drawing?`scale(2)`: `translate(${translateX}px,${translateY}px) scale(${scale})`,
+    width:drawing?  drawerX*2: undefined,
+    height:drawing? drawerY*2: undefined,
   };
   const drawingStationMap = new Map();
   allStationsList.forEach((station) => {
