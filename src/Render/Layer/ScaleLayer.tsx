@@ -116,7 +116,7 @@ function ScaleLayer({
   const drawerX = maxX - minX + 400;
   const drawerY = maxY - minY + 400;
   const style = {
-    transform: `translate(${translateX}px,${translateY}px) scale(${scale})`,
+    transform:drawing?undefined: `translate(${translateX}px,${translateY}px) scale(${scale})`,
     width:drawing?  drawerX: undefined,
     height:drawing? drawerY: undefined,
   };

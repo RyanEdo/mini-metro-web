@@ -75,6 +75,8 @@ function App() {
         setAutoHiddenName={setAutoHiddenName}
         drawing={drawing}
         setDrawing={setDrawing}
+        cardShowing={cardShowing}
+        setCardShowing={setCardShowing}
       />
       <DeleteConfirmation ref={ref} />
       <ScaleLayer

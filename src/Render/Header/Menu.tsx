@@ -25,12 +25,23 @@ import {
   LineProps,
   ShowNameProps,
   DrawProps,
+  CardShowing,
 } from "../../Data/UserData";
 import PlusIcon from "../../Resource/Icon/plus";
-import { exportJson, importFromFile, stringifyData } from "../../Common/util";
+import {
+  exportFile,
+  exportJson,
+  importFromFile,
+  stringifyData,
+} from "../../Common/util";
 import moment from "moment";
 import html2canvas from "html2canvas";
 
+import ScaleLayer from "../Layer/ScaleLayer";
+import { toPng, toJpeg, toBlob, toPixelData, toSvg } from "html-to-image";
+import download from "downloadjs";
+//@ts-ignore
+import { convertSVGToPNGUrl } from "svg-to-png-browser"; 
 type MenuType = {
   setEditingMode: React.Dispatch<React.SetStateAction<Mode>>;
   functionMode: FunctionMode;
@@ -43,6 +54,8 @@ type MenuType = {
   setData: Dispatch<SetStateAction<UserDataType>>;
   insertInfo?: InsertInfo;
   setInsertInfo: React.Dispatch<React.SetStateAction<InsertInfo | undefined>>;
+  cardShowing: CardShowing;
+  setCardShowing: Dispatch<SetStateAction<CardShowing>>;
 } & ShowNameProps &
   DrawProps;
 export const Menu = forwardRef(function (
@@ -63,6 +76,9 @@ export const Menu = forwardRef(function (
     autoHiddenName,
     setAutoHiddenName,
     setDrawing,
+    drawing,
+    cardShowing,
+    setCardShowing,
   }: MenuType,
   ref
 ) {
@@ -460,25 +476,126 @@ export const Menu = forwardRef(function (
                 onClick={(e) => {
                   e.stopPropagation();
                   setDrawing(true);
+                  // html2canvas will hidde overflow:visible
+                  // setTimeout(() => {
+                  //   html2canvas(
+                  //     document.querySelector(".transform-layer")!
+                  //   ).then((canvas) => {
+                  //     //setDrawing(false);
+                  //     document.body.appendChild(canvas);
+                  //     const dataUrl = canvas.toDataURL("image/png");
+                  //     const a = document.createElement("a");
+                  //     a.href = dataUrl;
+                  //     a.download = `${title}-${moment().format(
+                  //       "YYYY-MM-DD_HH-mm-ss"
+                  //     )}.png`;
+                  //     a.click();
+                  //   });
+                  // }, 300);
+                  // const svgToPngBase64 = (svgString: string | number | boolean) => {
+                  //   return new Promise((res, rej) => {
+                  //     var image = new Image();
+                  //     let xml = window.btoa(unescape(encodeURIComponent(svgString)));
+                  //     image.src = "data:image/svg+xml;base64," + xml;
+                  //     let url = "";
+                  //     image.onload = function() {
+                  //       var canvas = document.createElement("canvas");
+                  //       const {clientWidth, clientHeight} = document.querySelector(".transform-layer")!
+                  //       canvas.width = clientWidth;
+                  //       canvas.height = clientHeight;
+                  //       var context = canvas.getContext("2d")!;
+                  //       context.drawImage(image, 0, 0);
+                  //       url = canvas.toDataURL("image/" + "png");
+                  //       res(url);
+                  //     };
+                  //   });
+                  // };
+                  
+                  // const createBlobURL = (image: Blob | MediaSource) => {
+                  //   return URL.createObjectURL(image);
+                  // };
+                  
+                  // const makeBlobFromBase64 = (dataURL: string) => {
+                  //   const BASE64_MARKER = ";base64,";
+                  //   const parts = dataURL.split(BASE64_MARKER);
+                  //   const raw = window.atob(parts[1]);
+                  //   const rawLength = raw.length;
+                  //   const uInt8Array = new Uint8Array(rawLength);
+                  
+                  //   for (let i = 0; i < rawLength; ++i) {
+                  //     uInt8Array[i] = raw.charCodeAt(i);
+                  //   }
+                  
+                  //   return new Blob([uInt8Array], { type: "image/png" });
+                  // };
+                  
+                  // const convertSVGToPNGUrl = async (SVGString: string) => {
+                  //   const base64 = await svgToPngBase64(SVGString) as string;
+                  //   return base64
+                  //   const pngBlob = makeBlobFromBase64(base64);
+                  //   return createBlobURL(pngBlob);
+                  // };
+                  
+                  // setTimeout(() => {
+                  //   toSvg(
+                  //     document.querySelector(".transform-layer")! as HTMLElement
+                  //   ).then(async (dataUrl) => {
+                  //     setDrawing(false);
+                  //     const svg = decodeURIComponent(
+                  //       dataUrl.replace(
+                  //         /data:image\/svg\+xml;charset=utf-8,/,
+                  //         ""
+                  //       )
+                  //     );
+                  //     const pngUrl = await convertSVGToPNGUrl(svg);
+                  //     download(
+                  //       pngUrl!,
+                  //       `${title}-${moment().format("YYYY-MM-DD_HH-mm-ss")}.png`,
+                  //     );
+                  //   });
+                  // }, 300);
                   setTimeout(() => {
-                    html2canvas(
-                      document.querySelector(".transform-layer")!
-                    ).then((canvas) => {
+                    toPng(
+                      document.querySelector(".transform-layer")! as HTMLElement
+                    ).then((dataUrl) => {
                       setDrawing(false);
-                      const dataUrl = canvas.toDataURL("image/png");
-                      const a = document.createElement("a");
-                      a.href = dataUrl;
-                      a.download = `${title}-${moment().format(
-                        "YYYY-MM-DD_HH-mm-ss"
-                      )}.png`;
-                      a.click();
+                      download(
+                        dataUrl,
+                        `${title}-${moment().format("YYYY-MM-DD_HH-mm-ss")}.png`,
+                      );
                     });
-                  },300);
+                  }, 300);
                 }}
               >
                 作为图片导出...
               </div>
-              <div className="column-item">作为矢量图片导出...</div>
+              <div
+                className="column-item"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setDrawing(true);
+                  setTimeout(() => {
+                    toSvg(
+                      document.querySelector(".transform-layer")! as HTMLElement
+                    ).then((dataUrl) => {
+                      const svg = decodeURIComponent(
+                        dataUrl.replace(
+                          /data:image\/svg\+xml;charset=utf-8,/,
+                          ""
+                        )
+                      );
+                      console.log(svg);
+                      exportFile(
+                        svg!,
+                        `${title}-${moment().format("YYYY-MM-DD_HH-mm-ss")}.svg`,
+                        "image/svg+xml"
+                      );
+                    });
+                  }, 300);
+                }}
+              >
+                作为矢量图片导出...
+              </div>
               <div
                 className="column-item"
                 onClick={(e) => {

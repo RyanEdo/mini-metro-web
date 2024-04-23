@@ -97,6 +97,28 @@ export function exportJson(content: string, filename: string) {
   document.body.removeChild(link);
 }
 
+export function exportPNG(content: Blob, filename: string) {
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(content);
+  link.download = filename;
+  link.style.display = "none";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+export function exportFile(content: string, filename: string, type: string) {
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(
+    new Blob([content], { type })
+  );
+  link.download = filename;
+  link.style.display = "none";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
 export function importFromFile() {
   const input = document.createElement("input");
   const promise = parseSelectedFile(input);
