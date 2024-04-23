@@ -78,7 +78,7 @@ function LineRender({
   return (
     <>
       <div style={{ position: "absolute" }}>
-        <svg width={drawing? drawerX: 1} height={drawing? drawerY:1} style={{ overflow: "visible" }}>
+        <svg width={drawing? drawerX: 300} height={drawing? drawerY:300} style={{ overflow: "visible" }}>
           {/* <path fill="transparent" stroke="black" d={MCommand + LCommand} /> */}
           <path
             // fill="transparent"
