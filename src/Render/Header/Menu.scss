@@ -171,6 +171,12 @@
         margin: 100.66px 51.6px 0 51.6px;
     }
     .menus {
+        height: calc(100vh - 101px);
+        overflow-y: overlay;
+        overflow-x: hidden;
+        &::-webkit-scrollbar {
+            display: none;
+        }
         .columns {
             margin: 0 51.6px 0 51.6px;
             display: flex;
@@ -190,6 +196,9 @@
                     width: auto;
                     margin-top: -15px;
                     opacity: 0;
+                    &:last-child{
+                        padding-bottom: 150px;
+                    }
                 }
                 .column-title {
                     font-size: 36px;
