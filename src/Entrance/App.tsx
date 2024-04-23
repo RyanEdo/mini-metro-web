@@ -29,6 +29,9 @@ function App() {
   const [data, setDataOriginal] = useState(initData);
   const [showName, setShowName] = useState(true);
   const [autoHiddenName, setAutoHiddenName] = useState(true);
+  const [drawing, setDrawing] = useState(false);
+  //@ts-ignore
+  window.setDrawing = setDrawing;
   const ref = useRef<any>();
   const menuRef = useRef();
   const [showConfirmation, setShowConfirmation] =
@@ -70,6 +73,8 @@ function App() {
         setShowName={setShowName}
         autoHiddenName={autoHiddenName}
         setAutoHiddenName={setAutoHiddenName}
+        drawing={drawing}
+        setDrawing={setDrawing}
       />
       <DeleteConfirmation ref={ref} />
       <ScaleLayer
@@ -91,6 +96,8 @@ function App() {
         setShowName={setShowName}
         autoHiddenName={autoHiddenName}
         setAutoHiddenName={setAutoHiddenName}
+        drawing={drawing}
+        setDrawing={setDrawing}
       />
       <Cards
         functionMode={functionMode}

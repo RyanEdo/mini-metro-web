@@ -58,6 +58,16 @@ export type ShowNameProps ={
   autoHiddenName: boolean;
   setAutoHiddenName: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
+export type DrawProps = {
+  drawing: boolean,
+  setDrawing: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export type DrawerSize = {
+  drawerX: number,
+  drawerY: number,
+}
 const initDataMock: UserDataType = {
   title: "提瓦特",
   stations: [

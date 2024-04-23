@@ -24,10 +24,12 @@ import {
   LineChanges,
   LineProps,
   ShowNameProps,
+  DrawProps,
 } from "../../Data/UserData";
 import PlusIcon from "../../Resource/Icon/plus";
 import { exportJson, importFromFile, stringifyData } from "../../Common/util";
 import moment from "moment";
+import html2canvas from "html2canvas";
 
 type MenuType = {
   setEditingMode: React.Dispatch<React.SetStateAction<Mode>>;
@@ -41,7 +43,8 @@ type MenuType = {
   setData: Dispatch<SetStateAction<UserDataType>>;
   insertInfo?: InsertInfo;
   setInsertInfo: React.Dispatch<React.SetStateAction<InsertInfo | undefined>>;
-} & ShowNameProps;
+} & ShowNameProps &
+  DrawProps;
 export const Menu = forwardRef(function (
   {
     setEditingMode,
@@ -59,6 +62,7 @@ export const Menu = forwardRef(function (
     setShowName,
     autoHiddenName,
     setAutoHiddenName,
+    setDrawing,
   }: MenuType,
   ref
 ) {
@@ -75,6 +79,7 @@ export const Menu = forwardRef(function (
     setPage("title");
     setTitleEditable(false);
     setFunctionMode(FunctionMode.normal);
+    setDrawing(false);
   };
 
   const showTools = (e: React.MouseEvent, functionMode: FunctionMode) => {
@@ -450,7 +455,29 @@ export const Menu = forwardRef(function (
               >
                 导入文件...
               </div>
-              <div className="column-item">作为图片导出...</div>
+              <div
+                className="column-item"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setDrawing(true);
+                  setTimeout(() => {
+                    html2canvas(
+                      document.querySelector(".transform-layer")!
+                    ).then((canvas) => {
+                      setDrawing(false);
+                      const dataUrl = canvas.toDataURL("image/png");
+                      const a = document.createElement("a");
+                      a.href = dataUrl;
+                      a.download = `${title}-${moment().format(
+                        "YYYY-MM-DD_HH-mm-ss"
+                      )}.png`;
+                      a.click();
+                    });
+                  },300);
+                }}
+              >
+                作为图片导出...
+              </div>
               <div className="column-item">作为矢量图片导出...</div>
               <div
                 className="column-item"

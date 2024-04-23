@@ -13,6 +13,8 @@ import { Cards } from "../Card/Cards";
 import {
   CardShowing,
   ChangeSteps,
+  DrawProps,
+  DrawerSize,
   InsertInfo,
   LineChanges,
   LineProps,
@@ -37,7 +39,7 @@ import {
   getRoundedPoints,
   generateLineCommand,
 } from "../../Line/LinePoints";
-type RenderProps ={
+type RenderProps = {
   data: UserDataType;
   setData: Dispatch<SetStateAction<UserDataType>>;
   functionMode: FunctionMode;
@@ -54,7 +56,8 @@ type RenderProps ={
   cardShowing: CardShowing;
   setCardShowing: Dispatch<SetStateAction<CardShowing>>;
   editingMode: Mode;
-} & ShowNameProps;
+} & ShowNameProps &
+  DrawProps & DrawerSize;
 const buildStations = (
   stations: Map<string | number, StationProps>
 ): Map<number, Station> => {
@@ -95,7 +98,9 @@ const renderLines = (
   setCardShowing: Dispatch<SetStateAction<CardShowing>>,
   commandMap: Map<Line, string>,
   data: UserDataType,
-  setData: Dispatch<SetStateAction<UserDataType>>
+  setData: Dispatch<SetStateAction<UserDataType>>,
+  { drawing, setDrawing }: DrawProps,
+  {drawerX,drawerY}:DrawerSize,
 ) => {
   return (
     <div>
@@ -109,6 +114,10 @@ const renderLines = (
             setCardShowing={setCardShowing}
             data={data}
             setData={setData}
+            drawing={drawing}
+            setDrawing={setDrawing}
+            drawerX={drawerX}
+            drawerY={drawerY}
           />
         );
       })}
@@ -137,6 +146,9 @@ function RenderLayer({
   setShowName,
   autoHiddenName,
   setAutoHiddenName,
+  drawing,
+  setDrawing,
+  drawerX,drawerY
 }: RenderProps) {
   const { lines, stations } = data;
   const stationMap = buildStations(stations);
@@ -374,7 +386,15 @@ function RenderLayer({
               </div>
               <div
                 className="station-name"
-                style={ showName? autoHiddenName? scale < 0.65 ? { display: "none" } : nameStyle:nameStyle:{display:"none"}}
+                style={
+                  showName
+                    ? autoHiddenName
+                      ? scale < 0.65
+                        ? { display: "none" }
+                        : nameStyle
+                      : nameStyle
+                    : { display: "none" }
+                }
                 // style={{transform: `scale(${1/scale})`}}
               >
                 {stationName}
@@ -387,7 +407,7 @@ function RenderLayer({
     );
   };
   const commandMap = new Map<Line, string>();
-  const calculateCommand = allLinesList.map((line) => {
+  allLinesList.map((line) => {
     const { displayLine } = line;
     const { color, lineId } = displayLine!;
     let command = "",
@@ -404,14 +424,15 @@ function RenderLayer({
     }
   });
   const stationComp = renderStations(allStationsList);
-
   const lineComp = renderLines(
     allLinesList,
     cardShowing,
     setCardShowing,
     commandMap,
     data,
-    setData
+    setData,
+    { drawing, setDrawing },
+    {drawerX,drawerY}
   );
 
   return (

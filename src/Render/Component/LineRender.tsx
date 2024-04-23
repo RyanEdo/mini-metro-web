@@ -1,4 +1,10 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, {
+  CSSProperties,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import { Line } from "../../DataStructure/Line";
 import { Point } from "../../DataStructure/Point";
 
@@ -9,7 +15,7 @@ import {
 } from "../../Line/LinePoints";
 import { clearHandle, getHandleCommand } from "../../Line/Handle";
 import { gauge } from "../../Common/const";
-import { CardShowing, UserDataType } from "../../Data/UserData";
+import { CardShowing, DrawProps, DrawerSize, UserDataType } from "../../Data/UserData";
 
 function LineRender({
   line,
@@ -18,6 +24,8 @@ function LineRender({
   command,
   data,
   setData,
+  drawing,
+  drawerX,drawerY
 }: {
   line: Line;
   cardShowing: CardShowing;
@@ -25,73 +33,65 @@ function LineRender({
   command: string;
   data: UserDataType;
   setData: Dispatch<SetStateAction<UserDataType>>;
-}) {
-  const {stations} =data;
-  const { displayLine } = line;
+} & DrawProps & DrawerSize) {
+  const { stations } = data;
+  const { displayLine, departureRecord } = line;
   const { color, lineId } = displayLine!;
-  const {lineIds, stationIds} = cardShowing;
+  const { lineIds, stationIds } = cardShowing;
   const showing = lineIds?.length || stationIds?.length;
-  const emphasis = lineIds?.includes(lineId) || stationIds&&stationIds.length===1&&stationIds[0]&&stations.get(stationIds[0])&&stations.get(stationIds[0])?.lineIds.includes(lineId);
-  // let command = "",
-  //   allKeyPoints: Point[] = [];
-  // if (line.departureRecord?.nextLineRecord) {
-  //   allKeyPoints = getAllKeyPoints(line);
-  //   clearHandle(line);
-  //   const { startHandleCommand, LQLPoints, endHandleCommand } =
-  //     getHandleCommand(line, allKeyPoints);
-  //   const roundedPoints = getRoundedPoints(LQLPoints);
-  //   const pathCommand = generateLineCommand(roundedPoints);
-  //   command = startHandleCommand + pathCommand + endHandleCommand;
-  // }
+  const emphasis =
+    lineIds?.includes(lineId) ||
+    (stationIds &&
+      stationIds.length === 1 &&
+      stationIds[0] &&
+      stations.get(stationIds[0]) &&
+      stations.get(stationIds[0])?.lineIds.includes(lineId));
 
-  // useEffect(() => {
-  //   return () => {
-  //     clearHandle(line);
-  //   };
-  // }, []);
-  const renderPoints = (keyPoints: Point[]) => {
-    return (
-      <div>
-        {keyPoints.map((P) => (
-          <div
-            style={{
-              position: "absolute",
-              left: P.x,
-              top: P.y,
-              fontSize: 1,
-              color: "gray",
-            }}
-          >
-            {/* {`x:${P.x.toFixed()},y:${P.y.toFixed()}`} */}
-          </div>
-        ))}
-      </div>
-    );
-  };
   const [moved, setMoved] = useState(false);
-  const onClick = ()=>{
-    if(!moved){
-      setCardShowing({lineIds:[lineId]})
-
+  const onClick = () => {
+    if (!moved) {
+      setCardShowing({ lineIds: [lineId] });
     }
-}
+  };
+  // let minX = Infinity,
+  //   minY = Infinity,
+  //   maxX = -Infinity,
+  //   maxY = -Infinity,
+  //   patchX = 0,
+  //   patchY = 0;
+  // let p = departureRecord;
+  // while (p) {
+  //   const { station } = p;
+  //   const { position } = station;
+  //   const { x, y } = position;
+  //   minX = Math.min(x, minX);
+  //   minY = Math.min(y, minY);
+  //   maxX = Math.max(x, maxX);
+  //   maxY = Math.max(y, maxY);
+  //   p = p.nextLineRecord;
+  // }
+  // if (minX !== Infinity) {
+  //   if (minX < 0) patchX = -minX;
+  //   if (minY < 0) patchY = -minY;
+  // }
+  // const drawingStyle: CSSProperties = {};
   return (
     <>
       <div style={{ position: "absolute" }}>
-        <svg width="200" height="200" style={{ overflow: "visible" }}>
+        <svg width={drawing? drawerX: 1} height={drawing? drawerY:1} style={{ overflow: "visible" }}>
           {/* <path fill="transparent" stroke="black" d={MCommand + LCommand} /> */}
           <path
             // fill="transparent"
-            // stroke-linecap="round" 
-            fill="none" 
-            stroke={showing&&!emphasis?`${color}55`:`${color}`}
+            // stroke-linecap="round"
+            fill="none"
+            stroke={showing && !emphasis ? `${color}55` : `${color}`}
             d={command}
             stroke-width={gauge}
-            style={{cursor: "pointer"}}
-            onMouseDown={()=>setMoved(false)}
-            onTouchStart={()=>setMoved(false)}
-            onTouchMove={()=>setMoved(true)}
-            onMouseMove={()=>setMoved(true)}
+            style={{ cursor: "pointer" }}
+            onMouseDown={() => setMoved(false)}
+            onTouchStart={() => setMoved(false)}
+            onTouchMove={() => setMoved(true)}
+            onMouseMove={() => setMoved(true)}
             onMouseUp={onClick}
             onTouchEnd={onClick}
           />
