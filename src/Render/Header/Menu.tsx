@@ -544,6 +544,36 @@ export const Menu = forwardRef(function (
                 className="column-item"
                 onClick={(e) => {
                   e.stopPropagation();
+                  const current = localStorage.getItem("current");
+                  if (current) {
+                    const res = JSON.parse(current);
+                    const {
+                      stations: stationsArr,
+                      lines: linesArr,
+                      title,
+                    }: {
+                      stations: StationProps[];
+                      lines: LineProps[];
+                      title: string;
+                    } = res;
+                    const stations = stationsArr.reduce((map, cur) => {
+                      map.set(cur.stationId, cur);
+                      return map;
+                    }, new Map());
+                    const lines = linesArr.reduce((map, cur) => {
+                      map.set(cur.lineId, cur);
+                      return map;
+                    }, new Map());
+                    setData({ stations, lines, title });
+                  }
+                }}
+              >
+                恢复数据...
+              </div>
+              <div
+                className="column-item"
+                onClick={(e) => {
+                  e.stopPropagation();
                   const current = localStorage.getItem("last");
                   exportJson(
                     current!,

@@ -39,13 +39,17 @@ function LineRender({
   const { color, lineId } = displayLine!;
   const { lineIds, stationIds } = cardShowing;
   const showing = lineIds?.length || stationIds?.length;
+  console.log(stationIds &&
+    stationIds.length === 1 &&
+    stationIds[0] &&
+    stations.get(stationIds[0]));
   const emphasis =
     lineIds?.includes(lineId) ||
     (stationIds &&
       stationIds.length === 1 &&
       stationIds[0] &&
       stations.get(stationIds[0]) &&
-      stations.get(stationIds[0])?.lineIds.includes(lineId));
+      stations.get(stationIds[0])?.lineIds?.includes(lineId));
 
   const [moved, setMoved] = useState(false);
   const onClick = () => {
