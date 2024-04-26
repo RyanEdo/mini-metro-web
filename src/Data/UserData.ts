@@ -1,12 +1,14 @@
 import { Dispatch, SetStateAction } from "react";
 import { generateRandomColor, mapToArr } from "../Common/util";
 import { colorSH } from "../Common/color";
+import { Direct } from "../DataStructure/Direction";
 export class StationProps {
   stationId!: number;
   stationName!: string;
   position!: number[];
   shape!: string;
   lineIds!: number[];
+  tagDirection?: Direct;
 }
 export class LineProps {
   lineId!: number;
@@ -230,6 +232,14 @@ export const dataProcessor = (
       setData((state) => {
         const station = stations.get(id);
         station!.shape = shape;
+        return { ...state };
+      });
+    },
+    setStationTagDirection: (direct: Direct) => {
+      setData((state) => {
+        const station = stations.get(id);
+        station!.tagDirection = direct;
+        if(direct === 8) delete station!.tagDirection;
         return { ...state };
       });
     },

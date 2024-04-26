@@ -206,6 +206,14 @@ export function LineCard({
       case "operation": {
         return (
           <div className="operation-detail">
+                        <div
+              className="operation-item"
+              onClick={() => {
+                showConfirmation!({ line }, deleteLine);
+              }}
+            >
+              设为支线...
+            </div>
             <div
               className="operation-item delete"
               onClick={() => {

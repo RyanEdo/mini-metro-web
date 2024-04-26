@@ -9,7 +9,13 @@ import React, {
 import "./StationCard.scss";
 import classNames from "classnames";
 import { Point } from "../../DataStructure/Point";
-import { CardShowing, InsertInfo, StationProps, UserDataType, dataProcessor } from "../../Data/UserData";
+import {
+  CardShowing,
+  InsertInfo,
+  StationProps,
+  UserDataType,
+  dataProcessor,
+} from "../../Data/UserData";
 import shapes from "../../Resource/Shape/shape";
 import { Shape } from "../../Data/Shape";
 import { AutoGrowthInput } from "../../Common/AutoGrowthInput";
@@ -42,7 +48,7 @@ export function StationCard({
   functionMode: FunctionMode;
   setFunctionMode: React.Dispatch<React.SetStateAction<FunctionMode>>;
   insertInfo?: InsertInfo;
-  setInsertInfo: React.Dispatch<React.SetStateAction<InsertInfo|undefined>>;
+  setInsertInfo: React.Dispatch<React.SetStateAction<InsertInfo | undefined>>;
   cardShowing: CardShowing;
   setCardShowing: Dispatch<SetStateAction<CardShowing>>;
 }) {
@@ -52,7 +58,7 @@ export function StationCard({
     position,
     shape: shapeSelected,
     stationId,
-    
+    tagDirection=8,
   } = station;
   const {
     setStationName,
@@ -61,7 +67,8 @@ export function StationCard({
     getLineById,
     deleteStation,
     removeStationFromLine,
-    addNewLine
+    addNewLine,
+    setStationTagDirection,
   } = dataProcessor(stationId, setData, data);
   const [x, y] = position;
   const setX = (x: number) => setStationPosition(x, y);
@@ -69,7 +76,17 @@ export function StationCard({
   const lineCount = lineIds.length;
   const [tab, setTab] = useState("name");
   const { engine } = browserInfo;
-
+  const tags = [
+    "顶端",
+    "右上角",
+    "右侧",
+    "右下角",
+    "底部",
+    "左下角",
+    "左侧",
+    "左上角",
+    "自动"
+  ];
   const editTools = (tab: string) => {
     switch (tab) {
       case "name": {
@@ -139,14 +156,19 @@ export function StationCard({
       case "operation": {
         return (
           <div className="operation-detail">
-            <div className="operation-item" onClick={(e)=>{
-              const newLine = addNewLine();
-              setInsertInfo({insertIndex:1,line: newLine!})
-              // setFunctionMode(FunctionMode.selectingStation);
-              if (menuRef?.current?.showTools) {
-                menuRef.current.showTools(e,FunctionMode.selectingStation);
-              }
-              }}>以此为起点新建线路...</div>
+            <div
+              className="operation-item"
+              onClick={(e) => {
+                const newLine = addNewLine();
+                setInsertInfo({ insertIndex: 1, line: newLine! });
+                // setFunctionMode(FunctionMode.selectingStation);
+                if (menuRef?.current?.showTools) {
+                  menuRef.current.showTools(e, FunctionMode.selectingStation);
+                }
+              }}
+            >
+              以此为起点新建线路...
+            </div>
             {lineIds.map((lineId) => {
               const line = getLineById(lineId);
               const stationIndexes: number[] = [];
@@ -158,7 +180,7 @@ export function StationCard({
                 <div
                   className="operation-item delete"
                   onClick={() => {
-                    showConfirmation!({ line, station, stationIndex },()=>{
+                    showConfirmation!({ line, station, stationIndex }, () => {
                       removeStationFromLine(lineId, stationIndex);
                     });
                   }}
@@ -184,6 +206,38 @@ export function StationCard({
           </div>
         );
       }
+      case "tag": {
+        const directMapIndex = [7, 0, 1, 6, 8, 2, 5, 4, 3];
+        return (
+          <div className="tag-detail">
+            {directMapIndex.map((direct, index) => {
+              if (index === 4)
+                return (
+                  <div
+                    onClick={() => {
+                      setStationTagDirection(8);
+                    }}
+                    className="tag-item center"
+                  >
+                    {tags[tagDirection]}
+                  </div>
+                );
+              else
+                return (
+                  <div
+                    onClick={() => {
+                      setStationTagDirection(direct);
+                    }}
+                    className={classNames({
+                      "tag-item": 1,
+                      selected: tagDirection === direct,
+                    })}
+                  ></div>
+                );
+            })}
+          </div>
+        );
+      }
     }
   };
   return (
@@ -195,9 +249,18 @@ export function StationCard({
           : {}
       }
     >
-      <div className="line-count" onClick={()=>{
-        setCardShowing({stationIds: [stationId], lineIds, stationFirst: true})
-      }}>{lineCount}条线路</div>
+      <div
+        className="line-count"
+        onClick={() => {
+          setCardShowing({
+            stationIds: [stationId],
+            lineIds,
+            stationFirst: true,
+          });
+        }}
+      >
+        {lineCount}条线路
+      </div>
       <AutoGrowthInput
         onInput={(e) => setStationName(e.currentTarget.value)}
         className="station-name"
@@ -261,6 +324,19 @@ export function StationCard({
             >
               <div className="title">操作</div>
               <div className="value">删除</div>
+            </div>
+            <div
+              className={classNames({
+                "edit-tool operation": 1,
+                selected: tab === "tag",
+              })}
+              onClick={(e) => {
+                scrollOptimize(e);
+                setTab("tag");
+              }}
+            >
+              <div className="title">标签</div>
+              <div className="value">{tags[tagDirection]}</div>
             </div>
           </div>
         </div>

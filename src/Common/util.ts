@@ -16,7 +16,7 @@ export const scrollOptimize = (e: MouseEvent) => {
   childNodes.forEach((x, i) => {
     if (x === editTool) index = i;
   });
-  const scrollY = ((scrollHeight - offsetHeight) / childNodes.length) * index;
+  const scrollY = ((scrollHeight - offsetHeight) / (childNodes.length-1)) * index;
   editTools!.scrollTo({ top: scrollY, behavior: "smooth" });
 };
 

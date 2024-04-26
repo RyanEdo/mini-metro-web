@@ -77,7 +77,7 @@ const buildLines = (
   stationMap: Map<number, Station>
 ) => {
   const lineMap = new Map();
-  mapToArr(lines).forEach((line) => {
+  mapToArr(lines).sort((a,b)=>a.order-b.order).forEach((line) => {
     const { stationIds, lineId, bendFirst } = line;
     const dLine = new Line();
     dLine.displayLine = line;
@@ -280,6 +280,7 @@ function RenderLayer({
             shape,
             stationId,
             lineIds: stationLineIds,
+            tagDirection
           } = displayStation!;
           const add = () => {
             if (!moved) setCardShowing({ stationIds: [stationId] });
@@ -307,7 +308,8 @@ function RenderLayer({
               // setFunctionMode(FunctionMode.lineEditing);
             }
           };
-          const nameDirection: Direct = station.getBestDirectionForName();
+          let nameDirection: Direct = station.getBestDirectionForName();
+          if(tagDirection || tagDirection===0) nameDirection = tagDirection;
           const SQRT1_2 = Math.SQRT1_2;
           const directionOffset = [
             [0, -1],
