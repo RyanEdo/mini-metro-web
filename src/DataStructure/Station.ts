@@ -22,6 +22,13 @@ export class Station {
     this.handlers = new Array(8);
   }
 
+  lineCount(){
+    const set = new Set();
+    this.lineRecords.forEach(line=>{
+      set.add(line);
+    })
+    return set.size;
+  }
   isEmpty(direct: Direct){
     return !this.handlers[direct] && this.tracks[direct].isEmpty();
   }

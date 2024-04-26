@@ -18,6 +18,7 @@ export class LineProps {
   sign!: string;
   order!: number;
   bendFirst!: boolean[];
+  subLine?:boolean;
 }
 
 export type ChangeSteps = {
@@ -277,6 +278,14 @@ export const dataProcessor = (
       setData((state) => {
         const line = lines.get(id);
         line!.color = color;
+        return { ...state };
+      });
+    },
+    setSubLine: (subLine: boolean) => {
+      setData((state) => {
+        const line = lines.get(id);
+        line!.subLine = subLine;
+        if(!subLine) delete line!.subLine;
         return { ...state };
       });
     },

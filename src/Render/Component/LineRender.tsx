@@ -36,7 +36,7 @@ function LineRender({
 } & DrawProps & DrawerSize) {
   const { stations } = data;
   const { displayLine, departureRecord } = line;
-  const { color, lineId } = displayLine!;
+  const { color, lineId, subLine } = displayLine!;
   const { lineIds, stationIds } = cardShowing;
   const showing = lineIds?.length || stationIds?.length;
   console.log(stationIds &&
@@ -87,6 +87,7 @@ function LineRender({
           <path
             // fill="transparent"
             // stroke-linecap="round"
+            stroke-dasharray={subLine?'10,5': undefined}
             fill="none"
             stroke={showing && !emphasis ? `${color}55` : `${color}`}
             d={command}

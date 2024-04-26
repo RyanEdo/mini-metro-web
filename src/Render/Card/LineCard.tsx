@@ -69,6 +69,7 @@ export function LineCard({
     sign,
     order,
     color: colorSelected,
+    subLine = false,
   } = line;
   const {
     getStationById,
@@ -80,6 +81,7 @@ export function LineCard({
     getBendFirst,
     setBendFirst,
     deleteLine,
+    setSubLine,
   } = dataProcessor(lineId, setData, data);
   const colorName = colorSHMap.get(colorSelected)?.color_name || colorSelected;
   const firstStation = getStationById(stationIds[0]);
@@ -103,7 +105,9 @@ export function LineCard({
     const hasStation = stations && stations.length;
 
     const width =
-      expected > window.innerWidth ? window.innerWidth -(hasStation?505: 100) : expected;
+      expected > window.innerWidth
+        ? window.innerWidth - (hasStation ? 505 : 100)
+        : expected;
     // console.log(width);
     setExpendWidth(width);
   };
@@ -206,13 +210,13 @@ export function LineCard({
       case "operation": {
         return (
           <div className="operation-detail">
-                        <div
+            <div
               className="operation-item"
               onClick={() => {
-                showConfirmation!({ line }, deleteLine);
+                setSubLine(!subLine);
               }}
             >
-              设为支线...
+              {subLine?'不再作为':'设为'}支线...
             </div>
             <div
               className="operation-item delete"
@@ -304,9 +308,9 @@ export function LineCard({
               const bendFirst = getBendFirst(index);
               const last = index === stationsInThisLine.length - 1;
               let currentInserting = false;
-              if(insertInfo){
-                const {insertIndex, line:insertLine} = insertInfo;
-                if(insertIndex === index && insertLine === line){
+              if (insertInfo) {
+                const { insertIndex, line: insertLine } = insertInfo;
+                if (insertIndex === index && insertLine === line) {
                   currentInserting = true;
                 }
               }
@@ -318,7 +322,10 @@ export function LineCard({
                     <div className="sleeper"></div>
                   </div>
                   <div
-                    className={classNames({"bend-first":1,"current-inserting": currentInserting})}
+                    className={classNames({
+                      "bend-first": 1,
+                      "current-inserting": currentInserting,
+                    })}
                     onClick={(e) => {
                       if (addingStation) {
                         if (!firstStation) {
@@ -332,7 +339,7 @@ export function LineCard({
                         setInsertInfo({ insertIndex: index, line });
                         setFunctionMode(FunctionMode.selectingStation);
                       } else if (last) {
-                        setInsertInfo({ insertIndex: index+1, line });
+                        setInsertInfo({ insertIndex: index + 1, line });
                         if (menuRef?.current?.showTools) {
                           menuRef.current.showTools(
                             e,
@@ -347,14 +354,16 @@ export function LineCard({
                     <div
                       className={classNames({
                         "bend-icon": 1,
-                        bend: bendFirst && !addingStation &&!last,
+                        bend: bendFirst && !addingStation && !last,
                       })}
                     >
-                      {addingStation||last ? <PlusIcon /> : <ArrowIcon />}
+                      {addingStation || last ? <PlusIcon /> : <ArrowIcon />}
                     </div>
                     <div className="bend-des">
-                      {addingStation||last
-                        ? currentInserting?"插入到这": "插入站点"
+                      {addingStation || last
+                        ? currentInserting
+                          ? "插入到这"
+                          : "插入站点"
                         : bendFirst
                         ? "斜向优先"
                         : "直线优先"}

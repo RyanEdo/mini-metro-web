@@ -409,9 +409,9 @@ function RenderLayer({
     );
   };
   const commandMap = new Map<Line, string>();
-  allLinesList.map((line) => {
+  allLinesList.map((line:Line) => {
     const { displayLine } = line;
-    const { color, lineId } = displayLine!;
+    const { color, lineId, subLine } = displayLine!;
     let command = "",
       allKeyPoints: Point[] = [];
     if (line.departureRecord?.nextLineRecord) {

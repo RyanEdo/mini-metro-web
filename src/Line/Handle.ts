@@ -46,7 +46,7 @@ const addHandleForStation = (station: Station, line: Line, direct: Direct) => {
 };
 const getBestDirectionForHandle = (station: Station, direction: Direction) => {
   let min = Infinity,
-    bestChoice=0;
+    bestChoice = 0;
   for (let i = 0; i < station.handlers.length; i++) {
     const notEmpty = station.handlers[i] || !station.tracks[i].isEmpty();
     if (!notEmpty) {
@@ -174,14 +174,30 @@ const getHandleCommand = (line: Line, allKeyPoints: Point[]) => {
   const [A, B] = allKeyPoints;
   const C = allKeyPoints[allKeyPoints.length - 2],
     D = allKeyPoints[allKeyPoints.length - 1];
-  const { departureRecord } = line;
+  const { departureRecord, displayLine } = line;
+  const { subLine } = displayLine!;
   const terminalRecord = line.getTerminalRecord();
-  const startHandleCommand = getStartHandleCommand(A, B, departureRecord!);
-  let endHandleCommand = ` L ${A.x} ${A.y}`; // loop line 
-  if (!(departureRecord?.station === terminalRecord?.station)){ 
+  let startHandleCommand = getStartHandleCommand(A, B, departureRecord!);
+  let endHandleCommand = ` L ${A.x} ${A.y}`; // loop line
+  if (!(departureRecord?.station === terminalRecord?.station)) {
     endHandleCommand = getEndHandleCommand(C, D, terminalRecord!);
   }
   const LQLPoints = getLPLPoints(allKeyPoints);
+  // subline no need handler in joint
+  if (
+    subLine &&
+    departureRecord?.station?.lineCount &&
+    departureRecord?.station?.lineCount() >= 2
+  ) {
+    startHandleCommand = ` M ${A.x} ${A.y} `;
+  }
+  if (
+    subLine &&
+    terminalRecord?.station?.lineCount &&
+    terminalRecord?.station?.lineCount() >= 2
+  ) {
+    endHandleCommand = "";
+  }
   return { startHandleCommand, LQLPoints, endHandleCommand };
 };
 const clearHandleFromRecord = (lineRecord: LineRecord | undefined) => {
