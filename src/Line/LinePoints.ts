@@ -195,7 +195,7 @@ const deleteDuplicatedPoints = (keyPoints: Point[]) => {
     const AC = new Vector(A, C);
     const AB = new Vector(A, B);
     const BC = new Vector(B, C);
-    if (!AC.passesThroughPointRound(B) || AB.direct !== BC.direct
+    if (!AC.passesThroughPointRound(B) //|| AB.direct !== BC.direct
     )
       QKeyPoints.push(B);
   }

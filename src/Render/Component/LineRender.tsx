@@ -15,7 +15,12 @@ import {
 } from "../../Line/LinePoints";
 import { clearHandle, getHandleCommand } from "../../Line/Handle";
 import { gauge } from "../../Common/const";
-import { CardShowing, DrawProps, DrawerSize, UserDataType } from "../../Data/UserData";
+import {
+  CardShowing,
+  DrawProps,
+  DrawerSize,
+  UserDataType,
+} from "../../Data/UserData";
 
 function LineRender({
   line,
@@ -25,7 +30,8 @@ function LineRender({
   data,
   setData,
   drawing,
-  drawerX,drawerY
+  drawerX,
+  drawerY,
 }: {
   line: Line;
   cardShowing: CardShowing;
@@ -33,16 +39,19 @@ function LineRender({
   command: string;
   data: UserDataType;
   setData: Dispatch<SetStateAction<UserDataType>>;
-} & DrawProps & DrawerSize) {
+} & DrawProps &
+  DrawerSize) {
   const { stations } = data;
   const { displayLine, departureRecord } = line;
-  const { color, lineId, subLine } = displayLine!;
+  const { color, lineId, subLine, lineName } = displayLine!;
   const { lineIds, stationIds } = cardShowing;
   const showing = lineIds?.length || stationIds?.length;
-  console.log(stationIds &&
-    stationIds.length === 1 &&
-    stationIds[0] &&
-    stations.get(stationIds[0]));
+  console.log(
+    stationIds &&
+      stationIds.length === 1 &&
+      stationIds[0] &&
+      stations.get(stationIds[0])
+  );
   const emphasis =
     lineIds?.includes(lineId) ||
     (stationIds &&
@@ -57,37 +66,20 @@ function LineRender({
       setCardShowing({ lineIds: [lineId] });
     }
   };
-  // let minX = Infinity,
-  //   minY = Infinity,
-  //   maxX = -Infinity,
-  //   maxY = -Infinity,
-  //   patchX = 0,
-  //   patchY = 0;
-  // let p = departureRecord;
-  // while (p) {
-  //   const { station } = p;
-  //   const { position } = station;
-  //   const { x, y } = position;
-  //   minX = Math.min(x, minX);
-  //   minY = Math.min(y, minY);
-  //   maxX = Math.max(x, maxX);
-  //   maxY = Math.max(y, maxY);
-  //   p = p.nextLineRecord;
-  // }
-  // if (minX !== Infinity) {
-  //   if (minX < 0) patchX = -minX;
-  //   if (minY < 0) patchY = -minY;
-  // }
-  // const drawingStyle: CSSProperties = {};
   return (
     <>
       <div style={{ position: "absolute" }}>
-        <svg width={drawing? drawerX: 300} height={drawing? drawerY:300} style={{ overflow: "visible" }}>
+        <svg
+          width={drawing ? drawerX : 300}
+          height={drawing ? drawerY : 300}
+          style={{ overflow: "visible" }}
+        >
           {/* <path fill="transparent" stroke="black" d={MCommand + LCommand} /> */}
           <path
+            id={lineName}
             // fill="transparent"
             // stroke-linecap="round"
-            stroke-dasharray={subLine?'10,5': undefined}
+            stroke-dasharray={subLine ? "10,5" : undefined}
             fill="none"
             stroke={showing && !emphasis ? `${color}55` : `${color}`}
             d={command}

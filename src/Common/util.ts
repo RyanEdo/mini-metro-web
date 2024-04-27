@@ -141,8 +141,7 @@ function parseSelectedFile(input: HTMLInputElement): Promise<any> {
         reader.onload = (event) => {
           try {
             const jsonContent = event.target?.result as string;
-            const parsedData = JSON.parse(jsonContent);
-            resolve(parsedData);
+            resolve(jsonContent);
           } catch (error) {
             reject(error);
           }

@@ -115,6 +115,15 @@ export const Menu = forwardRef(function (
     setTimeout(() => setPage("tools"));
   };
 
+  const transfromTools = {
+    scale,
+    setScale,
+    translateX,
+    translateY,
+    setTranslateX,
+    setTranslateY,
+  };
+
   useImperativeHandle(
     ref,
     () => {
@@ -424,6 +433,14 @@ export const Menu = forwardRef(function (
               >
                 插入站点...
               </div>
+              <div
+                className="column-item"
+                onClick={() => {
+                  mediateMap(data,transfromTools)
+                }}
+              >
+                居中路线图...
+              </div>
             </div>
           </div>
           <div className="column">
@@ -457,14 +474,7 @@ export const Menu = forwardRef(function (
                   e.stopPropagation();
                   importFromFile().then((res) => {
                     const data = setDataFromJson(setData, res);
-                    mediateMap(data, {
-                      scale,
-                      setScale,
-                      translateX,
-                      translateY,
-                      setTranslateX,
-                      setTranslateY,
-                    });
+                    mediateMap(data, transfromTools);
                   });
                 }}
               >
@@ -549,14 +559,7 @@ export const Menu = forwardRef(function (
                   const current = localStorage.getItem("current");
                   if (current) {
                     const data = setDataFromJson(setData, current);
-                    mediateMap(data, {
-                      scale,
-                      setScale,
-                      translateX,
-                      translateY,
-                      setTranslateX,
-                      setTranslateY,
-                    });
+                    mediateMap(data, transfromTools);
                   }
                 }}
               >
