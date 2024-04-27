@@ -2,6 +2,8 @@ import { Dispatch, SetStateAction } from "react";
 import { generateRandomColor, mapToArr } from "../Common/util";
 import { colorSH } from "../Common/color";
 import { Direct } from "../DataStructure/Direction";
+import { teyvat } from "../Common/teyvat";
+
 export class StationProps {
   stationId!: number;
   stationName!: string;
@@ -150,9 +152,7 @@ const initDataMock: UserDataType = {
 };
 
 export const initData = {
-  // stations: [],
-  // lines: [],
-  ...initDataMock,
+  ...teyvat,
 };
 
 export const setDataFromJson = (

@@ -372,17 +372,18 @@ export const Menu = forwardRef(function (
               );
             })}
 
-            <div
+            {selectedMap?<div
               className="tool"
               onClick={() => {
                 setPage("title");
                 setTitleEditable(false);
                 const data = mapData.get(selectedMap!);
-                setData(data!);
+                if(data)
+                setData(data);
               }}
             >
-              新建
-            </div>
+              以{existingMap.find(x=>x.id===selectedMap)?.name}为模板新建地图
+            </div>:<></>}
             <div
               className="tool"
               onClick={() => {
@@ -535,7 +536,7 @@ export const Menu = forwardRef(function (
               <div
                 className="column-item"
                 onClick={(e) => {
-                  setSelectedMap("current");
+                  setSelectedMap("");
                   setOriginalMap(data);
                   showTools(e, FunctionMode.choosingExistMap);
                 }}

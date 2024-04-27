@@ -203,13 +203,13 @@ export const mediateMap = (
   if (innerWidth > innerHeight) {
     const margin = innerWidth*0.05;
     scale = (innerWidth - margin) / width;
-    transformX = margin/2-minX;
-    transformY = (innerHeight - height*scale)/2;
+    transformX = margin/2-minX*scale;
+    transformY = (innerHeight - height*scale)/2 - minY*scale;
   } else {
     const margin = innerHeight*0.05;
     scale = (innerHeight - margin) / height;
-    transformY = margin/2-minY;
-    transformX = (innerWidth - width*scale)/2;
+    transformY = margin/2-minY*scale;
+    transformX = (innerWidth - width*scale)/2 -minX*scale;
   }
 
   // small size map
