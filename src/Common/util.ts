@@ -201,13 +201,22 @@ export const mediateMap = (
   const { innerHeight, innerWidth } = window;
   let scale = 1, transformX = -minX, transformY = -minY;
   if (innerWidth > innerHeight) {
-    scale = (innerWidth - 50) / width;
-    transformX = 25-minX;
+    const margin = innerWidth*0.05;
+    scale = (innerWidth - margin) / width;
+    transformX = margin/2-minX;
     transformY = (innerHeight - height*scale)/2;
   } else {
-    scale = (innerHeight - 50) / height;
-    transformY = 25-minY;
+    const margin = innerHeight*0.05;
+    scale = (innerHeight - margin) / height;
+    transformY = margin/2-minY;
     transformX = (innerWidth - width*scale)/2;
+  }
+
+  // small size map
+  if(scale>1){
+    scale = 1;
+    transformX = (innerWidth - width)/2 - minX;
+    transformY = (innerHeight - height)/2 - minY;
   }
   setScale(scale);
   setTranslateX(transformX);

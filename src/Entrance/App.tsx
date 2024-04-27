@@ -1,4 +1,4 @@
-import { mapToArr, setLocalStorage } from "../Common/util";
+import { mapToArr, mediateMap, setLocalStorage } from "../Common/util";
 import {
   CardShowing,
   ChangeSteps,

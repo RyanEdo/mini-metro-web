@@ -12,4 +12,5 @@ export enum Mode {
     dragingStation,
     lineEditing,
     selectingStation,
+    choosingExistMap,
   }

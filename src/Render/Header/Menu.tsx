@@ -42,6 +42,7 @@ import moment from "moment";
 
 import { toPng, toJpeg, toBlob, toPixelData, toSvg } from "html-to-image";
 import download from "downloadjs";
+import { getExistMap } from "../../Common/api";
 type MenuType = {
   setEditingMode: React.Dispatch<React.SetStateAction<Mode>>;
   functionMode: FunctionMode;
@@ -94,6 +95,9 @@ export const Menu = forwardRef(function (
   const [display, setDisplay] = useState("none");
   const inputRef = useRef<HTMLInputElement>(null);
   const [toolsDisPlay, setToolsDisPlay] = useState("none");
+  const [selectedMap, setSelectedMap] = useState<string>();
+  const [originalMap, setOriginalMap] = useState<UserDataType>();
+  const [mapData, setMapData] = useState<Map<string, UserDataType>>(new Map());
   const undoCondition = currentRecordIndex >= 0;
   const redoCondition = currentRecordIndex < record.length - 1;
   const { title } = data;
@@ -123,7 +127,9 @@ export const Menu = forwardRef(function (
     setTranslateX,
     setTranslateY,
   };
-
+  useEffect(() => {
+    mediateMap(data, transfromTools);
+  }, []);
   useImperativeHandle(
     ref,
     () => {
@@ -332,6 +338,65 @@ export const Menu = forwardRef(function (
           </>
         );
       }
+      case FunctionMode.choosingExistMap: {
+        const existingMap = [
+          { name: "上海", id: "shanghai" },
+          { name: "北京", id: "beijing" },
+          { name: "广州", id: "guangzhou" },
+          { name: "深圳", id: "shenzhen" },
+        ];
+        return (
+          <>
+            <div className="tool disabled">选择一张地图</div>
+            {existingMap.map(({ name, id }) => {
+              return (
+                <div
+                  onClick={async () => {
+                    let data = mapData.get(id);
+                    if (!data) {
+                      const res = await getExistMap(id);
+                      data = setDataFromJson(setData, res);
+                      mapData.set(id, data);
+                    } 
+                    setData({...data,title});
+                    mediateMap(data, transfromTools);
+                    setSelectedMap(id);
+                  }}
+                  className={classNames({
+                    tool: 1,
+                    disabled: selectedMap !== id,
+                  })}
+                >
+                  {name}
+                </div>
+              );
+            })}
+
+            <div
+              className="tool"
+              onClick={() => {
+                setPage("title");
+                setTitleEditable(false);
+                const data = mapData.get(selectedMap!);
+                setData(data!);
+              }}
+            >
+              新建
+            </div>
+            <div
+              className="tool"
+              onClick={() => {
+                setData(originalMap!);
+                mediateMap(originalMap!, transfromTools);
+                setPage("title");
+                setTitleEditable(false);
+              }}
+            >
+              取消
+            </div>
+          </>
+        );
+      }
     }
   };
   return (
@@ -436,7 +501,7 @@ export const Menu = forwardRef(function (
               <div
                 className="column-item"
                 onClick={() => {
-                  mediateMap(data,transfromTools)
+                  mediateMap(data, transfromTools);
                 }}
               >
                 居中路线图...
@@ -467,7 +532,16 @@ export const Menu = forwardRef(function (
               >
                 新建空白地图...
               </div>
-              <div className="column-item">从已有地图新建...</div>
+              <div
+                className="column-item"
+                onClick={(e) => {
+                  setSelectedMap("current");
+                  setOriginalMap(data);
+                  showTools(e, FunctionMode.choosingExistMap);
+                }}
+              >
+                从已有地图新建...
+              </div>
               <div
                 className="column-item"
                 onClick={(e) => {
