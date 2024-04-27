@@ -30,8 +30,9 @@ function App() {
   const [showName, setShowName] = useState(true);
   const [autoHiddenName, setAutoHiddenName] = useState(true);
   const [drawing, setDrawing] = useState(false);
-  //@ts-ignore
-  window.setDrawing = setDrawing;
+  const [translateX, setTranslateX] = useState(0);
+  const [translateY, setTranslateY] = useState(0);
+  const [scale, setScale] = useState(1);
   const ref = useRef<any>();
   const menuRef = useRef();
   const [showConfirmation, setShowConfirmation] =
@@ -77,6 +78,12 @@ function App() {
         setDrawing={setDrawing}
         cardShowing={cardShowing}
         setCardShowing={setCardShowing}
+        translateX={translateX}
+        translateY={translateY}
+        scale={scale}
+        setTranslateX={setTranslateX}
+        setTranslateY={setTranslateY}
+        setScale={setScale}
       />
       <DeleteConfirmation ref={ref} />
       <ScaleLayer
@@ -100,6 +107,12 @@ function App() {
         setAutoHiddenName={setAutoHiddenName}
         drawing={drawing}
         setDrawing={setDrawing}
+        translateX={translateX}
+        translateY={translateY}
+        scale={scale}
+        setTranslateX={setTranslateX}
+        setTranslateY={setTranslateY}
+        setScale={setScale}
       />
       <Cards
         functionMode={functionMode}

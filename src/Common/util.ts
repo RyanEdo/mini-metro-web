@@ -1,6 +1,6 @@
 import { MouseEvent, WheelEventHandler } from "react";
 import UAParser from "ua-parser-js";
-import { UserDataType } from "../Data/UserData";
+import { TransformProps, UserDataType } from "../Data/UserData";
 
 export const mapToArr = <K, V>(map: Map<K, V>) => {
   const arr: V[] = [];
@@ -16,7 +16,8 @@ export const scrollOptimize = (e: MouseEvent) => {
   childNodes.forEach((x, i) => {
     if (x === editTool) index = i;
   });
-  const scrollY = ((scrollHeight - offsetHeight) / (childNodes.length-1)) * index;
+  const scrollY =
+    ((scrollHeight - offsetHeight) / (childNodes.length - 1)) * index;
   editTools!.scrollTo({ top: scrollY, behavior: "smooth" });
 };
 
@@ -109,9 +110,7 @@ export function exportPNG(content: Blob, filename: string) {
 
 export function exportFile(content: string, filename: string, type: string) {
   const link = document.createElement("a");
-  link.href = URL.createObjectURL(
-    new Blob([content], { type })
-  );
+  link.href = URL.createObjectURL(new Blob([content], { type }));
   link.download = filename;
   link.style.display = "none";
   document.body.appendChild(link);
@@ -163,7 +162,6 @@ export const stringifyData = (data: UserDataType) => {
   return JSON.stringify({ stations, lines, title });
 };
 
-
 export const setLocalStorage = (data: UserDataType) => {
   const last = localStorage.getItem("current");
   const current = localStorage.getItem("current");
@@ -176,4 +174,43 @@ export const setLocalStorage = (data: UserDataType) => {
   }
 };
 
+export const getBoundary = (data: UserDataType) => {
+  const { stations } = data;
+  const allStationsList = mapToArr(stations);
+  let minX = Infinity,
+    minY = Infinity,
+    maxX = -Infinity,
+    maxY = -Infinity;
+  allStationsList.forEach((station) => {
+    const { position } = station;
+    const [x, y] = position;
+    minX = Math.min(x, minX);
+    minY = Math.min(y, minY);
+    maxX = Math.max(x, maxX);
+    maxY = Math.max(y, maxY);
+  });
+  return { minX, minY, maxX, maxY };
+};
 
+export const mediateMap = (
+  data: UserDataType,
+  { setScale, setTranslateX, setTranslateY }: TransformProps
+) => {
+  const { minX, minY, maxX, maxY } = getBoundary(data);
+  const width = maxX - minX;
+  const height = maxY - minY;
+  const { innerHeight, innerWidth } = window;
+  let scale = 1, transformX = -minX, transformY = -minY;
+  if (innerWidth > innerHeight) {
+    scale = (innerWidth - 50) / width;
+    transformX = 25-minX;
+    transformY = (innerHeight - height*scale)/2;
+  } else {
+    scale = (innerHeight - 50) / height;
+    transformY = 25-minY;
+    transformX = (innerWidth - width*scale)/2;
+  }
+  setScale(scale);
+  setTranslateX(transformX);
+  setTranslateY(transformY);
+};

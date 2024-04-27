@@ -26,6 +26,8 @@ import {
   ShowNameProps,
   DrawProps,
   CardShowing,
+  setDataFromJson,
+  TransformProps,
 } from "../../Data/UserData";
 import PlusIcon from "../../Resource/Icon/plus";
 import {
@@ -33,6 +35,7 @@ import {
   exportFile,
   exportJson,
   importFromFile,
+  mediateMap,
   stringifyData,
 } from "../../Common/util";
 import moment from "moment";
@@ -54,7 +57,8 @@ type MenuType = {
   cardShowing: CardShowing;
   setCardShowing: Dispatch<SetStateAction<CardShowing>>;
 } & ShowNameProps &
-  DrawProps;
+  DrawProps &
+  TransformProps;
 export const Menu = forwardRef(function (
   {
     setEditingMode,
@@ -76,6 +80,12 @@ export const Menu = forwardRef(function (
     drawing,
     cardShowing,
     setCardShowing,
+    scale,
+    setScale,
+    translateX,
+    translateY,
+    setTranslateX,
+    setTranslateY,
   }: MenuType,
   ref
 ) {
@@ -115,6 +125,7 @@ export const Menu = forwardRef(function (
     },
     []
   );
+
   const tools = () => {
     switch (functionMode) {
       case FunctionMode.addingStation: {
@@ -445,24 +456,15 @@ export const Menu = forwardRef(function (
                 onClick={(e) => {
                   e.stopPropagation();
                   importFromFile().then((res) => {
-                    const {
-                      stations: stationsArr,
-                      lines: linesArr,
-                      title,
-                    }: {
-                      stations: StationProps[];
-                      lines: LineProps[];
-                      title: string;
-                    } = res;
-                    const stations = stationsArr.reduce((map, cur) => {
-                      map.set(cur.stationId, cur);
-                      return map;
-                    }, new Map());
-                    const lines = linesArr.reduce((map, cur) => {
-                      map.set(cur.lineId, cur);
-                      return map;
-                    }, new Map());
-                    setData({ stations, lines, title });
+                    const data = setDataFromJson(setData, res);
+                    mediateMap(data, {
+                      scale,
+                      setScale,
+                      translateX,
+                      translateY,
+                      setTranslateX,
+                      setTranslateY,
+                    });
                   });
                 }}
               >
@@ -546,25 +548,15 @@ export const Menu = forwardRef(function (
                   e.stopPropagation();
                   const current = localStorage.getItem("current");
                   if (current) {
-                    const res = JSON.parse(current);
-                    const {
-                      stations: stationsArr,
-                      lines: linesArr,
-                      title,
-                    }: {
-                      stations: StationProps[];
-                      lines: LineProps[];
-                      title: string;
-                    } = res;
-                    const stations = stationsArr.reduce((map, cur) => {
-                      map.set(cur.stationId, cur);
-                      return map;
-                    }, new Map());
-                    const lines = linesArr.reduce((map, cur) => {
-                      map.set(cur.lineId, cur);
-                      return map;
-                    }, new Map());
-                    setData({ stations, lines, title });
+                    const data = setDataFromJson(setData, current);
+                    mediateMap(data, {
+                      scale,
+                      setScale,
+                      translateX,
+                      translateY,
+                      setTranslateX,
+                      setTranslateY,
+                    });
                   }
                 }}
               >

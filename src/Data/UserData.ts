@@ -18,7 +18,7 @@ export class LineProps {
   sign!: string;
   order!: number;
   bendFirst!: boolean[];
-  subLine?:boolean;
+  subLine?: boolean;
 }
 
 export type ChangeSteps = {
@@ -55,22 +55,31 @@ export class UserDataType {
   title?: string;
 }
 
-export type ShowNameProps ={
+export type ShowNameProps = {
   showName: boolean;
   setShowName: React.Dispatch<React.SetStateAction<boolean>>;
   autoHiddenName: boolean;
   setAutoHiddenName: React.Dispatch<React.SetStateAction<boolean>>;
-}
+};
 
 export type DrawProps = {
-  drawing: boolean,
+  drawing: boolean;
   setDrawing: React.Dispatch<React.SetStateAction<boolean>>;
-}
+};
 
 export type DrawerSize = {
-  drawerX: number,
-  drawerY: number,
-}
+  drawerX: number;
+  drawerY: number;
+};
+
+export type TransformProps = {
+  translateX: number;
+  setTranslateX: React.Dispatch<React.SetStateAction<number>>;
+  translateY: number;
+  setTranslateY: React.Dispatch<React.SetStateAction<number>>;
+  scale: number;
+  setScale: React.Dispatch<React.SetStateAction<number>>;
+};
 const initDataMock: UserDataType = {
   title: "提瓦特",
   stations: [
@@ -145,6 +154,34 @@ export const initData = {
   // lines: [],
   ...initDataMock,
 };
+
+export const setDataFromJson = (
+  setData: Dispatch<SetStateAction<UserDataType>>,
+  jsonString: string
+) => {
+  const res = JSON.parse(jsonString);
+  const {
+    stations: stationsArr,
+    lines: linesArr,
+    title,
+  }: {
+    stations: StationProps[];
+    lines: LineProps[];
+    title: string;
+  } = res;
+  const stations = stationsArr.reduce((map, cur) => {
+    map.set(cur.stationId, cur);
+    return map;
+  }, new Map());
+  const lines = linesArr.reduce((map, cur) => {
+    map.set(cur.lineId, cur);
+    return map;
+  }, new Map());
+  const data = { stations, lines, title }
+  setData(data);
+  return data;
+};
+
 export const deleteStation = (
   data: UserDataType,
   setData: Dispatch<SetStateAction<UserDataType>>,
@@ -240,7 +277,7 @@ export const dataProcessor = (
       setData((state) => {
         const station = stations.get(id);
         station!.tagDirection = direct;
-        if(direct === 8) delete station!.tagDirection;
+        if (direct === 8) delete station!.tagDirection;
         return { ...state };
       });
     },
@@ -285,7 +322,7 @@ export const dataProcessor = (
       setData((state) => {
         const line = lines.get(id);
         line!.subLine = subLine;
-        if(!subLine) delete line!.subLine;
+        if (!subLine) delete line!.subLine;
         return { ...state };
       });
     },

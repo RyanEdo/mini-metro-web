@@ -27,10 +27,11 @@ import {
   RecordType,
   ShowNameProps,
   StationProps,
+  TransformProps,
   UserDataType,
 } from "../../Data/UserData";
-import { mapToArr } from "../../Common/util";
-import { transform } from "html2canvas/dist/types/css/property-descriptors/transform";
+import { getBoundary, mapToArr } from "../../Common/util";
+
 type ScaleLayerProp = {
   editingMode: Mode;
   setEditingMode: React.Dispatch<React.SetStateAction<Mode>>;
@@ -47,7 +48,7 @@ type ScaleLayerProp = {
   cardShowing: CardShowing;
   setCardShowing: Dispatch<SetStateAction<CardShowing>>;
 } & ShowNameProps &
-  DrawProps;
+  DrawProps & TransformProps;
 function ScaleLayer({
   editingMode,
   setEditingMode,
@@ -69,10 +70,14 @@ function ScaleLayer({
   setAutoHiddenName,
   drawing,
   setDrawing,
+  scale,
+  setScale,
+  translateX,
+  translateY,
+  setTranslateX,
+  setTranslateY
 }: ScaleLayerProp) {
-  const [translateX, setTranslateX] = useState(0);
-  const [translateY, setTranslateY] = useState(0);
-  const [scale, setScale] = useState(1);
+
   // mouseRefPoint
   // in mouse drag mode: this point record mouse start point
   const [mouseRefPoint, setMouseRefPoint] = useState(new Point());
@@ -101,18 +106,7 @@ function ScaleLayer({
 
   const { stations } = data;
   const allStationsList = mapToArr(stations);
-  let minX = Infinity,
-    minY = Infinity,
-    maxX = -Infinity,
-    maxY = -Infinity;
-  allStationsList.forEach((station) => {
-    const { position } = station;
-    const [x, y] = position;
-    minX = Math.min(x, minX);
-    minY = Math.min(y, minY);
-    maxX = Math.max(x, maxX);
-    maxY = Math.max(y, maxY);
-  });
+  const {minX,minY,maxX,maxY} = getBoundary(data);
   const drawerX = maxX - minX + 400;
   const drawerY = maxY - minY + 400;
   const style:CSSProperties = {
