@@ -1,4 +1,9 @@
-import { mapToArr, mediateMap, setLocalStorage } from "../Common/util";
+import {
+  browserInfo,
+  mapToArr,
+  mediateMap,
+  setLocalStorage,
+} from "../Common/util";
 import {
   CardShowing,
   ChangeSteps,
@@ -54,7 +59,6 @@ function App() {
     setShowConfirmation(() => ref.current?.showConfirmation);
   }, [ref.current?.showConfirmation]);
   const [cardShowing, setCardShowing] = useState(new CardShowing());
-
   return (
     <div className="App">
       <Menu
