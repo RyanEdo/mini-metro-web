@@ -2,6 +2,7 @@ import React, {
   CSSProperties,
   Dispatch,
   SetStateAction,
+  memo,
   useEffect,
   useState,
 } from "react";
@@ -46,12 +47,6 @@ function LineRender({
   const { color, lineId, subLine, lineName } = displayLine!;
   const { lineIds, stationIds } = cardShowing;
   const showing = lineIds?.length || stationIds?.length;
-  console.log(
-    stationIds &&
-      stationIds.length === 1 &&
-      stationIds[0] &&
-      stations.get(stationIds[0])
-  );
   const emphasis =
     lineIds?.includes(lineId) ||
     (stationIds &&
@@ -79,16 +74,16 @@ function LineRender({
             id={lineName}
             // fill="transparent"
             // stroke-linecap="round"
-            stroke-dasharray={subLine ? "10,5" : undefined}
+            strokeDasharray={subLine ? "10,5" : undefined}
             fill="none"
             stroke={showing && !emphasis ? `${color}55` : `${color}`}
             d={command}
-            stroke-width={gauge}
+            strokeWidth={gauge}
             style={{ cursor: "pointer" }}
             onMouseDown={() => setMoved(false)}
             onTouchStart={() => setMoved(false)}
-            onTouchMove={() => setMoved(true)}
-            onMouseMove={() => setMoved(true)}
+            onTouchMove={() => (!moved) && setMoved(true)}
+            onMouseMove={() => (!moved) && setMoved(true)}
             onMouseUp={onClick}
             onTouchEnd={onClick}
           />
@@ -101,4 +96,4 @@ function LineRender({
   );
 }
 
-export default LineRender;
+export default memo(LineRender);

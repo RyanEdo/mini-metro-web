@@ -344,11 +344,17 @@ export const Menu = forwardRef(function (
           { name: "北京", id: "beijing" },
           { name: "广州", id: "guangzhou" },
           { name: "深圳", id: "shenzhen" },
+          { name: "香港", id: "hongkong", webkit: true },
+          { name: "长沙", id: "changsha", webkit: true },
+          { name: "天津", id: "tianjing", webkit: true },
+
+
         ];
+        const webkit = engine.name === "WebKit";
         return (
           <>
             <div className="tool disabled">选择一张地图</div>
-            {existingMap.map(({ name, id }) => {
+            {existingMap.filter(x=>webkit ? x.webkit: true).map(({ name, id }) => {
               return (
                 <div
                   onClick={async () => {
@@ -654,6 +660,41 @@ export const Menu = forwardRef(function (
                 }}
               >
                 导出恢复数据...
+              </div>
+            </div>
+          </div>
+
+          <div className="column">
+            <div className="column-title">关于</div>
+            <div className="column-items">
+
+              <div
+                className="column-item"
+                onClick={() => {
+                }}
+              >
+                项目地址...
+              </div>
+              <div
+                className="column-item"
+                onClick={() => {
+                }}
+              >
+                使用教程...
+              </div>
+              <div
+                className="column-item small"
+              >
+                版本 :  1.0.0
+              </div>
+              <div
+                className="column-item small author"
+                onClick={e => {
+                  e.stopPropagation();
+                  window.open("https://space.bilibili.com/8217854","_blank");
+                }}
+              >
+                作者 :  江户川瑞安
               </div>
             </div>
           </div>

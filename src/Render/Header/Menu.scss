@@ -220,9 +220,23 @@
                                 margin-right: 10px;
                             }
                         }
+                        &.small{
+                            font-size: small;
+                        }
+                        &.author{
+                            margin-top: 4px;
+                            &:hover{
+                                // text-decoration: underline;
+                            }
+                        }
                     }
                 }
             }
+        }
+        .notice{
+            position: fixed;
+            left: 0;
+            bottom: 0;
         }
     }
 }
