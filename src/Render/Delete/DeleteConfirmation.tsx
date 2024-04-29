@@ -79,7 +79,8 @@ export const DeleteConfirmation = forwardRef(function (
       style={show === ShowMode.none ? { display: "none" } : {}}
       className={classNames({
         "delete-confirmation-container": 1,
-        show: show === ShowMode.animated,
+        "before-animate": show === ShowMode.beforeAnimate, 
+        animated: show === ShowMode.animated,
       })}
       onClick={disappearWithAnimate}
     >
