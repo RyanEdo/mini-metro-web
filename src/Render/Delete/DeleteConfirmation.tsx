@@ -21,25 +21,40 @@ export interface showConfirmationInterface {
     callback?: any
   ): void;
 }
+enum ShowMode {
+  none,
+  beforeAnimate,
+  animated,
+}
 export const DeleteConfirmation = forwardRef(function (
   {}: any,
   ref: React.Ref<unknown> | undefined
 ) {
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(ShowMode.none);
   //   const [title, setTitle] = useState();
   //   const [subTitle, setSubTitle] = useState();
   const [line, setLine] = useState<LineProps>();
   const [station, setStation] = useState<StationProps>();
   const [stationIndex, setStationIndex] = useState<number | undefined>();
   const [callback, setCallback] = useState(() => () => {});
+  //@ts-ignore
+  window.setShow = setShow
+  const showWithAnimate = () => {
+    setShow(ShowMode.beforeAnimate);
+    setTimeout(() => setShow(ShowMode.animated));
+  };
+  const disappearWithAnimate = () => {
+    setShow(ShowMode.beforeAnimate);
+    setTimeout(() => setShow(ShowMode.none));
+  };
   const showConfirmation: showConfirmationInterface = (
     { line, station, stationIndex },
     callback
   ) => {
-    setShow(true);
+    showWithAnimate();
     setLine(line);
     setStation(station);
-    setCallback(()=>callback);
+    setCallback(() => callback);
     setStationIndex(stationIndex);
   };
   useImperativeHandle(
@@ -58,10 +73,15 @@ export const DeleteConfirmation = forwardRef(function (
   const { lineName, sign, color } = line || {};
   const index = stationIndex ? stationIndex + 1 : 0;
   const subTitle = `不再作为${lineName}的第${index}站`;
+
   return (
     <div
-      className={classNames({ "delete-confirmation-container": 1, show })}
-      onClick={() => setShow(false)}
+      style={show === ShowMode.none ? { display: "none" } : {}}
+      className={classNames({
+        "delete-confirmation-container": 1,
+        show: show === ShowMode.animated,
+      })}
+      onClick={disappearWithAnimate}
     >
       <div className="delete-confirmation">
         <div className="title">{title}</div>
@@ -89,18 +109,21 @@ export const DeleteConfirmation = forwardRef(function (
             </div>
             <div className="text">{stationName || lineName}</div>
           </div>
-          <div className="delete-line" style={show ? {} : { width: 0 }}></div>
+          <div
+            className="delete-line"
+            style={show===ShowMode.animated ? {} : { width: 0 }}
+          ></div>
         </div>
         <div
           className="delete"
           onClick={() => {
-            setShow(false);
+            disappearWithAnimate();
             if (typeof callback === "function") callback();
           }}
         >
           {deleteText}
         </div>
-        <div className="back" onClick={() => setShow(false)}>
+        <div className="back" onClick={disappearWithAnimate}>
           取消
         </div>
       </div>

@@ -354,7 +354,9 @@ export const Menu = forwardRef(function (
         return (
           <>
             <div className="tool disabled">选择一张地图</div>
-            {existingMap.filter(x=>webkit ? x.webkit: true).map(({ name, id }) => {
+            {existingMap
+            // .filter(x=>webkit ? x.webkit: true)
+            .map(({ name, id }) => {
               return (
                 <div
                   onClick={async () => {
