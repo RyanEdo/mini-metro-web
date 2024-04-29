@@ -161,7 +161,7 @@ export const stringifyData = (data: UserDataType) => {
   return JSON.stringify({ stations, lines, title });
 };
 
-export const setLocalStorage = (data: UserDataType) => {
+export const setLocalStorage = (data: UserDataType, callback: Function) => {
   const last = localStorage.getItem("current");
   const current = localStorage.getItem("current");
   const latest = stringifyData(data);
@@ -170,6 +170,7 @@ export const setLocalStorage = (data: UserDataType) => {
       localStorage.setItem("last", current);
     }
     localStorage.setItem("current", latest);
+    callback();
   }
 };
 

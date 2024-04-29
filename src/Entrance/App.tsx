@@ -40,6 +40,7 @@ function App() {
   const [scale, setScale] = useState(1);
   const ref = useRef<any>();
   const menuRef = useRef();
+  const [saved, setSaved] = useState(true);
   const [showConfirmation, setShowConfirmation] =
     useState<showConfirmationInterface>();
   // keep latest data if crash happend
@@ -47,11 +48,11 @@ function App() {
     if (typeof data === "function") {
       setDataOriginal((state) => {
         const newState = data(state);
-        setLocalStorage(newState);
+        setLocalStorage(newState, () => setSaved(false));
         return newState;
       });
     } else {
-      setLocalStorage(data);
+      setLocalStorage(data, () => setSaved(false));
       setDataOriginal(data);
     }
   };
@@ -88,6 +89,8 @@ function App() {
         setTranslateX={setTranslateX}
         setTranslateY={setTranslateY}
         setScale={setScale}
+        saved={saved}
+        setSaved={setSaved}
       />
       <DeleteConfirmation ref={ref} />
       <ScaleLayer

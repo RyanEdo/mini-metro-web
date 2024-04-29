@@ -43,6 +43,7 @@ import moment from "moment";
 import { toPng, toJpeg, toBlob, toPixelData, toSvg } from "html-to-image";
 import download from "downloadjs";
 import { getExistMap } from "../../Common/api";
+
 type MenuType = {
   setEditingMode: React.Dispatch<React.SetStateAction<Mode>>;
   functionMode: FunctionMode;
@@ -57,6 +58,8 @@ type MenuType = {
   setInsertInfo: React.Dispatch<React.SetStateAction<InsertInfo | undefined>>;
   cardShowing: CardShowing;
   setCardShowing: Dispatch<SetStateAction<CardShowing>>;
+  saved: boolean;
+  setSaved: Dispatch<SetStateAction<boolean>>;
 } & ShowNameProps &
   DrawProps &
   TransformProps;
@@ -87,6 +90,8 @@ export const Menu = forwardRef(function (
     translateY,
     setTranslateX,
     setTranslateY,
+    saved,
+    setSaved
   }: MenuType,
   ref
 ) {
@@ -524,7 +529,7 @@ export const Menu = forwardRef(function (
                 className="column-item"
                 onClick={(e) => {
                   const current = localStorage.getItem("current");
-                  if (current)
+                  if (current && !saved)
                     exportJson(
                       current!,
                       `${title}-autosave-${moment().format(
@@ -627,6 +632,7 @@ export const Menu = forwardRef(function (
                 onClick={(e) => {
                   e.stopPropagation();
                   const current = stringifyData(data);
+                  setSaved(true);
                   exportJson(
                     current!,
                     `${title}-${moment().format("YYYY-MM-DD_HH-mm-ss")}.json`
