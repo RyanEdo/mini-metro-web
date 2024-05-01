@@ -39,6 +39,7 @@ import {
   getRoundedPoints,
   generateLineCommand,
 } from "../../Line/LinePoints";
+import classNames from "classnames";
 type RenderProps = {
   data: UserDataType;
   setData: Dispatch<SetStateAction<UserDataType>>;
@@ -57,7 +58,8 @@ type RenderProps = {
   setCardShowing: Dispatch<SetStateAction<CardShowing>>;
   editingMode: Mode;
 } & ShowNameProps &
-  DrawProps & DrawerSize;
+  DrawProps &
+  DrawerSize;
 const buildStations = (
   stations: Map<string | number, StationProps>
 ): Map<number, Station> => {
@@ -77,18 +79,20 @@ const buildLines = (
   stationMap: Map<number, Station>
 ) => {
   const lineMap = new Map();
-  mapToArr(lines).sort((a,b)=>a.order-b.order).forEach((line) => {
-    const { stationIds, lineId, bendFirst } = line;
-    const dLine = new Line();
-    dLine.displayLine = line;
-    for (let i = 1; i < stationIds.length; i++) {
-      const B = stationMap.get(stationIds[i - 1])!;
-      const C = stationMap.get(stationIds[i])!;
+  mapToArr(lines)
+    .sort((a, b) => a.order - b.order)
+    .forEach((line) => {
+      const { stationIds, lineId, bendFirst } = line;
+      const dLine = new Line();
+      dLine.displayLine = line;
+      for (let i = 1; i < stationIds.length; i++) {
+        const B = stationMap.get(stationIds[i - 1])!;
+        const C = stationMap.get(stationIds[i])!;
 
-      dLine.link(B, C, !!bendFirst[i - 1]);
-    }
-    lineMap.set(lineId, dLine);
-  });
+        dLine.link(B, C, !!bendFirst[i - 1]);
+      }
+      lineMap.set(lineId, dLine);
+    });
   return lineMap;
 };
 
@@ -100,7 +104,7 @@ const renderLines = (
   data: UserDataType,
   setData: Dispatch<SetStateAction<UserDataType>>,
   { drawing, setDrawing }: DrawProps,
-  {drawerX,drawerY}:DrawerSize,
+  { drawerX, drawerY }: DrawerSize
 ) => {
   return (
     <div>
@@ -148,7 +152,8 @@ function RenderLayer({
   setAutoHiddenName,
   drawing,
   setDrawing,
-  drawerX,drawerY
+  drawerX,
+  drawerY,
 }: RenderProps) {
   const { lines, stations } = data;
   const stationMap = buildStations(stations);
@@ -280,8 +285,9 @@ function RenderLayer({
             shape,
             stationId,
             lineIds: stationLineIds,
-            tagDirection
+            tagDirection,
           } = displayStation!;
+          const  descend = stations.size - index;
           const add = () => {
             if (!moved) setCardShowing({ stationIds: [stationId] });
             if (functionMode === FunctionMode.selectingStation) {
@@ -309,7 +315,7 @@ function RenderLayer({
             }
           };
           let nameDirection: Direct = station.getBestDirectionForName();
-          if(tagDirection || tagDirection===0) nameDirection = tagDirection;
+          if (tagDirection || tagDirection === 0) nameDirection = tagDirection;
           const SQRT1_2 = Math.SQRT1_2;
           const directionOffset = [
             [0, -1],
@@ -355,16 +361,20 @@ function RenderLayer({
           };
           return (
             <div
+              id={`station-${stationId}`}
               onMouseDown={(e) => operationStart(e, station)}
               onTouchStart={(e) => operationStart(e, station)}
-              className="station-render"
+              className={classNames({ "station-render": 1 , [`station-trigger-descend-${descend}`]:  1})}
               onTouchMove={() => setMoved(true)}
               onMouseMove={() => setMoved(true)}
               onTouchEnd={add}
               onClick={add}
             >
               <div
-                className="station-shape"
+                className={classNames({
+                  "station-shape": 1,
+                  [`station-descend-${descend}`]:  1,
+                })}
                 style={{
                   position: "absolute",
                   left: station.position.x - 15,
@@ -409,7 +419,7 @@ function RenderLayer({
     );
   };
   const commandMap = new Map<Line, string>();
-  allLinesList.map((line:Line) => {
+  allLinesList.map((line: Line) => {
     const { displayLine } = line;
     const { color, lineId, subLine } = displayLine!;
     let command = "",
@@ -434,7 +444,7 @@ function RenderLayer({
     data,
     setData,
     { drawing, setDrawing },
-    {drawerX,drawerY}
+    { drawerX, drawerY }
   );
 
   return (

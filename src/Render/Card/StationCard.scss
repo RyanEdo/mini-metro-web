@@ -165,6 +165,7 @@
         }
         .operation-detail {
             .operation-item {
+                width: fit-content;
                 &:first-child {
                     margin-top: 15px;
                 }

@@ -158,6 +158,7 @@ export const Menu = forwardRef(function (
                 : "点击空白处新增站点"}
             </div>
             <div
+            
               className={classNames({ tool: 1, disabled: !undoCondition })}
               onClick={(e) => {
                 e.stopPropagation();
@@ -186,6 +187,7 @@ export const Menu = forwardRef(function (
             </div>
             <div
               className="tool"
+              id="add-station-finish-btn"
               onClick={() => {
                 setPage("title");
                 setTitleEditable(false);
@@ -332,6 +334,7 @@ export const Menu = forwardRef(function (
             </div>
             <div
               className="tool"
+              id="add-line-finish-btn"
               onClick={() => {
                 setPage("title");
                 setTitleEditable(false);
@@ -468,6 +471,7 @@ export const Menu = forwardRef(function (
             <div className="column-title">站点</div>
             <div className="column-items">
               <div
+                id="menu-add-station"
                 className="column-item"
                 onClick={(e) => showTools(e, FunctionMode.addingStation)}
               >

@@ -157,7 +157,7 @@ export function StationCard({
         return (
           <div className="operation-detail">
             <div
-              className="operation-item"
+              className="operation-item add-new-line-btn"
               onClick={(e) => {
                 const newLine = addNewLine();
                 setInsertInfo({ insertIndex: 1, line: newLine! });
@@ -314,7 +314,7 @@ export function StationCard({
             </div>
             <div
               className={classNames({
-                "edit-tool operation": 1,
+                "edit-tool operation station-card-operation": 1,
                 selected: tab === "operation",
               })}
               onClick={(e) => {

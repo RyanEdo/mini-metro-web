@@ -135,7 +135,7 @@ function App() {
         cardShowing={cardShowing}
         setCardShowing={setCardShowing}
       />
-      <WelcomeTour />
+      <WelcomeTour data={data}/>
     </div>
   );
 }

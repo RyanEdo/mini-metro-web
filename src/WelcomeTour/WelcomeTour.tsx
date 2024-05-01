@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import "./WelcomeTour.scss";
 import Infinity from "../Resource/Icon/infinity";
 import GoToIcon from "../Resource/Icon/goto";
 import { hightLights } from "./HightLights";
 import classNames from "classnames";
-export function WelcomeTour() {
+import { onWheelX } from "../Common/util";
+import { showTour } from "./driver";
+import { UserDataType } from "../Data/UserData";
+export function WelcomeTour({data}:{data: UserDataType}) {
+  const [show, setShow] = useState(true);
   return (
-    <div className="welcome-tour-container">
+    <div className="welcome-tour-container" style={show?{}:{display: 'none'}}>
       <div className="welcome-tour">
         <div className="header">
           <span className="icon">
@@ -17,12 +21,15 @@ export function WelcomeTour() {
             <div className="main-title">迷你地铁地图构建工具</div>
           </span>
           <div className="control">
-            <span className="skip-tour">暂时跳过</span>
-            <span className="start-tour">开始教程</span>
+            <span className="skip-tour" onClick={()=>{setShow(false)}}>暂时跳过</span>
+            <span className="start-tour" onClick={()=>{
+              setShow(false);
+              showTour(data);
+            }}>开始教程</span>
           </div>
         </div>
         <div className="divider"></div>
-        <div className="body">
+        <div className="body"  onWheel={onWheelX}>
           {hightLights.map((hightLight) => {
             const { icon, title, subTitle, introText, more } = hightLight;
             return (
