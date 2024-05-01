@@ -24,6 +24,7 @@ import {
 import { Menu } from "../Render/Header/Menu";
 import ScaleLayer from "../Render/Layer/ScaleLayer";
 import "./App.scss";
+import "driver.js/dist/driver.css";
 import React, { useEffect, useRef, useState } from "react";
 function App() {
   const [editingMode, setEditingMode] = useState(Mode.normal);

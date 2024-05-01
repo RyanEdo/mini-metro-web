@@ -25,6 +25,7 @@ enum ShowMode {
   none,
   beforeAnimate,
   animated,
+  beforeDisappear,
 }
 export const DeleteConfirmation = forwardRef(function (
   {}: any,
@@ -44,8 +45,8 @@ export const DeleteConfirmation = forwardRef(function (
     setTimeout(() => setShow(ShowMode.animated));
   };
   const disappearWithAnimate = () => {
-    setShow(ShowMode.beforeAnimate);
-    setTimeout(() => setShow(ShowMode.none));
+    setShow(ShowMode.beforeDisappear);
+    setTimeout(() => setShow(ShowMode.none),300);
   };
   const showConfirmation: showConfirmationInterface = (
     { line, station, stationIndex },
@@ -80,7 +81,8 @@ export const DeleteConfirmation = forwardRef(function (
       className={classNames({
         "delete-confirmation-container": 1,
         "before-animate": show === ShowMode.beforeAnimate, 
-        animated: show === ShowMode.animated,
+        "animated": show === ShowMode.animated,
+        "before-disappear": show === ShowMode.beforeDisappear,
       })}
       onClick={disappearWithAnimate}
     >
@@ -112,7 +114,7 @@ export const DeleteConfirmation = forwardRef(function (
           </div>
           <div
             className="delete-line"
-            style={show===ShowMode.animated ? {} : { width: 0 }}
+            style={show===ShowMode.animated || show === ShowMode.beforeDisappear ? {} : { width: 0 }}
           ></div>
         </div>
         <div

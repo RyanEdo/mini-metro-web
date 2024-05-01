@@ -12,9 +12,9 @@ import "./LineCard.scss";
 import ArrowIcon from "../../Resource/Icon/arrow";
 import PlusIcon from "../../Resource/Icon/plus";
 
-import expendIcon from "../../Resource/Icon/expend-icon.svg";
-import shrinkIcon from "../../Resource/Icon/shrink-icon.svg";
-import EditIcon from "../../Resource/Icon/edit.svg";
+import ExpendIcon from "../../Resource/Icon/expend";
+import ShrinkIcon from "../../Resource/Icon/shrink";
+import EditIcon from "../../Resource/Icon/edit";
 
 import classNames from "classnames";
 import {
@@ -265,10 +265,7 @@ export function LineCard({
           <></>
         ) : (
           <div className="expend tool-item" onClick={() => setExpend(!expend)}>
-            <img
-              className="expend-icon"
-              src={expend ? shrinkIcon : expendIcon}
-            ></img>
+            {expend ? <ShrinkIcon className="expend-icon"/> : <ExpendIcon className="expend-icon"/>}
           </div>
         )}
       </div>
