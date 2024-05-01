@@ -74,12 +74,19 @@
         }
         .body {
             white-space: nowrap;
+            overflow-x: scroll;
+            &::-webkit-scrollbar {
+                display: none;
+            }
             .intro {
                 display: inline-block;
                 color: white;
                 width: 285px;
                 margin-left: 38px;
                 margin-top: 36.67px;
+                &:last-child{
+                    margin-right: 38px;
+                }
                 .hight-light {
                     display: inline-flex;
                     justify-content: center;

@@ -1,7 +1,7 @@
 import React from "react";
 import "./WelcomeTour.scss";
 import Infinity from "../Resource/Icon/infinity";
-import GoToIcon from "../Resource/Icon/GoTo";
+import GoToIcon from "../Resource/Icon/goto";
 import { hightLights } from "./HightLights";
 import classNames from "classnames";
 export function WelcomeTour() {

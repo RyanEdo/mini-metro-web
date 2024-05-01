@@ -1,8 +1,13 @@
-<svg width="31" height="31" viewBox="0 0 31 31" fill="none" xmlns="http://www.w3.org/2000/svg">
-<mask id="mask0_863_660" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="31" height="31">
+import React from "react";
+
+const ExportIcon = ({ className }: { className?: string }) => (<svg width="31" height="31" viewBox="0 0 31 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="mask0_863_660"       style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="31" height="31">
 <rect width="31" height="31" fill="#D9D9D9"/>
 </mask>
 <g mask="url(#mask0_863_660)">
 <path d="M7.7474 29.7087C7.03698 29.7087 6.42882 29.4557 5.92292 28.9498C5.41701 28.4439 5.16406 27.8357 5.16406 27.1253V12.917C5.16406 12.2066 5.41701 11.5984 5.92292 11.0925C6.42882 10.5866 7.03698 10.3337 7.7474 10.3337H11.6224V12.917H7.7474V27.1253H23.2474V12.917H19.3724V10.3337H23.2474C23.9578 10.3337 24.566 10.5866 25.0719 11.0925C25.5778 11.5984 25.8307 12.2066 25.8307 12.917V27.1253C25.8307 27.8357 25.5778 28.4439 25.0719 28.9498C24.566 29.4557 23.9578 29.7087 23.2474 29.7087H7.7474ZM14.2057 20.667V6.23262L12.1391 8.29928L10.3307 6.45866L15.4974 1.29199L20.6641 6.45866L18.8557 8.29928L16.7891 6.23262V20.667H14.2057Z" fill="white"/>
 </g>
-</svg>
+</svg>);
+
+export default ExportIcon;
+
