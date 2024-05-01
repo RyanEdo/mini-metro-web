@@ -1,0 +1,151 @@
+.welcome-tour-container {
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    left: 0;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    font-weight: 500;
+    font-size: 18px;
+    .welcome-tour {
+        margin-top: -10vh;
+        width: 800px;
+        min-width: 45vw;
+        height: 475px;
+        background-color: #454545;
+        border-radius: 12px;
+        .header {
+            margin: 33.3px 33.3px 20px 33.3px;
+            white-space: nowrap;
+            position: relative;
+            .icon {
+                img {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 5px;
+                }
+            }
+            .title {
+                display: inline-block;
+                margin-left: 13px;
+                vertical-align: top;
+                .sub-title {
+                    font-size: 12px;
+                    color: white;
+                    width: fit-content;
+                    margin-top: -2px;
+                }
+                .main-title {
+                    color: white;
+                    font-weight: 800;
+                    width: fit-content;
+                }
+            }
+            .control {
+                display: inline-flex;
+                vertical-align: top;
+                font-size: 12px;
+                position: absolute;
+                right: 0;
+                height: 40px;
+                justify-content: center;
+                align-items: center;
+
+                .skip-tour {
+                    color: rgba(255, 255, 255, 0.6);
+                    margin: 0 20px;
+                    cursor: pointer;
+                }
+                .start-tour {
+                    cursor: pointer;
+                    color: white;
+                    padding: 7.33px 20px;
+                    background-color: #2196f3;
+                    border-radius: 35px;
+                }
+            }
+        }
+        .divider {
+            border-bottom: rgba(255, 255, 255, 0.27) solid 1px;
+        }
+        .body {
+            white-space: nowrap;
+            .intro {
+                display: inline-block;
+                color: white;
+                width: 285px;
+                margin-left: 38px;
+                margin-top: 36.67px;
+                .hight-light {
+                    display: inline-flex;
+                    justify-content: center;
+                    align-items: center;
+                    background-color: #727272;
+                    padding: 4px 15px;
+                    border-radius: 35px;
+                    .icon {
+                        height: 20px;
+                        width: 20px;
+                        svg {
+                            height: 20px;
+                            width: 20px;
+                        }
+                    }
+                    .title {
+                        margin-left: 5px;
+                    }
+                }
+                .detail-card {
+                    height: 240px;
+                    background-color: #727272;
+                    border-radius: 14px;
+                    margin-top: 17.3px;
+                    display: flow-root;
+                    position: relative;
+
+                    .title {
+                        margin-top: 20.67px;
+                        margin-left: 24px;
+                    }
+                    .left-down {
+                        position: absolute;
+                        left: 24px;
+                        bottom: 20.67px;
+                        .intro-text {
+                            .intro-text-line {
+                                :not(.emphasis) {
+                                    color: rgba(255, 255, 255, 0.6);
+                                }
+                            }
+                        }
+                        .more {
+                            margin-top: 26px;
+                            cursor: pointer;
+                            &:hover{
+                                // text-decoration: underline;
+                                opacity: 0.9; ;
+                            }
+                            .more-text {
+                                
+                            }
+                            .more-icon {
+                                height: 20px;
+                                width: 28px;
+                                vertical-align: top;
+                                display: inline-block;
+                                svg {
+                                    height: 28px;
+                                    width: 28px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

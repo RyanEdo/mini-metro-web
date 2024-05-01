@@ -23,6 +23,7 @@ import {
 } from "../Render/Delete/DeleteConfirmation";
 import { Menu } from "../Render/Header/Menu";
 import ScaleLayer from "../Render/Layer/ScaleLayer";
+import { WelcomeTour } from "../WelcomeTour/WelcomeTour";
 import "./App.scss";
 import "driver.js/dist/driver.css";
 import React, { useEffect, useRef, useState } from "react";
@@ -134,6 +135,7 @@ function App() {
         cardShowing={cardShowing}
         setCardShowing={setCardShowing}
       />
+      <WelcomeTour />
     </div>
   );
 }
