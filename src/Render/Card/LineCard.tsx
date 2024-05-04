@@ -12,7 +12,7 @@ import "./LineCard.scss";
 import ArrowIcon from "../../Resource/Icon/arrow";
 import PlusIcon from "../../Resource/Icon/plus";
 
-import ExpendIcon from "../../Resource/Icon/expend";
+import ExpandIcon from "../../Resource/Icon/expand";
 import ShrinkIcon from "../../Resource/Icon/shrink";
 import EditIcon from "../../Resource/Icon/edit";
 
@@ -90,15 +90,15 @@ export function LineCard({
   //   firstStation = new StationProps();
   //   lastStation = firstStation;
   // }
-  const [expend, setExpend] = useState(false);
+  const [expand, setExpand] = useState(false);
   const [edit, setEdit] = useState(false);
-  const [expendWidth, setExpendWidth] = useState(455);
+  const [expandWidth, setExpandWidth] = useState(455);
   const [tab, setTab] = useState("name");
   const addingStation =
     functionMode === FunctionMode.selectingStation ||
     functionMode === FunctionMode.lineEditing ||
     !firstStation;
-  const getExpendWidth = () => {
+  const getExpandWidth = () => {
     const { stationIds: stations } = cardShowing;
     const expected =
       33 + 161 * (addingStation ? stationIds.length + 1 : stationIds.length);
@@ -109,16 +109,16 @@ export function LineCard({
         ? window.innerWidth - (hasStation ? 505 : 100)
         : expected;
     // console.log(width);
-    setExpendWidth(width);
+    setExpandWidth(width);
   };
   useEffect(() => {
-    getExpendWidth();
-    window.addEventListener("resize", getExpendWidth);
-    return () => window.removeEventListener("resize", getExpendWidth);
+    getExpandWidth();
+    window.addEventListener("resize", getExpandWidth);
+    return () => window.removeEventListener("resize", getExpandWidth);
   }, [stationIds, addingStation, cardShowing]);
   useEffect(() => {
-    getExpendWidth();
-  }, [expend]);
+    getExpandWidth();
+  }, [expand]);
   const editTools = (tab: string) => {
     switch (tab) {
       case "name": {
@@ -238,9 +238,9 @@ export function LineCard({
   }
   return (
     <div
-      className={classNames({ "line-card": 1, "expend-card": expend })}
+      className={classNames({ "line-card": 1, "expand-card": expand })}
       style={{
-        width: expend ? expendWidth : undefined,
+        width: expand ? expandWidth : undefined,
         boxShadow:
           engine.name === "WebKit"
             ? "0 4px 59px 7px rgba(0, 0, 0, 0.25)"
@@ -248,7 +248,7 @@ export function LineCard({
       }}
     >
       <div className="tools">
-        {expend || edit ? (
+        {expand || edit ? (
           <></>
         ) : (
           <div
@@ -264,8 +264,8 @@ export function LineCard({
         {edit ? (
           <></>
         ) : (
-          <div className="expend tool-item" onClick={() => setExpend(!expend)}>
-            {expend ? <ShrinkIcon className="expend-icon"/> : <ExpendIcon className="expend-icon"/>}
+          <div className="expand tool-item" onClick={() => setExpand(!expand)}>
+            {expand ? <ShrinkIcon className="expand-icon"/> : <ExpandIcon className="expand-icon"/>}
           </div>
         )}
       </div>
@@ -296,7 +296,7 @@ export function LineCard({
 
           <div
             className="station-bar"
-            style={expend ? { width: expendWidth } : {}}
+            style={expand ? { width: expandWidth } : {}}
             onWheel={onWheelX}
           >
             <div className="add-first"></div>

@@ -24,7 +24,7 @@ export const getSteps = (driver: Driver): DriveStep[] => [
     },
   },
   {
-    element: ".expend",
+    element: ".expand",
     popover: { title: "放大按钮", description: "可以拓宽线路卡片" },
   },
 ];
