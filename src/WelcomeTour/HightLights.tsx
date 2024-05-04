@@ -39,7 +39,7 @@ export const hightLights = [
       [false, "站点线路互相", "关联"],
       [true, "高亮", "展示选中站点与线路"],
     ],
-    more: "了解信息卡片"
+    more: "了解站点卡片"
   },
   {
     id:'quick-edit',
@@ -50,7 +50,7 @@ export const hightLights = [
       [true, "连续添加站点", "模式"],
       [false, "支持", "撤回", "与", "重做"],
     ],
-    more: "了解快速编辑"
+    more: "了解快速创建"
   },
   {
     id:'mobile',

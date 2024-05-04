@@ -32,7 +32,7 @@ export const showTour = async (id: string, callback: Function) => {
           setTimeout(() => {
             if (!next || document.querySelector(next.element as string)) {
               element.removeEventListener(eventName, moveToNext);
-              // element.removeEventListener("touchend",moveToNext)
+              // element.removeEventListener("touchend",moveToNext);
               driver.moveNext();
             }
           }, 100);
@@ -42,16 +42,24 @@ export const showTour = async (id: string, callback: Function) => {
         // element.addEventListener("touchend", moveToNext);
       }
     },
-    // onNextClick: (ele) => {
-    //   if (ele) {
-    //     const element = ele as HTMLElement;
-    //     element.dispatchEvent(
-    //       new Event("click", { bubbles: true, cancelable: true })
-    //     );
-    //   }
-    // },
+    onNextClick: (ele) => {
+      if (ele) {
+        const element = ele as HTMLElement;
+        element.dispatchEvent(
+          new Event("click", { bubbles: true, cancelable: true })
+        );
+      }
+    },
     steps: getSteps(driver),
-    onDestroyed: () => callback(),
+    onDestroyed: (ele) => {
+      if (ele) {
+        const element = ele as HTMLElement;
+        element.dispatchEvent(
+          new Event("click", { bubbles: true, cancelable: true })
+        );
+      }
+      callback()
+    },
   };
   driver.setConfig(config);
 

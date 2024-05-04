@@ -397,7 +397,10 @@ function RenderLayer({
                 }
               </div>
               <div
-                className="station-name"
+                className={classNames({
+                  "station-name": 1,
+                  [`station-name-descend-${descend}`]:  1,
+                })}
                 style={
                   showName
                     ? autoHiddenName

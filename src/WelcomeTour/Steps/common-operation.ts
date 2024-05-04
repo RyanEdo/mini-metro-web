@@ -2,69 +2,66 @@ import { DriveStep, Driver } from "driver.js";
 
 export const getSteps = (driver: Driver): DriveStep[] => [
   {
+    element: ".ScaleLayer",
+    onHighlighted:()=>{},
+    popover: {
+      title: "尝试缩放或者移动地图",
+      description: window.ontouchend === null? "单指拖动地图，双指缩放地图": "按住鼠标左键拖动移动地图，滚动鼠标滚轮缩放地图",
+      showButtons:['next'],
+      onNextClick:driver.moveNext
+    },
+  },
+  {
     element: ".title .click-panel",
     popover: {
-      title: "打开菜单",
+      title: "点击标题",
       description: "点击标题打开菜单",
     },
   },
   {
-    element: "#menu-add-station",
+    element: ".title",
     popover: {
-      title: "点击添加站点",
-      description: "进入添加站点模式",
+      title: "再次点击标题",
+      description: "可以修改标题",
+    },
+  },
+  {
+    element: ".menu",
+    popover: {
+      title: "点击任意空白区域退出菜单",
+      description: "退出菜单",
+    },
+  },
+  {
+    element: ".station-descend-31",
+    popover: {
+      title: "点击站点",
+      description: "以打开站点卡片",
+    },
+  },
+  {
+    element: ".station-card",
+    popover: {
+      title: "站点卡片",
+      description: "可以在这里编辑站点的所有设置",
+      showButtons:["next"],
+      onNextClick:driver.moveNext
     },
   },
   {
     element: ".ScaleLayer",
-    onHighlighted: () => {},
     popover: {
-      title: "点击任意空白处添加站点",
-      description: "添加好之后点击下一步",
-      showButtons: ["next"],
-      onNextClick: () => {
-        driver.moveNext();
-      },
+      title: "尝试点击线路",
+      description: "图中的彩色线条即为线路,如果无法选中可以尝试放大地图再点选",
     },
   },
   {
-    element: "#add-station-finish-btn",
-    popover: { title: "点击完成", description: "退出编辑模式" },
-  },
-  {
-    element: ".station-descend-1",
+    element: ".line-card",
     popover: {
-      title: "点击刚才创建的站点",
-      description: "打开站点信息卡片",
+      title: "线路卡片",
+      description: "可以在这里编辑线路的所有设置",
+      showButtons:["next"],
+      onNextClick:driver.moveNext
     },
-  },
-  {
-    element: ".station-card-operation",
-    popover: { title: "点击操作选项卡", description: "我们来添加线路" },
-  },
-  {
-    element: ".add-new-line-btn",
-    popover: {
-      title: "点击以此为起点新建线路",
-      description: "进入添加线路模式",
-    },
-  },
-  {
-    element: ".station-descend-2",
-    popover: {
-      title: "点击站点",
-      description: "连接站点",
-    },
-  },
-  {
-    element: ".station-descend-3",
-    popover: {
-      title: "点击站点",
-      description: "连接站点",
-    },
-  },
-  {
-    element: "#add-line-finish-btn",
-    popover: { title: "点击完成", description: "线路就创建好了" },
   },
 ];

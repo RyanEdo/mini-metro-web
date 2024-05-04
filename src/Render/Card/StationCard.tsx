@@ -327,7 +327,7 @@ export function StationCard({
             </div>
             <div
               className={classNames({
-                "edit-tool operation": 1,
+                "edit-tool operation tag": 1,
                 selected: tab === "tag",
               })}
               onClick={(e) => {

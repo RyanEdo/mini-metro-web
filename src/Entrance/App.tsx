@@ -43,6 +43,9 @@ function App() {
   const ref = useRef<any>();
   const menuRef = useRef();
   const [saved, setSaved] = useState(true);
+  const [showTour, setShowTour] = useState(() => {
+    return !localStorage.getItem("skip-tour-viewed");
+  });
   const [showConfirmation, setShowConfirmation] =
     useState<showConfirmationInterface>();
   // keep latest data if crash happend
@@ -93,6 +96,8 @@ function App() {
         setScale={setScale}
         saved={saved}
         setSaved={setSaved}
+        showTour={showTour}
+        setShowTour={setShowTour}
       />
       <DeleteConfirmation ref={ref} />
       <ScaleLayer
@@ -135,7 +140,7 @@ function App() {
         cardShowing={cardShowing}
         setCardShowing={setCardShowing}
       />
-      <WelcomeTour data={data}/>
+      <WelcomeTour showTour={showTour} setShowTour={setShowTour} />
     </div>
   );
 }

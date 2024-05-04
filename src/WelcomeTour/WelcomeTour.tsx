@@ -1,4 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, {
+  LegacyRef,
+  MutableRefObject,
+  RefObject,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import "./WelcomeTour.scss";
 import Infinity from "../Resource/Icon/infinity";
 import GoToIcon from "../Resource/Icon/goto";
@@ -6,26 +13,44 @@ import { hightLights } from "./HightLights";
 import classNames from "classnames";
 import { onWheelX } from "../Common/util";
 import { showTour } from "./Driver";
-import { UserDataType } from "../Data/UserData";
+import { ShowTourProps, UserDataType } from "../Data/UserData";
 import FinishedIcon from "../Resource/Icon/finished";
-export function WelcomeTour({data}:{data: UserDataType}) {
-  const [show, setShow] = useState(true);
-  const [visitedSteps, setVisitedSteps] = useState<string[]>(()=>{
-    const visitedStepsJson = localStorage.getItem('visited-steps');
-    return visitedStepsJson ? JSON.parse(visitedStepsJson): [];
+import QRCode from "qrcode";
+export function WelcomeTour({
+  showTour: show,
+  setShowTour: setShow,
+}: ShowTourProps) {
+  const [qrCode, setQRCode] = useState(false);
+  const [visitedSteps, setVisitedSteps] = useState<string[]>(() => {
+    const visitedStepsJson = localStorage.getItem("visited-steps");
+    return visitedStepsJson ? JSON.parse(visitedStepsJson) : [];
   });
-  const setVisited = (step: string) =>{
+  const setVisited = (step: string) => {
     const steps = visitedSteps.concat([step]);
-    localStorage.setItem('visited-steps',JSON.stringify(steps));
+    localStorage.setItem("visited-steps", JSON.stringify(steps));
     setVisitedSteps(steps);
-  }
-  const reset = () =>{
-    localStorage.setItem('visited-steps',JSON.stringify([]));
+  };
+  const reset = () => {
+    localStorage.setItem("visited-steps", JSON.stringify([]));
     setVisitedSteps([]);
-  }
-  const next = hightLights.find(highlight=>!visitedSteps.includes(highlight.id));
+    localStorage.setItem("skip-tour-viewed", "Y");
+  };
+  const next = hightLights.find(
+    (highlight) => !visitedSteps.includes(highlight.id)
+  );
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const showQRCode = () => {
+    setQRCode(true);
+    setVisited("mobile");
+    setTimeout(() => {
+      QRCode.toCanvas(canvasRef.current, window.location.href);
+    });
+  };
   return (
-    <div className="welcome-tour-container" style={show?{}:{display: 'none'}}>
+    <div
+      className="welcome-tour-container"
+      style={show ? {} : { display: "none" }}
+    >
       <div className="welcome-tour">
         <div className="header">
           <span className="icon">
@@ -36,28 +61,60 @@ export function WelcomeTour({data}:{data: UserDataType}) {
             <div className="main-title">迷你地铁地图构建工具</div>
           </span>
           <div className="control">
-            {next?<>
-                        <span className="skip-tour" onClick={()=>{setShow(false)}}>暂时跳过</span>
-            <span className="start-tour" onClick={()=>{
-              setShow(false);
-               showTour(next.id,()=>{
-                setShow(true);
-                setVisited(next.id);
-               });
-            }}>{visitedSteps.length?"继续":""}{next.more}</span>
-            </>:<>
-            <span className="skip-tour" onClick={reset}>重新开始</span>
-            <span className="start-tour" onClick={()=>{
-              setShow(false);
-            }}>完成</span>
-            </>}
-
+            {next ? (
+              <>
+                <span
+                  className="skip-tour"
+                  onClick={() => {
+                    setShow(false);
+                    if (!localStorage.getItem("skip-tour-viewed"))
+                      showTour("skip", () => {
+                        localStorage.setItem("skip-tour-viewed", "Y");
+                      });
+                  }}
+                >
+                  暂时跳过
+                </span>
+                <span
+                  className="start-tour"
+                  onClick={() => {
+                    if (next.id === "mobile") {
+                      showQRCode();
+                    } else {
+                      setShow(false);
+                      showTour(next.id, () => {
+                        setShow(true);
+                        setVisited(next.id);
+                      });
+                    }
+                  }}
+                >
+                  {visitedSteps.length ? "继续" : ""}
+                  {next.more}
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="skip-tour" onClick={reset}>
+                  重新开始
+                </span>
+                <span
+                  className="start-tour"
+                  onClick={() => {
+                    localStorage.setItem("skip-tour-viewed", "Y");
+                    setShow(false);
+                  }}
+                >
+                  完成
+                </span>
+              </>
+            )}
           </div>
         </div>
         <div className="divider"></div>
-        <div className="body"  onWheel={onWheelX}>
+        <div className="body" onWheel={onWheelX}>
           {hightLights.map((hightLight) => {
-            const { id,icon, title, subTitle, introText, more } = hightLight;
+            const { id, icon, title, subTitle, introText, more } = hightLight;
             const finished = visitedSteps.includes(id);
             return (
               <div className="intro">
@@ -87,16 +144,47 @@ export function WelcomeTour({data}:{data: UserDataType}) {
                         );
                       })}
                     </div>
-                    <div className="more" onClick={()=>{
-                      showTour(id,()=>{setVisited(id);setShow(true)});
-                      setShow(false);
-                    }}>
-                      <span className={classNames({"more-text":1,finished})}>{more}</span>
+                    <div
+                      className="more"
+                      onClick={() => {
+                        if (id === "mobile") {
+                          showQRCode();
+                        } else {
+                          showTour(id, () => {
+                            setVisited(id);
+                            setShow(true);
+                          });
+                          setShow(false);
+                        }
+                      }}
+                    >
+                      <span
+                        className={classNames({ "more-text": 1, finished })}
+                      >
+                        {more}
+                      </span>
                       <span className="more-icon">
-                        {finished?<FinishedIcon className="finished"/>:<GoToIcon />}
+                        {finished ? (
+                          <FinishedIcon className="finished" />
+                        ) : (
+                          <GoToIcon />
+                        )}
                       </span>
                     </div>
                   </div>
+                  {id === "mobile" ? (
+                    <div
+                      className={classNames({
+                        "qrcode-container": 1,
+                        show: qrCode,
+                      })}
+                      onClick={() => setQRCode(false)}
+                    >
+                      <canvas id="qrcode" ref={canvasRef} />
+                    </div>
+                  ) : (
+                    <></>
+                  )}
                 </div>
               </div>
             );

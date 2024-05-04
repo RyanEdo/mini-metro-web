@@ -1,3 +1,4 @@
+import { showTour } from './../WelcomeTour/Driver';
 import { Dispatch, SetStateAction } from "react";
 import { generateRandomColor, mapToArr } from "../Common/util";
 import { colorSH } from "../Common/color";
@@ -81,6 +82,11 @@ export type TransformProps = {
   setTranslateY: React.Dispatch<React.SetStateAction<number>>;
   scale: number;
   setScale: React.Dispatch<React.SetStateAction<number>>;
+};
+
+export type ShowTourProps = {
+  showTour: boolean;
+  setShowTour: React.Dispatch<React.SetStateAction<boolean>>;
 };
 const initDataMock: UserDataType = {
   title: "提瓦特",

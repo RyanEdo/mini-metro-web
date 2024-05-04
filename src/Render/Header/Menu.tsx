@@ -28,6 +28,7 @@ import {
   CardShowing,
   setDataFromJson,
   TransformProps,
+  ShowTourProps,
 } from "../../Data/UserData";
 import PlusIcon from "../../Resource/Icon/plus";
 import {
@@ -62,7 +63,7 @@ type MenuType = {
   setSaved: Dispatch<SetStateAction<boolean>>;
 } & ShowNameProps &
   DrawProps &
-  TransformProps;
+  TransformProps & ShowTourProps;
 export const Menu = forwardRef(function (
   {
     setEditingMode,
@@ -91,7 +92,8 @@ export const Menu = forwardRef(function (
     setTranslateX,
     setTranslateY,
     saved,
-    setSaved
+    setSaved,
+    setShowTour
   }: MenuType,
   ref
 ) {
@@ -381,6 +383,7 @@ export const Menu = forwardRef(function (
                   className={classNames({
                     tool: 1,
                     disabled: selectedMap !== id,
+                    [id]: 1
                   })}
                 >
                   {name}
@@ -389,7 +392,7 @@ export const Menu = forwardRef(function (
             })}
 
             {selectedMap?<div
-              className="tool"
+              className="tool confirm-add-from-existed-map-btn"
               onClick={() => {
                 setPage("title");
                 setTitleEditable(false);
@@ -494,7 +497,7 @@ export const Menu = forwardRef(function (
               </div>
               {showName ? (
                 <div
-                  className="column-item"
+                  className="column-item auto-hidden-btn"
                   onClick={(e) => {
                     e.stopPropagation();
                     setAutoHiddenName(!autoHiddenName);
@@ -530,7 +533,7 @@ export const Menu = forwardRef(function (
             <div className="column-title">数据</div>
             <div className="column-items">
               <div
-                className="column-item"
+                className="column-item new-map-btn"
                 onClick={(e) => {
                   const current = localStorage.getItem("current");
                   if (current && !saved)
@@ -551,7 +554,7 @@ export const Menu = forwardRef(function (
                 新建空白地图...
               </div>
               <div
-                className="column-item"
+                className="column-item existed-map-btn"
                 onClick={(e) => {
                   setSelectedMap("");
                   setOriginalMap(data);
@@ -561,7 +564,7 @@ export const Menu = forwardRef(function (
                 从已有地图新建...
               </div>
               <div
-                className="column-item"
+                className="column-item import-file-btn"
                 onClick={(e) => {
                   e.stopPropagation();
                   importFromFile().then((res) => {
@@ -576,7 +579,7 @@ export const Menu = forwardRef(function (
                 <></>
               ) : (
                 <div
-                  className="column-item"
+                  className="column-item export-as-image-btn"
                   onClick={(e) => {
                     e.stopPropagation();
                     setDrawing(true);
@@ -603,7 +606,7 @@ export const Menu = forwardRef(function (
               )}
 
               <div
-                className="column-item"
+                className="column-item export-as-svg-image-btn"
                 onClick={(e) => {
                   e.stopPropagation();
                   setDrawing(true);
@@ -632,7 +635,7 @@ export const Menu = forwardRef(function (
                 作为矢量图片导出...
               </div>
               <div
-                className="column-item"
+                className="column-item export-as-file-btn"
                 onClick={(e) => {
                   e.stopPropagation();
                   const current = stringifyData(data);
@@ -646,7 +649,7 @@ export const Menu = forwardRef(function (
                 作为文件导出...
               </div>
               <div
-                className="column-item"
+                className="column-item recover-btn"
                 onClick={(e) => {
                   e.stopPropagation();
                   const current = localStorage.getItem("current");
@@ -659,7 +662,7 @@ export const Menu = forwardRef(function (
                 恢复数据...
               </div>
               <div
-                className="column-item"
+                className="column-item export-recover-btn"
                 onClick={(e) => {
                   e.stopPropagation();
                   const current = localStorage.getItem("last");
@@ -688,8 +691,9 @@ export const Menu = forwardRef(function (
                 项目地址...
               </div>
               <div
-                className="column-item"
+                className="column-item tour-btn"
                 onClick={() => {
+                  setShowTour(true);
                 }}
               >
                 使用教程...

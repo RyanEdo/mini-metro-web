@@ -40,6 +40,7 @@
         font-weight: 500;
         cursor: pointer;
         margin: 23px 0 0 var(--margin-left);
+        width: fit-content;
     }
     .line-name {
         & > * {

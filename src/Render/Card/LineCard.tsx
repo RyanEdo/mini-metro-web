@@ -264,7 +264,7 @@ export function LineCard({
         {edit ? (
           <></>
         ) : (
-          <div className="expand tool-item" onClick={() => setExpand(!expand)}>
+          <div className={classNames({"expand tool-item":1,shrink: expand})} onClick={() => setExpand(!expand)}>
             {expand ? <ShrinkIcon className="expand-icon"/> : <ExpandIcon className="expand-icon"/>}
           </div>
         )}
