@@ -234,6 +234,7 @@ function ScaleLayer({
       }
       style={{ cursor: getCursor(editingMode) }}
     >
+      <div className="layer-for-welcome-tour"></div>
       <div className="transform-layer" style={style}>
         {/* <div className="patch-layer" style={drawing?{transform: `translate(${patchX+200}px,${patchY+200}px)`}:{}}> */}
         <RenderLayer

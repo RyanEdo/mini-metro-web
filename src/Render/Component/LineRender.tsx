@@ -74,6 +74,7 @@ function LineRender({
             id={lineName}
             // fill="transparent"
             // stroke-linecap="round"
+            className={`line-path-${lineId}`}
             strokeDasharray={subLine ? "10,5" : undefined}
             fill="none"
             stroke={showing && !emphasis ? `${color}55` : `${color}`}
