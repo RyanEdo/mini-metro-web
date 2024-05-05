@@ -24,13 +24,14 @@ import {
   ChangeSteps,
   DrawProps,
   InsertInfo,
+  PageProps,
   RecordType,
   ShowNameProps,
   StationProps,
   TransformProps,
   UserDataType,
 } from "../../Data/UserData";
-import { getBoundary, mapToArr } from "../../Common/util";
+import { browserInfo, getBoundary, mapToArr } from "../../Common/util";
 
 type ScaleLayerProp = {
   editingMode: Mode;
@@ -48,7 +49,7 @@ type ScaleLayerProp = {
   cardShowing: CardShowing;
   setCardShowing: Dispatch<SetStateAction<CardShowing>>;
 } & ShowNameProps &
-  DrawProps & TransformProps;
+  DrawProps & TransformProps &PageProps;
 function ScaleLayer({
   editingMode,
   setEditingMode,
@@ -75,7 +76,8 @@ function ScaleLayer({
   translateX,
   translateY,
   setTranslateX,
-  setTranslateY
+  setTranslateY,
+  page
 }: ScaleLayerProp) {
 
   // mouseRefPoint
@@ -123,6 +125,9 @@ function ScaleLayer({
     drawingStationMap.set(stationId, { ...station, position });
   });
   const drawingData = { ...data, stations: drawingStationMap };
+  const { engine } = browserInfo;
+  const webkit = engine.name === "WebKit"
+  const display = stations.size>100 && webkit && page==="menu"? "none": undefined;
   return (
     <div
       className="ScaleLayer"

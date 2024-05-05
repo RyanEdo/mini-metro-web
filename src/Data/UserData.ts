@@ -88,6 +88,11 @@ export type ShowTourProps = {
   showTour: boolean;
   setShowTour: React.Dispatch<React.SetStateAction<boolean>>;
 };
+
+export type PageProps = {
+  page: string;
+  setPage: React.Dispatch<React.SetStateAction<string>>;
+};
 const initDataMock: UserDataType = {
   title: "提瓦特",
   stations: [

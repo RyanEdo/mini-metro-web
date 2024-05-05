@@ -46,6 +46,21 @@ export function WelcomeTour({
       QRCode.toCanvas(canvasRef.current, window.location.href);
     });
   };
+  const scrollToNext = ()=>{
+    setTimeout(() => {
+      const contianer = document.querySelector(".welcome-tour .body");
+      if(next && contianer){
+        const nextIntro = document.querySelector(`.intro-${next.id}`)
+        if(nextIntro){
+          const {offsetLeft} = nextIntro as HTMLDivElement;
+          contianer.scrollTo(offsetLeft-38,0);
+        }
+      }
+    },100);
+  }
+  useEffect(() => {
+    scrollToNext();
+  }, []);
   return (
     <div
       className="welcome-tour-container"
@@ -85,6 +100,7 @@ export function WelcomeTour({
                       showTour(next.id, () => {
                         setShow(true);
                         setVisited(next.id);
+                        scrollToNext();
                       });
                     }
                   }}
@@ -117,7 +133,7 @@ export function WelcomeTour({
             const { id, icon, title, subTitle, introText, more } = hightLight;
             const finished = visitedSteps.includes(id);
             return (
-              <div className="intro">
+              <div className={classNames({ intro: 1, ["intro-" + id]: 1 })}>
                 <div className="hight-light">
                   <span className="icon">{icon}</span>
                   <span className="title">{title}</span>
@@ -153,6 +169,7 @@ export function WelcomeTour({
                           showTour(id, () => {
                             setVisited(id);
                             setShow(true);
+                            scrollToNext();
                           });
                           setShow(false);
                         }

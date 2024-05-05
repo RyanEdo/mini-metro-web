@@ -45,7 +45,7 @@ export const getSteps = (driver: Driver): DriveStep[] => [
       title: "站点卡片",
       description: "可以在这里编辑站点的所有设置",
       showButtons:["next"],
-      onNextClick:driver.moveNext
+    //   onNextClick:driver.moveNext
     },
   },
   {
@@ -61,7 +61,7 @@ export const getSteps = (driver: Driver): DriveStep[] => [
       title: "线路卡片",
       description: "可以在这里编辑线路的所有设置",
       showButtons:["next"],
-      onNextClick:driver.moveNext
+    //   onNextClick:driver.moveNext
     },
   },
 ];

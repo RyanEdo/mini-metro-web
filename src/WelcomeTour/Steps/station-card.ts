@@ -14,7 +14,7 @@ export const getSteps = (driver: Driver): DriveStep[] => [
       title: "站点卡片",
       description: "可以在这里编辑站点的所有设置",
       showButtons:["next"],
-      onNextClick:driver.moveNext
+      // onNextClick:driver.moveNext
     },
   },
   {
@@ -23,7 +23,7 @@ export const getSteps = (driver: Driver): DriveStep[] => [
       title: "编辑站点位置",
       description: "点击坐标之后使用鼠标滚轮可以精确调节",
       showButtons:["next"],
-      onNextClick:driver.moveNext
+      // onNextClick:driver.moveNext
     },
   },
   {

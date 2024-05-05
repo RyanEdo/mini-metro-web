@@ -3,6 +3,9 @@ export const showTour = async (id: string, callback: Function) => {
   const driver = Driver();
   const { getSteps } = await import(`./Steps/${id}`);
   const eventListeners: EventListenerOrEventListenerObject[] = [];
+  const touch = window.ontouchend === null;
+  const eventName =// touch ? "touchend" : 
+  "click";
   const config: Config = {
     prevBtnText: "上一步",
     doneBtnText: "完成",
@@ -24,22 +27,31 @@ export const showTour = async (id: string, callback: Function) => {
       const steps = opt.config.steps!;
       const last = step === steps[steps.length - 1];
       const next = steps[opt.state.activeIndex! + 1];
-      const touch = window.ontouchend === null;
-      const eventName = touch? "touchend": "click";
+
       if (ele) {
         const element = ele as HTMLElement;
         const moveToNext = () => {
+          const gotoNext = () => {
+            // element.removeEventListener(eventName, moveToNext);
+            element.removeEventListener("click", moveToNext);
+            element.removeEventListener("touchend", moveToNext);
+            if(driver.getActiveStep()===step)
+            driver.moveNext();
+          };
           setTimeout(() => {
             if (!next || document.querySelector(next.element as string)) {
-              element.removeEventListener(eventName, moveToNext);
-              // element.removeEventListener("touchend",moveToNext);
-              driver.moveNext();
+              gotoNext();
+            }else{
+              setTimeout(()=>{
+                if (!next || document.querySelector(next.element as string))
+                gotoNext()
+              },300)
             }
           }, 100);
         };
         eventListeners.push(moveToNext);
-        element.addEventListener(eventName, moveToNext);
-        // element.addEventListener("touchend", moveToNext);
+        element.addEventListener("click", moveToNext);
+        element.addEventListener("touchend", moveToNext);
       }
     },
     onNextClick: (ele) => {
@@ -51,14 +63,15 @@ export const showTour = async (id: string, callback: Function) => {
       }
     },
     steps: getSteps(driver),
-    onDestroyed: (ele) => {
+    onDestroyed: (ele,step) => {
       if (ele) {
         const element = ele as HTMLElement;
+        if(step.element!==".tour-btn")
         element.dispatchEvent(
           new Event("click", { bubbles: true, cancelable: true })
         );
       }
-      callback()
+      callback();
     },
   };
   driver.setConfig(config);

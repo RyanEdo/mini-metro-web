@@ -29,6 +29,7 @@ import {
   setDataFromJson,
   TransformProps,
   ShowTourProps,
+  PageProps,
 } from "../../Data/UserData";
 import PlusIcon from "../../Resource/Icon/plus";
 import {
@@ -63,7 +64,7 @@ type MenuType = {
   setSaved: Dispatch<SetStateAction<boolean>>;
 } & ShowNameProps &
   DrawProps &
-  TransformProps & ShowTourProps;
+  TransformProps & ShowTourProps & PageProps;
 export const Menu = forwardRef(function (
   {
     setEditingMode,
@@ -93,11 +94,12 @@ export const Menu = forwardRef(function (
     setTranslateY,
     saved,
     setSaved,
-    setShowTour
+    setShowTour,
+    page,
+    setPage
   }: MenuType,
   ref
 ) {
-  const [page, setPage] = useState("title");
   const [titleEditable, setTitleEditable] = useState(false);
   const [display, setDisplay] = useState("none");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -350,10 +352,10 @@ export const Menu = forwardRef(function (
       }
       case FunctionMode.choosingExistMap: {
         const existingMap = [
-          { name: "上海", id: "shanghai" },
+          { name: "上海", id: "shanghai", webkit: true },
           { name: "北京", id: "beijing" },
-          { name: "广州", id: "guangzhou" },
-          { name: "深圳", id: "shenzhen" },
+          { name: "广州", id: "guangzhou" , webkit: true},
+          { name: "深圳", id: "shenzhen", webkit: true },
           { name: "香港", id: "hongkong", webkit: true },
           { name: "长沙", id: "changsha", webkit: true },
           { name: "天津", id: "tianjing", webkit: true },
@@ -365,7 +367,7 @@ export const Menu = forwardRef(function (
           <>
             <div className="tool disabled">选择一张地图</div>
             {existingMap
-            // .filter(x=>webkit ? x.webkit: true)
+            .filter(x=>webkit ? x.webkit: true)
             .map(({ name, id }) => {
               return (
                 <div
@@ -419,6 +421,7 @@ export const Menu = forwardRef(function (
       }
     }
   };
+
   return (
     <div
       className={classNames({ menu: 1, [`page-${page}`]: 1 })}
@@ -693,7 +696,11 @@ export const Menu = forwardRef(function (
               <div
                 className="column-item tour-btn"
                 onClick={() => {
+                  if(window.innerWidth>=710)
                   setShowTour(true);
+                  else{
+                    // to-do 教程视频
+                  }
                 }}
               >
                 使用教程...

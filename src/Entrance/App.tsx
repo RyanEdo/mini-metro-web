@@ -39,12 +39,13 @@ function App() {
   const [drawing, setDrawing] = useState(false);
   const [translateX, setTranslateX] = useState(0);
   const [translateY, setTranslateY] = useState(0);
+  const [page, setPage] = useState("title");
   const [scale, setScale] = useState(1);
   const ref = useRef<any>();
   const menuRef = useRef();
   const [saved, setSaved] = useState(true);
   const [showTour, setShowTour] = useState(() => {
-    return !localStorage.getItem("skip-tour-viewed");
+    return  window.innerWidth>=710 && !localStorage.getItem("skip-tour-viewed");
   });
   const [showConfirmation, setShowConfirmation] =
     useState<showConfirmationInterface>();
@@ -98,6 +99,8 @@ function App() {
         setSaved={setSaved}
         showTour={showTour}
         setShowTour={setShowTour}
+        page={page}
+        setPage={setPage}
       />
       <DeleteConfirmation ref={ref} />
       <ScaleLayer
@@ -127,6 +130,8 @@ function App() {
         setTranslateX={setTranslateX}
         setTranslateY={setTranslateY}
         setScale={setScale}
+        page={page}
+        setPage={setPage}
       />
       <Cards
         functionMode={functionMode}
