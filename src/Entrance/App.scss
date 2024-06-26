@@ -4,10 +4,19 @@ body{
     touch-action: none;
     overscroll-behavior: none;
 }
+html{
+    touch-action: none;
+    overscroll-behavior: none;
+}
 
 .App{
     height: 100vh;
     width: 100vw;
     overflow: hidden;
     user-select: none;
+}
+
+*{
+    font-family: 'PingFang SC';
+    -webkit-tap-highlight-color: transparent;
 }

@@ -4,3 +4,13 @@ export enum Mode {
     touchMoving,
     touchScaling
   }
+
+
+  export enum FunctionMode{
+    normal,
+    addingStation,
+    dragingStation,
+    lineEditing,
+    selectingStation,
+    choosingExistMap,
+  }

@@ -18,6 +18,10 @@ export class Track {
     this.extraRails = new Array(3).fill(true).map((x, index) => new Array());
   }
 
+  isEmpty(){
+    return !this.rails.some(rail=>!rail.line.empty)
+  }
+
   getEmptyRails() {
     return this.rails.filter((rail) => rail.line.empty);
   }

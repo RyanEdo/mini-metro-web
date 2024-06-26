@@ -2,6 +2,14 @@
    width: 100vw;
    height: 100vh;
    overflow: hidden;
+   .layer-for-welcome-tour{
+    position: fixed;
+    z-index: -500;
+    width: 70vw;
+    height: 70vh;
+    left: 15vw;
+    top: 15vw;
+   }
     .transform-layer{
         transform-origin: left top;
         // never use will-change here, it makes child elements blurry

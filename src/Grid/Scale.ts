@@ -1,3 +1,4 @@
+import { CardShowing, ChangeSteps, RecordType, StationProps, UserDataType, addNewStation } from "./../Data/UserData";
 import {
   WheelEvent,
   Dispatch,
@@ -5,8 +6,9 @@ import {
   MouseEvent,
   TouchEvent,
 } from "react";
-import { Mode } from "../DataStructure/Mode";
+import { FunctionMode, Mode } from "../DataStructure/Mode";
 import { Point } from "../DataStructure/Point";
+import React from "react";
 
 const sensitivity = -0.0006;
 
@@ -54,12 +56,14 @@ export const onMouseDown = (
   translateY: number,
   setEditingMode: Dispatch<SetStateAction<Mode>>,
   setMouseRefPoint: Dispatch<SetStateAction<Point>>,
-  setMouseStartTranslate: Dispatch<React.SetStateAction<Point>>
+  setMouseStartTranslate: Dispatch<React.SetStateAction<Point>>,
+  setMoved: Dispatch<SetStateAction<boolean>>
 ) => {
   const point = Point.getPointFromMouse(event);
   setMouseRefPoint(point);
   setEditingMode(Mode.moving);
   setMouseStartTranslate(new Point(translateX, translateY));
+  setMoved(false);
 };
 
 export const onMouseMove = (
@@ -70,13 +74,17 @@ export const onMouseMove = (
   setTranslateY: Dispatch<SetStateAction<number>>,
   editingMode: Mode,
   mouseRefPoint: Point,
-  mouseStartTranslate: Point
+  mouseStartTranslate: Point,
+  setMoved: Dispatch<SetStateAction<boolean>>
 ) => {
+  // setMoved(true);
   switch (editingMode) {
     case Mode.moving: {
       // console.log(event);
       const point = Point.getPointFromMouse(event);
       const displacement = point.displacementTo(mouseRefPoint);
+      const distance = point.distanceTo(mouseRefPoint);
+      if(distance>5) setMoved(true);  
       setTranslateX(mouseStartTranslate.x + displacement.x);
       setTranslateY(mouseStartTranslate.y + displacement.y);
       break;
@@ -86,10 +94,46 @@ export const onMouseMove = (
 
 export const onMouseUp = (
   event: MouseEvent<HTMLDivElement>,
-  setEditingMode: Dispatch<SetStateAction<Mode>>
+  setEditingMode: Dispatch<SetStateAction<Mode>>,
+  editingMode: Mode,
+  functionMode: FunctionMode,
+  data: UserDataType,
+  setData: Dispatch<SetStateAction<UserDataType>>,
+  moved: boolean,
+  translateX: number,
+  translateY: number,
+  scale: number,
+  record: RecordType,
+  setRecord: React.Dispatch<React.SetStateAction<RecordType>>,
+  currentRecordIndex: number,
+  setCurrentRecordIndex: React.Dispatch<React.SetStateAction<number>>,
+  cardShowing: CardShowing,
+  setCardShowing: Dispatch<SetStateAction<CardShowing>>,
 ) => {
   // console.log(event);
   setEditingMode(Mode.normal);
+  if (functionMode === FunctionMode.addingStation && !moved) {
+    console.log({ translateX, translateY, scale });
+    const { clientX, clientY } = event;
+    const x = (clientX - translateX) / scale;
+    const y = (clientY - translateY) / scale;
+    addNewStation(
+      data,
+      setData,
+      x,
+      y,
+      record as StationProps[],
+      setRecord,
+      currentRecordIndex,
+      setCurrentRecordIndex,
+      cardShowing,
+      setCardShowing,
+    );
+  }
+  const {currentTarget, target} = event;
+  if(currentTarget === target && !moved){
+    setCardShowing({});
+  }
 };
 
 export const onMouseLeave = (
@@ -109,11 +153,14 @@ export const onTouchStart = (
   scale: number,
   setTouchStartTranslate: Dispatch<SetStateAction<Point>>,
   translateX: number,
-  translateY: number
+  translateY: number,
+  setMoved: Dispatch<SetStateAction<boolean>>
 ) => {
+  event.preventDefault();
   const { touches } = event;
   // record touch start translate position
   setTouchStartTranslate(new Point(translateX, translateY));
+  setMoved(false);
 
   switch (touches.length) {
     //one finger
@@ -151,9 +198,12 @@ export const onTouchMove = (
   touchStartDistance: number,
   touchStartScale: number,
   setScale: Dispatch<SetStateAction<number>>,
-  touchStartTranslate: Point
+  touchStartTranslate: Point,
+  setMoved: Dispatch<SetStateAction<boolean>>
 ) => {
+  event.preventDefault();
   const { touches } = event;
+  setMoved(true);
   // console.log(event, touches.length, editingMode);
   switch (touches.length) {
     //one finger
@@ -161,7 +211,7 @@ export const onTouchMove = (
       if (editingMode === Mode.touchMoving) {
         const touch = touches[0];
         const point = Point.getPointFromTouch(touch);
-        console.log(touchRefPoint);
+        // console.log(touchRefPoint);
         const displacement = point.displacementTo(touchRefPoint);
         setTranslateX(displacement.x + touchStartTranslate.x);
         setTranslateY(displacement.y + touchStartTranslate.y);
@@ -202,9 +252,51 @@ export const onTouchMove = (
 
 export const onTouchEnd = (
   event: TouchEvent<HTMLDivElement>,
-  setEditingMode: Dispatch<SetStateAction<Mode>>
+  setEditingMode: Dispatch<SetStateAction<Mode>>,
+  editingMode: Mode,
+  functionMode: FunctionMode,
+  data: UserDataType,
+  setData: Dispatch<SetStateAction<UserDataType>>,
+  moved: boolean,
+  translateX: number,
+  translateY: number,
+  scale: number,
+  record: RecordType,
+  setRecord: React.Dispatch<React.SetStateAction<RecordType>>,
+  currentRecordIndex: number,
+  setCurrentRecordIndex: React.Dispatch<React.SetStateAction<number>>,
+  cardShowing: CardShowing,
+  setCardShowing: Dispatch<SetStateAction<CardShowing>>,
 ) => {
-  // const { touches } = event;
-  // console.log(event);
+  event.preventDefault();
+  const { changedTouches } = event;
+  // console.log(event,editingMode);
+  if (
+    functionMode === FunctionMode.addingStation &&
+    !moved &&
+    changedTouches.length === 1
+  ) {
+    const touch = changedTouches[0];
+    console.log({ touch, translateX, translateY, scale });
+    const { clientX, clientY } = touch;
+    const x = (clientX - translateX) / scale;
+    const y = (clientY - translateY) / scale;
+    addNewStation(
+      data,
+      setData,
+      x,
+      y,
+      record as StationProps[],
+      setRecord,
+      currentRecordIndex,
+      setCurrentRecordIndex,
+      cardShowing,
+      setCardShowing,
+    );
+  }
+  const {currentTarget, target} = event;
+  if(currentTarget === target && !moved){
+    setCardShowing({});
+  }
   setEditingMode(Mode.normal);
 };

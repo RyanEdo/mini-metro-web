@@ -1,3 +1,4 @@
+import { LineProps } from "../Data/UserData";
 import { Bend } from "./Bend";
 import { ConnectType } from "./ConnectType";
 import { LineRecord } from "./LineRecord";
@@ -8,10 +9,20 @@ import { Straight } from "./Straight";
 import { Vector } from "./Vector";
 export class Line {
   empty: boolean;
-  departureStation: LineRecord | undefined;
+  departureRecord: LineRecord | undefined;
   _dev_tag: string | undefined;
+  displayLine?: LineProps;
   constructor() {
     this.empty = false;
+  }
+
+  getTerminalRecord(){
+    let p = this.departureRecord;
+    while(p?.nextLineRecord){
+      p = p.nextLineRecord;
+      if(p === this.departureRecord || !p.nextLineRecord) return p;
+    }
+    return p;
   }
 
   linkAll(stations: Station[]){
@@ -32,9 +43,9 @@ export class Line {
       bLineRecord = new LineRecord(B, this);
       // register cLineRecord in C station
       B.addLineRecord(bLineRecord);
-      this.departureStation = bLineRecord;
+      this.departureRecord = bLineRecord;
     }
-    let cLineRecord = C.getJoint(this);
+    let cLineRecord// = C.getJoint(this);
     if (!cLineRecord) {
       cLineRecord = new LineRecord(C, this);
       // register cLineRecord in C station
@@ -51,6 +62,7 @@ export class Line {
     if (direction.standard) {
       const bOutIndex = Straight.getBestRailIndex(B, C, this);
       const cInIndex = Rail.oppositeIndex(bOutIndex);
+      // if(B.displayStation?.stationName==='风起地站'&&C.displayStation?.stationName==='达达乌帕谷') debugger
       const bTrack = B.getTrack(direction);
       const cTrack = C.getTrack(direction.opposite());
       const bRail = bTrack.getAvailableRail(bOutIndex);

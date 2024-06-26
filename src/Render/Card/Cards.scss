@@ -1,0 +1,48 @@
+.cards {
+    position: fixed;
+    bottom: 0;
+    // left: -65px;
+    // zoom: 0.85
+    width: fit-content;
+    max-width: 100vw;
+    height: 500px;
+    overflow-x: scroll;
+    overflow-y: visible;
+    white-space: nowrap;
+    padding-top: 200px;
+    // padding-right: 100px;
+    box-sizing: border-box;
+    pointer-events: none;
+    &::-webkit-scrollbar {
+        display: none;
+        // width: 0.01px;
+    }
+    .card-container {
+        display: inline-block;
+        pointer-events: auto;
+
+        & > div {
+            margin-left: 50px;
+            position: relative;
+            box-shadow: 0 4px 159px 7px rgba(0, 0, 0, 0.25);
+            // filter: drop-shadow(0 0 2px #999);
+        }
+        &:last-child {
+            margin-right: 50px;
+        }
+    }
+
+    // @media (max-width: 555px) {
+    //     height: 285px;
+    //     &>div{
+    //     margin-left: 50px;
+    // // box-shadow: none;
+    // // border: 1px solid rgba(0, 0, 0, 0.266);
+
+    //     &:last-child{
+    //         margin-right: 50px;
+    //     }
+    //     zoom: 0.7;
+    // }
+    // }
+}

@@ -4,6 +4,7 @@ import { Point } from "../../DataStructure/Point";
 import { Station } from "../../DataStructure/Station";
 import { Line } from "../../DataStructure/Line";
 import LineRender from "../Component/LineRender";
+import { CardShowing } from "../../Data/UserData";
 
 function DevelopLayer() {
   // test line and station
@@ -31,14 +32,14 @@ function DevelopLayer() {
   const line9 = new Line();
 
   line1.linkAll([A, B, C, D]);
-  line3.linkAll([E, B, C, D, F, E]);
-  line3._dev_tag='line3';
+  // line3.linkAll([E, B, C, D, F, E]);
+  line8._dev_tag='line8';
   line8.linkAll([E, B, C, D]);
   line9.linkAll([A, E, G,D,F]);
 
   // console.log(line1, line3, line8);
-  // console.log(A, B, C, D, E, F);
-  console.log(C);
+  console.log(A, B, C, D, E, F);
+
 
   const allStationsList = [A, B, C, D, E, F, G];
   const allLinesList = [line1, line3, line8, line9];
@@ -61,15 +62,16 @@ function DevelopLayer() {
     );
   };
 
-  const renderLines = (allLinesList: Line[]) => {
-    return (
-      <div>
-        {allLinesList.map((line) => {
-          return <LineRender line={line} />;
-        })}
-      </div>
-    );
-  };
+  // const renderLines = (allLinesList: Line[], cardShowing: CardShowing, setCardShowing: Dispatch<SetStateAction<CardShowing>>) => {
+  //   return (
+  //     <div>
+  //       {allLinesList.map((line) => {
+  //         return <LineRender line={line}           cardShowing={cardShowing}
+  //         setCardShowing={setCardShowing}/>;
+  //       })}
+  //     </div>
+  //   );
+  // };
 
 
   return (
@@ -80,7 +82,7 @@ function DevelopLayer() {
         ))}
       </div> */}
       {renderStations(allStationsList)}
-      {renderLines(allLinesList)}
+      {/* {renderLines(allLinesList)} */}
 
     </div>
   );

@@ -1,0 +1,51 @@
+.station-render {
+  cursor: pointer;
+    .station-shape {
+        height: 30px;
+        width: 30px;
+        // transform: translate(-50%,-50%);
+        display: inline-flex;
+        // align-content: center;
+        justify-content: center;
+        align-items: center;
+        svg {
+            fill: white;
+            // &.square {
+            //     zoom: 0.9;
+            //   }
+            //   &.triangle {
+            //     zoom: 1.05;
+            //   }
+            //   &.start {
+            //     zoom: 1.15;
+            //   }
+            //   &.hexagon {
+            //     zoom: 0.9;
+            //   }
+            //   &.pentagon {
+            //     zoom: 1.1;
+            //   }
+
+            &.shadow{
+              position: absolute;
+              transform: scale(1.5);
+              transform-origin: center;
+              *{
+                fill: inherit;
+                stroke: inherit;
+              }
+            }
+        }
+    }
+    .station-name {
+        display: inline-block;
+        font-size: 18px;
+        font-weight: 500;
+        // font-size: 30px;
+        // font-weight: 1000;
+        vertical-align: top;
+        // margin-left: 5px;
+        white-space: nowrap;
+
+    }
+}
