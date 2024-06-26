@@ -688,7 +688,9 @@ export const Menu = forwardRef(function (
 
               <div
                 className="column-item"
-                onClick={() => {
+                onClick={e => {
+                  e.stopPropagation();
+                  window.open("https://github.com/RyanEdo/mini-metro-web","_blank");
                 }}
               >
                 项目地址...
