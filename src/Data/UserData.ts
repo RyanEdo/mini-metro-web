@@ -1,4 +1,3 @@
-import { showTour } from './../WelcomeTour/Driver';
 import { Dispatch, SetStateAction } from "react";
 import { generateRandomColor, mapToArr } from "../Common/util";
 import { colorSH } from "../Common/color";
