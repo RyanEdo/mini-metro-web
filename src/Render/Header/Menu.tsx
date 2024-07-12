@@ -64,7 +64,9 @@ type MenuType = {
   setSaved: Dispatch<SetStateAction<boolean>>;
 } & ShowNameProps &
   DrawProps &
-  TransformProps & ShowTourProps & PageProps;
+  TransformProps &
+  ShowTourProps &
+  PageProps;
 export const Menu = forwardRef(function (
   {
     setEditingMode,
@@ -96,7 +98,7 @@ export const Menu = forwardRef(function (
     setSaved,
     setShowTour,
     page,
-    setPage
+    setPage,
   }: MenuType,
   ref
 ) {
@@ -162,7 +164,6 @@ export const Menu = forwardRef(function (
                 : "点击空白处新增站点"}
             </div>
             <div
-            
               className={classNames({ tool: 1, disabled: !undoCondition })}
               onClick={(e) => {
                 e.stopPropagation();
@@ -354,57 +355,59 @@ export const Menu = forwardRef(function (
         const existingMap = [
           { name: "上海", id: "shanghai", webkit: true },
           { name: "北京", id: "beijing" },
-          { name: "广州", id: "guangzhou" , webkit: true},
+          { name: "广州", id: "guangzhou", webkit: true },
           { name: "深圳", id: "shenzhen", webkit: true },
           { name: "香港", id: "hongkong", webkit: true },
           { name: "长沙", id: "changsha", webkit: true },
           { name: "天津", id: "tianjing", webkit: true },
-
-
         ];
         const webkit = engine.name === "WebKit";
         return (
           <>
             <div className="tool disabled">选择一张地图</div>
             {existingMap
-            .filter(x=>webkit ? x.webkit: true)
-            .map(({ name, id }) => {
-              return (
-                <div
-                  onClick={async () => {
-                    let data = mapData.get(id);
-                    if (!data) {
-                      const res = await getExistMap(id);
-                      data = setDataFromJson(setData, res);
-                      mapData.set(id, data);
-                    } 
-                    setData({...data,title});
-                    mediateMap(data, transfromTools);
-                    setSelectedMap(id);
-                  }}
-                  className={classNames({
-                    tool: 1,
-                    disabled: selectedMap !== id,
-                    [id]: 1
-                  })}
-                >
-                  {name}
-                </div>
-              );
-            })}
+              .filter((x) => (webkit ? x.webkit : true))
+              .map(({ name, id }) => {
+                return (
+                  <div
+                    onClick={async () => {
+                      let data = mapData.get(id);
+                      if (!data) {
+                        const res = await getExistMap(id);
+                        data = setDataFromJson(setData, res);
+                        mapData.set(id, data);
+                      }
+                      setData({ ...data, title });
+                      mediateMap(data, transfromTools);
+                      setSelectedMap(id);
+                    }}
+                    className={classNames({
+                      tool: 1,
+                      disabled: selectedMap !== id,
+                      [id]: 1,
+                    })}
+                  >
+                    {name}
+                  </div>
+                );
+              })}
 
-            {selectedMap?<div
-              className="tool confirm-add-from-existed-map-btn"
-              onClick={() => {
-                setPage("title");
-                setTitleEditable(false);
-                const data = mapData.get(selectedMap!);
-                if(data)
-                setData(data);
-              }}
-            >
-              以{existingMap.find(x=>x.id===selectedMap)?.name}为模板新建地图
-            </div>:<></>}
+            {selectedMap ? (
+              <div
+                className="tool confirm-add-from-existed-map-btn"
+                onClick={() => {
+                  setPage("title");
+                  setTitleEditable(false);
+                  const data = mapData.get(selectedMap!);
+                  if (data) setData(data);
+                }}
+              >
+                以{existingMap.find((x) => x.id === selectedMap)?.name}
+                为模板新建地图
+              </div>
+            ) : (
+              <></>
+            )}
             <div
               className="tool"
               onClick={() => {
@@ -685,41 +688,58 @@ export const Menu = forwardRef(function (
           <div className="column">
             <div className="column-title">关于</div>
             <div className="column-items">
-
               <div
                 className="column-item"
-                onClick={e => {
+                onClick={(e) => {
                   e.stopPropagation();
-                  window.open("https://github.com/RyanEdo/mini-metro-web","_blank");
+                  window.open(
+                    "https://github.com/RyanEdo/mini-metro-web",
+                    "_blank"
+                  );
                 }}
               >
                 项目地址...
               </div>
               <div
                 className="column-item tour-btn"
-                onClick={() => {
-                  if(window.innerWidth>=710)
-                  setShowTour(true);
-                  else{
-                    // to-do 教程视频
+                onClick={(e) => {
+                  if (window.innerWidth >= 710) setShowTour(true);
+                  else {
+                    e.stopPropagation();
+                    window.open(
+                      "https://www.bilibili.com/video/BV1E4421D7Yn/",
+                      "_blank"
+                    );
                   }
                 }}
               >
                 使用教程...
               </div>
-              <div
-                className="column-item small"
-              >
-                版本 :  1.0.0
-              </div>
+              {window.innerWidth >= 710 ? (
+                <div
+                  className="column-item tour-btn"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    window.open(
+                      "https://www.bilibili.com/video/BV1E4421D7Yn/",
+                      "_blank"
+                    );
+                  }}
+                >
+                  视频教程...
+                </div>
+              ) : (
+                <></>
+              )}
+              <div className="column-item small">版本 : 1.0.0</div>
               <div
                 className="column-item small author"
-                onClick={e => {
+                onClick={(e) => {
                   e.stopPropagation();
-                  window.open("https://space.bilibili.com/8217854","_blank");
+                  window.open("https://space.bilibili.com/8217854", "_blank");
                 }}
               >
-                作者 :  江户川瑞安
+                作者 : 江户川瑞安
               </div>
             </div>
           </div>
