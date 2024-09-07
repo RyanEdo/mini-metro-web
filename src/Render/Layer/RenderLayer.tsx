@@ -247,6 +247,7 @@ function RenderLayer({
       setStationBeingDrag(undefined);
     }
   };
+ 
   useEffect(() => {
     const scaleLayer = document.querySelector(".ScaleLayer");
     scaleLayer?.addEventListener("mouseup", mouseUp);
@@ -449,7 +450,14 @@ function RenderLayer({
     { drawing, setDrawing },
     { drawerX, drawerY }
   );
-
+  const [debugError, setDebugError] = useState(false);
+  //@ts-ignore
+  window.throwError = () => {
+    setDebugError(true);
+  }
+  if(debugError){
+    throw new Error();
+  }
   return (
     <div className="RenderLayer">
       {lineComp}

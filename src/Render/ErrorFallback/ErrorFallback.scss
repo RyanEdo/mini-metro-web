@@ -1,0 +1,67 @@
+.error-layer {
+  text-align: center;
+  .title {
+    margin-top: 20vh;
+    font-size: 36px;
+    font-weight: 1000;
+  }
+  .sub-title {
+    margin-top: 0.5vh;
+    font-size: 18px;
+    font-weight: 500;
+  }
+  .error-btn {
+    span{
+      margin-left: 55px;
+    }
+    user-select: none;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    --gap: min(20px, 2vw);
+    position: relative;
+    svg{
+      position: absolute;
+      left: calc(var(--gap) + 20px);
+    }
+    &.recover-from-cache {
+      margin-top: 12vh;
+      background-color: rgb(234, 11, 42, 0.09);
+      color: #ea0b2a;
+      svg {
+        width: 20px;
+
+      }
+    }
+    &.export-from-cache {
+      margin-top: 0.5vh;
+      background-color: #D9D9D9;
+      svg {
+        width: 16px;
+        padding: 0 2px;
+  
+      }
+    }
+    padding: 20px 30px;
+    width: 315px;
+    margin: auto;
+    border-radius: 10px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+
+  }
+  .export-error{
+    position: absolute;
+    bottom: 10vh;
+    margin: auto;
+    left: 0;
+    right: 0;
+    font-size: 18px;
+    font-weight: 500;
+    .export-error-file{
+      color: #ea0b2a;
+      cursor: pointer;
+    }
+  }
+}

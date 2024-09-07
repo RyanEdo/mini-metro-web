@@ -1,3 +1,4 @@
+import { ErrorBoundary } from "react-error-boundary";
 import {
   browserInfo,
   mapToArr,
@@ -14,6 +15,7 @@ import {
   StationProps,
   UserDataType,
   initData,
+  setDataFromJson,
 } from "../Data/UserData";
 import { FunctionMode, Mode } from "../DataStructure/Mode";
 import { Cards } from "../Render/Card/Cards";
@@ -27,6 +29,7 @@ import { WelcomeTour } from "../WelcomeTour/WelcomeTour";
 import "./App.scss";
 import "driver.js/dist/driver.css";
 import React, { useEffect, useRef, useState } from "react";
+import { ErrorFallback } from "../Render/ErrorFallback/ErrorFallback";
 function App() {
   const [editingMode, setEditingMode] = useState(Mode.normal);
   const [functionMode, setFunctionMode] = useState(FunctionMode.normal);
@@ -66,7 +69,25 @@ function App() {
     setShowConfirmation(() => ref.current?.showConfirmation);
   }, [ref.current?.showConfirmation]);
   const [cardShowing, setCardShowing] = useState(new CardShowing());
+  const transfromTools = {
+    scale,
+    setScale,
+    translateX,
+    translateY,
+    setTranslateX,
+    setTranslateY,
+  };
   return (
+    <ErrorBoundary
+    FallbackComponent={ErrorFallback}
+    onReset={() => {
+      const last = localStorage.getItem("last");
+      if (last) {
+        const data = setDataFromJson(setData, last);
+        mediateMap(data, transfromTools);
+      }
+    }}
+  >
     <div className="App">
       <Menu
         setEditingMode={setEditingMode}
@@ -147,6 +168,7 @@ function App() {
       />
       <WelcomeTour showTour={showTour} setShowTour={setShowTour} />
     </div>
+    </ErrorBoundary>
   );
 }
 
