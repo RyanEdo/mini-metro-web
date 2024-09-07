@@ -731,7 +731,7 @@ export const Menu = forwardRef(function (
               ) : (
                 <></>
               )}
-              <div className="column-item small">版本 : 1.0.0</div>
+              <div className="column-item small">版本 : 1.0.1</div>
               <div
                 className="column-item small author"
                 onClick={(e) => {
