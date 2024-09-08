@@ -30,6 +30,7 @@ import "./App.scss";
 import "driver.js/dist/driver.css";
 import React, { useEffect, useRef, useState } from "react";
 import { ErrorFallback } from "../Render/ErrorFallback/ErrorFallback";
+import { Recovery } from "../Render/Recovery/Recovery";
 function App() {
   const [editingMode, setEditingMode] = useState(Mode.normal);
   const [functionMode, setFunctionMode] = useState(FunctionMode.normal);
@@ -50,6 +51,7 @@ function App() {
   const [showTour, setShowTour] = useState(() => {
     return  window.innerWidth>=710 && !localStorage.getItem("skip-tour-viewed");
   });
+  const [recoveredFromError, setRecoveredFromError] = useState(false);
   const [showConfirmation, setShowConfirmation] =
     useState<showConfirmationInterface>();
   // keep latest data if crash happend
@@ -86,6 +88,7 @@ function App() {
         const data = setDataFromJson(setData, last);
         mediateMap(data, transfromTools);
       }
+      setRecoveredFromError(true);
     }}
   >
     <div className="App">
@@ -167,6 +170,13 @@ function App() {
         setCardShowing={setCardShowing}
       />
       <WelcomeTour showTour={showTour} setShowTour={setShowTour} />
+      <Recovery         
+        data={data}
+        setData={setData}
+        recoveredFromError={recoveredFromError}
+        setRecoveredFromError={setRecoveredFromError}
+        transfromTools={transfromTools}
+        />
     </div>
     </ErrorBoundary>
   );

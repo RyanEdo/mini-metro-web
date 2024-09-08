@@ -1,0 +1,114 @@
+.App{
+    perspective: 1000px;
+    perspective-origin: 100vw 105px; 
+    z-index: 10000;
+}
+.recovery-notification-container {
+
+    position: fixed;
+    right: 0;
+    top: 0;
+    transform-origin: right center;
+    transition: ease-in-out 0.5s;
+
+    &.show {
+        transform: rotate3d(0, 1, 0, 0deg);
+        opacity: 1;
+    }
+    &:not(.show) {
+        transform: rotate3d(0, 1, 0, -90deg);
+        opacity: 0;
+    }
+    .recovery-notification {
+        @media screen and (max-width: 520px) {
+            display: none;
+        }
+        position: fixed;
+        top: 30px;
+        right: 30px;
+        width: 363px;
+        height: 75px;
+        display: flex;
+        // justify-content: space-between;
+        align-items: center;
+        background-color: rgb(255, 255, 255, 0.72);
+        box-shadow: 0 0 80px 0 rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(15px);
+        border-radius: 15px;
+        transition: ease-in-out 0.3s;
+
+        // zoom: 1.2;
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.001);
+        }
+        .icon {
+            margin: 0 20px;
+        }
+
+        .icon,
+        .ok,
+        .no {
+            width: 36px;
+            height: 36px;
+
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ok,
+        .no {
+            cursor: pointer;
+            position: absolute;
+        }
+
+        .icon,
+        .ok {
+            background-color: rgb(235, 10, 40, 0.1);
+        }
+
+        .no {
+            background-color: #d9d9d9;
+            right: 20px;
+        }
+
+        .icon {
+            svg {
+                width: 20px;
+                height: 20px;
+            }
+        }
+
+        .ok {
+            right: 60px;
+            transition: ease-in-out 0.3s;
+            &:hover {
+                background-color: rgb(235, 10, 40, 0.2);
+            }
+            svg {
+                width: 16px;
+            }
+        }
+
+        .no {
+            transition: ease-in-out 0.3s;
+            &:hover {
+                background-color: #c9c9c9;
+            }
+            svg {
+                width: 12px;
+            }
+        }
+
+        .text {
+            .title {
+                font-size: 16px;
+            }
+            .sub-title {
+                font-size: 12px;
+            }
+            font-weight: 500;
+        }
+    }
+}
