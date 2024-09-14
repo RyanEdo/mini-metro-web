@@ -55,6 +55,7 @@ export class UserDataType {
   stations!: Map<number | string, StationProps>;
   lines!: Map<number | string, LineProps>;
   title?: string;
+  backgroundColor?: string; 
 }
 
 export type ShowNameProps = {
@@ -159,6 +160,7 @@ const initDataMock: UserDataType = {
     map.set(cur.lineId, cur);
     return map;
   }, new Map()),
+  backgroundColor: '#ffffff',
 };
 
 export const initData = {
@@ -174,10 +176,12 @@ export const setDataFromJson = (
     stations: stationsArr,
     lines: linesArr,
     title,
+    backgroundColor,
   }: {
     stations: StationProps[];
     lines: LineProps[];
     title: string;
+    backgroundColor: string;
   } = res;
   const stations = stationsArr.reduce((map, cur) => {
     map.set(cur.stationId, cur);
@@ -187,7 +191,7 @@ export const setDataFromJson = (
     map.set(cur.lineId, cur);
     return map;
   }, new Map());
-  const data = { stations, lines, title }
+  const data = { stations, lines, title, backgroundColor }
   setData(data);
   return data;
 };

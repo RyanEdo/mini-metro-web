@@ -281,6 +281,68 @@ export const Menu = forwardRef(function (
           </>
         );
       }
+      case FunctionMode.backgroundEditing: {
+        const {backgroundColor = '#ffffff'} = data;
+        const setColor = (color: string) => setData(data=>({...data, backgroundColor: color}))
+        return (
+          <>
+          <div className="tool disabled">
+              背景设定
+            </div>
+            <div className={classNames({"tool":1, "disabled":backgroundColor ==='#ffffff'})}
+            onClick={()=>setColor('#ffffff')}
+            >
+              纯白
+            </div>
+            <div className={classNames({"tool":1, "disabled":backgroundColor ==='transparent'})}
+            onClick={()=>setColor('transparent')}
+            >
+              透明
+            </div>
+            <div className="tool">
+            <input
+                  className="color-input"
+                  type="color"
+                  value={backgroundColor}
+                  onInput={(e) => setColor(e.currentTarget.value)}
+                />
+            </div>
+            <div className="tool" onClick={(e) => showTools(e, FunctionMode.customBackground)}>
+              导入背景图...
+            </div>
+            <div
+              className="tool"
+              onClick={() => {
+                setPage("title");
+                setTitleEditable(false);
+              }}
+            >
+              完成
+            </div>
+          </>
+        );
+      }
+      case FunctionMode.customBackground: {
+        return (
+          <>
+          <div className="tool disabled">
+              自定义背景图
+            </div>
+            <div className="tool">
+              透明度
+            </div>
+            <div className="tool">
+              位置
+            </div>
+            <div className="tool">
+            删除图片
+            </div>
+            <div className="tool" onClick={(e) => showTools(e, FunctionMode.backgroundEditing)}>
+              返回
+            </div>
+          </>
+        );
+      }
       case FunctionMode.selectingStation: {
         const { insertIndex, line } = insertInfo!;
         const { lineName } = line;
@@ -532,6 +594,12 @@ export const Menu = forwardRef(function (
                 }}
               >
                 居中路线图...
+              </div>
+              <div
+                className="column-item"
+                onClick={(e) => showTools(e, FunctionMode.backgroundEditing)}
+              >
+                设定背景...
               </div>
             </div>
           </div>

@@ -155,10 +155,10 @@ function parseSelectedFile(input: HTMLInputElement): Promise<any> {
 }
 
 export const stringifyData = (data: UserDataType) => {
-  const { stations: stationsMap, lines: linesMap, title } = data;
+  const { stations: stationsMap, lines: linesMap, title, backgroundColor } = data;
   const stations = mapToArr(stationsMap);
   const lines = mapToArr(linesMap);
-  return JSON.stringify({ stations, lines, title });
+  return JSON.stringify({ stations, lines, title, backgroundColor });
 };
 
 export const setLocalStorage = (data: UserDataType, callback: Function) => {

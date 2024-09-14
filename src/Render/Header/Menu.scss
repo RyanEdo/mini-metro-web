@@ -145,10 +145,15 @@
                 font-size: 18px;
                 font-weight: 500;
                 color: #ea0b2a;
+                &.tool-title{
+                    color: #00A0E8;
+                    cursor:auto;
+                }
                 margin-left: 21.77px;
                 cursor: pointer;
                 &.disabled {
                     color: #ea0b2a55;
+                    cursor:auto;
                 }
                 svg{
                     vertical-align: text-bottom;

@@ -106,13 +106,13 @@ function ScaleLayer({
   // touches or mouse moved, that means user trying to scale or move, not adding station
   const [moved, setMoved] = useState(false);
 
-  const { stations } = data;
+  const { stations, backgroundColor } = data;
   const allStationsList = mapToArr(stations);
   const {minX,minY,maxX,maxY} = getBoundary(data);
   const drawerX = maxX - minX + 400;
   const drawerY = maxY - minY + 400;
   const style:CSSProperties = {
-    backgroundColor:"white",
+    backgroundColor,
     transform:drawing?`scale(2)`: `translate(${translateX}px,${translateY}px) scale(${scale})`,
     width:drawing?  drawerX*2: undefined,
     height:drawing? drawerY*2: undefined,
@@ -237,7 +237,7 @@ function ScaleLayer({
           setCardShowing
         )
       }
-      style={{ cursor: getCursor(editingMode) }}
+      style={{ cursor: getCursor(editingMode) , backgroundColor}}
     >
       <div className="layer-for-welcome-tour"></div>
       <div className="transform-layer" style={style}>
