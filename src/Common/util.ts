@@ -223,3 +223,22 @@ export const mediateMap = (
   setTranslateX(transformX);
   setTranslateY(transformY);
 };
+
+
+export function importImage(): Promise<File | null> {
+  return new Promise((resolve, reject) => {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
+      input.onchange = (event: Event) => {
+          const target = event.target as HTMLInputElement;
+          if (target.files && target.files.length > 0) {
+              const file = target.files[0];
+              resolve(file);
+          } else {
+              resolve(null);
+          }
+      };
+      input.click();
+  });
+}

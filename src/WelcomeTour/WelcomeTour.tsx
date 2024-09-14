@@ -82,10 +82,10 @@ export function WelcomeTour({
                   className="skip-tour"
                   onClick={() => {
                     setShow(false);
-                    if (!localStorage.getItem("skip-tour-viewed"))
-                      showTour("skip", () => {
+                    // if (!localStorage.getItem("skip-tour-viewed"))
+                    //   showTour("skip", () => {
                         localStorage.setItem("skip-tour-viewed", "Y");
-                      });
+                    //   });
                   }}
                 >
                   暂时跳过

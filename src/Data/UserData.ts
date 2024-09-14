@@ -56,6 +56,11 @@ export class UserDataType {
   lines!: Map<number | string, LineProps>;
   title?: string;
   backgroundColor?: string; 
+  backgroundImage?: File;
+  opacity?: number;
+  translateX?: number;
+  translateY?: number;
+  scale?: number;
 }
 
 export type ShowNameProps = {
@@ -92,75 +97,6 @@ export type ShowTourProps = {
 export type PageProps = {
   page: string;
   setPage: React.Dispatch<React.SetStateAction<string>>;
-};
-const initDataMock: UserDataType = {
-  title: "提瓦特",
-  stations: [
-    {
-      stationId: 1,
-      stationName: "风起地站",
-      position: [200, 300],
-      shape: "cicle",
-      lineIds: [1, 2, 3],
-    },
-    {
-      stationId: 2,
-      stationName: "蒙德站",
-      position: [300, 500],
-      shape: "square",
-      lineIds: [1, 3],
-    },
-    {
-      stationId: 3,
-      stationName: "达达乌帕谷",
-      position: [500, 600],
-      shape: "square",
-      lineIds: [2, 3],
-    },
-    {
-      stationId: 4,
-      stationName: "望风山地",
-      position: [400, 300],
-      shape: "square",
-      lineIds: [2, 3],
-    },
-  ].reduce((map, cur) => {
-    map.set(cur.stationId, cur);
-    return map;
-  }, new Map()),
-  lines: [
-    {
-      lineId: 1,
-      lineName: "1号线",
-      color: "#EA0B2A",
-      stationIds: [1, 2],
-      sign: "1",
-      order: 1,
-      bendFirst: [1, 0],
-    },
-    {
-      lineId: 2,
-      lineName: "2号线",
-      color: "#94D40B",
-      stationIds: [1, 3, 4],
-      sign: "2",
-      order: 2,
-      bendFirst: [1, 0, 1],
-    },
-    {
-      lineId: 3,
-      lineName: "3号线",
-      color: "#F8D000",
-      stationIds: [1, 4, 2, 3, 4],
-      sign: "3",
-      order: 3,
-      bendFirst: [1, 0, 0, 0, 0],
-    },
-  ].reduce((map, cur) => {
-    map.set(cur.lineId, cur);
-    return map;
-  }, new Map()),
-  backgroundColor: '#ffffff',
 };
 
 export const initData = {

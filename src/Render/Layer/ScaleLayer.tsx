@@ -2,6 +2,7 @@ import React, {
   CSSProperties,
   Dispatch,
   SetStateAction,
+  useMemo,
   useState,
 } from "react";
 import { FunctionMode, Mode } from "../../DataStructure/Mode";
@@ -49,7 +50,9 @@ type ScaleLayerProp = {
   cardShowing: CardShowing;
   setCardShowing: Dispatch<SetStateAction<CardShowing>>;
 } & ShowNameProps &
-  DrawProps & TransformProps &PageProps;
+  DrawProps &
+  TransformProps &
+  PageProps;
 function ScaleLayer({
   editingMode,
   setEditingMode,
@@ -77,9 +80,8 @@ function ScaleLayer({
   translateY,
   setTranslateX,
   setTranslateY,
-  page
+  page,
 }: ScaleLayerProp) {
-
   // mouseRefPoint
   // in mouse drag mode: this point record mouse start point
   const [mouseRefPoint, setMouseRefPoint] = useState(new Point());
@@ -106,16 +108,22 @@ function ScaleLayer({
   // touches or mouse moved, that means user trying to scale or move, not adding station
   const [moved, setMoved] = useState(false);
 
-  const { stations, backgroundColor } = data;
+  // translate and scale used for map or background image
+
+  const { stations, backgroundColor, backgroundImage, opacity } = data;
+  // const backgroundColor =
+  //   _backgroundColor === "image" ? "transparent" : _backgroundColor;
   const allStationsList = mapToArr(stations);
-  const {minX,minY,maxX,maxY} = getBoundary(data);
+  const { minX, minY, maxX, maxY } = getBoundary(data);
   const drawerX = maxX - minX + 400;
   const drawerY = maxY - minY + 400;
-  const style:CSSProperties = {
+  const style: CSSProperties = {
     backgroundColor,
-    transform:drawing?`scale(2)`: `translate(${translateX}px,${translateY}px) scale(${scale})`,
-    width:drawing?  drawerX*2: undefined,
-    height:drawing? drawerY*2: undefined,
+    transform: drawing
+      ? `scale(2)`
+      : `translate(${translateX}px,${translateY}px) scale(${scale})`,
+    width: drawing ? drawerX * 2 : undefined,
+    height: drawing ? drawerY * 2 : undefined,
   };
   const drawingStationMap = new Map();
   allStationsList.forEach((station) => {
@@ -126,8 +134,13 @@ function ScaleLayer({
   });
   const drawingData = { ...data, stations: drawingStationMap };
   const { engine } = browserInfo;
-  const webkit = engine.name === "WebKit"
-  const display = stations.size>100 && webkit && page==="menu"? "none": undefined;
+  const webkit = engine.name === "WebKit";
+  const display =
+    stations.size > 100 && webkit && page === "menu" ? "none" : undefined;
+  const imageSrc = useMemo(
+    () => (backgroundImage ? URL.createObjectURL(backgroundImage) : undefined),
+    [backgroundImage]
+  );
   return (
     <div
       className="ScaleLayer"
@@ -237,11 +250,18 @@ function ScaleLayer({
           setCardShowing
         )
       }
-      style={{ cursor: getCursor(editingMode) , backgroundColor}}
+      style={{ cursor: getCursor(editingMode), backgroundColor }}
     >
       <div className="layer-for-welcome-tour"></div>
+
       <div className="transform-layer" style={style}>
-        {/* <div className="patch-layer" style={drawing?{transform: `translate(${patchX+200}px,${patchY+200}px)`}:{}}> */}
+        <img
+          className="background-layer"
+          src={imageSrc}
+          style={{
+            opacity,
+          }}
+        />
         <RenderLayer
           data={drawing ? drawingData : data}
           setData={setData}
@@ -269,7 +289,6 @@ function ScaleLayer({
           drawerY={drawerY}
         />
       </div>
-      {/* </div> */}
     </div>
   );
 }

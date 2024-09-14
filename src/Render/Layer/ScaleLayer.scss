@@ -15,4 +15,10 @@
         // never use will-change here, it makes child elements blurry
         // will-change: transform;
     }
+
+    .background-layer{
+        position: absolute;
+        pointer-events: none;
+        transform-origin: left top;
+    }
 }
