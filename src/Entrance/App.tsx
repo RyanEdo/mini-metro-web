@@ -3,6 +3,7 @@ import {
   browserInfo,
   mapToArr,
   mediateMap,
+  readFileFromIndexedDB,
   setLocalStorage,
 } from "../Common/util";
 import {
@@ -86,6 +87,16 @@ function App() {
       const last = localStorage.getItem("last");
       if (last) {
         const data = setDataFromJson(setData, last);
+        readFileFromIndexedDB("image").then(
+          (file) => {
+            setData((data) => ({
+              ...data,
+              // backgroundColor: "image",
+              backgroundImage: file as File,
+            }));
+          },
+          () => {}
+        );
         mediateMap(data, transfromTools);
       }
       setRecoveredFromError(true);

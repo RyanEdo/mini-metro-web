@@ -20,5 +20,13 @@
         position: absolute;
         pointer-events: none;
         transform-origin: left top;
+        appearance: none;
+        border: none;
+        box-shadow: none;
+        border-image-width: 0;
+
+        &:not([src]) {
+            opacity: 0 !important;
+        }
     }
 }

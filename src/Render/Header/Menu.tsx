@@ -7,6 +7,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import {ReactComponent as ShareIcon} from '../../Resource/Icon/share.svg';
 import { AutoGrowthInput } from "../../Common/AutoGrowthInput";
 import "./Menu.scss";
 import classNames from "classnames";
@@ -34,11 +35,15 @@ import {
 import PlusIcon from "../../Resource/Icon/plus";
 import {
   browserInfo,
+  calculateTransform,
+  deleteFileFromIndexedDB,
   exportFile,
   exportJson,
   importFromFile,
   importImage,
   mediateMap,
+  readFileFromIndexedDB,
+  storeFileInIndexedDB,
   stringifyData,
 } from "../../Common/util";
 import moment from "moment";
@@ -135,12 +140,21 @@ export const Menu = forwardRef(function (
     importImage()
       .then((file) => {
         if (file) {
-          showTools(e, FunctionMode.customBackground);
-          setData((data) => ({
-            ...data,
-            // backgroundColor: "image",
-            backgroundImage: file,
-          }));
+          calculateTransform(file).then(
+            ({ translateX: x, translateY: y, scale: s }) => {
+              showTools(e, FunctionMode.editingCustomBackgroundPosition);
+              setData((data) => ({
+                ...data,
+                // backgroundColor: "image",
+                backgroundImage: file,
+                translateX: (x - translateX) / scale,
+                translateY: (y - translateY) / scale,
+                scale: s / scale,
+              }));
+              storeFileInIndexedDB(file, "image");
+            }
+          );
+
           console.log("图片 Blob 对象:", file);
         } else {
           console.log("未选择图片");
@@ -347,7 +361,7 @@ export const Menu = forwardRef(function (
               <div
                 className="tool"
                 onClick={(e) => {
-                  showTools(e, FunctionMode.customBackground);
+                  showTools(e, FunctionMode.editingCustomBackgroundPosition);
                 }}
               >
                 修改背景图...
@@ -369,43 +383,36 @@ export const Menu = forwardRef(function (
           </>
         );
       }
-      case FunctionMode.customBackground: {
-        const { backgroundColor, backgroundImage, opacity=1 } = data;
+      case FunctionMode.customBackground:
+      case FunctionMode.editingCustomBackgroundPosition: {
+        const { backgroundColor, backgroundImage, opacity = 1 } = data;
         const setColor = (color: string) =>
           setData((data) => ({ ...data, backgroundColor: color }));
         const setOpacity = (opacity: number) =>
-          setData((data) => ({ ...data, opacity}));
+          setData((data) => ({ ...data, opacity }));
         return (
           <>
             <div className="tool disabled">背景设定 / 修改背景图</div>
-            {/* {backgroundColor === "image" ? (
-              <div className="tool disabled">已应用图片</div>
-            ) : backgroundImage ? (
-              <div
-                className="tool"
-                onClick={() => {
-                  setColor("image");
-                }}
-              >
-                应用图片
-              </div>
+            <div className="tool" onClick={importImageClick}>
+              导入图片
+            </div>
+            <OpacityControl opacity={opacity} setOpacity={setOpacity} />
+            {/* 
+            {functionMode === FunctionMode.editingCustomBackgroundPosition ? (
+              <div className="tool" onClick={(e) => showTools(e, FunctionMode.customBackground)}>调整地图</div>
             ) : (
-              <div className="tool" onClick={importImageClick}>
-                导入图片
-              </div>
+              <div className={classNames({ tool: 1, disabled: !backgroundImage })} onClick={(e) => showTools(e, FunctionMode.editingCustomBackgroundPosition)}>调整位置与缩放</div>
             )} */}
-              <div className="tool" onClick={importImageClick}>
-                导入图片
-              </div>
-            <OpacityControl opacity={opacity} setOpacity={setOpacity}/>
-            <div className="tool">位置</div>
+
             <div
               className={classNames({ tool: 1, disabled: !backgroundImage })}
               onClick={(e) => {
+                showTools(e, FunctionMode.customBackground);
                 setData((data) => ({
                   ...data,
                   backgroundImage: undefined,
                 }));
+                deleteFileFromIndexedDB("image");
               }}
             >
               删除图片
@@ -564,7 +571,7 @@ export const Menu = forwardRef(function (
   };
 
   useEffect(() => {
-    if (drawing)
+    if (drawing) {
       toPng(document.querySelector(".transform-layer")! as HTMLElement).then(
         (dataUrl) => {
           setDrawing(false);
@@ -574,6 +581,7 @@ export const Menu = forwardRef(function (
           );
         }
       );
+    }
   }, [drawing]);
 
   return (
@@ -802,6 +810,17 @@ export const Menu = forwardRef(function (
                   const current = localStorage.getItem("current");
                   if (current) {
                     const data = setDataFromJson(setData, current);
+                    readFileFromIndexedDB("image").then(
+                      (file) => {
+                        setData((data) => ({
+                          ...data,
+                          // backgroundColor: "image",
+                          backgroundImage: file as File,
+                        }));
+                      },
+                      () => {}
+                    );
+
                     mediateMap(data, transfromTools);
                   }
                 }}
@@ -872,7 +891,17 @@ export const Menu = forwardRef(function (
               ) : (
                 <></>
               )}
-              <div className="column-item small">版本 : 1.0.2</div>
+              <div
+                className="column-item friend"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.open("https://railmapgen.org/?utm_source=mini-metro-web", "_blank");
+                }}
+              >
+                线路图工具包
+                <ShareIcon/>
+              </div>
+              <div className="column-item small">版本 : 1.1.0</div>
               <div
                 className="column-item small author"
                 onClick={(e) => {
@@ -882,6 +911,8 @@ export const Menu = forwardRef(function (
               >
                 作者 : 江户川瑞安
               </div>
+
+
             </div>
           </div>
         </div>

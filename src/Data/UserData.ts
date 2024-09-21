@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { generateRandomColor, mapToArr } from "../Common/util";
+import { base64ToFile, generateRandomColor, mapToArr } from "../Common/util";
 import { colorSH } from "../Common/color";
 import { Direct } from "../DataStructure/Direction";
 import { teyvat } from "../Common/teyvat";
@@ -113,11 +113,21 @@ export const setDataFromJson = (
     lines: linesArr,
     title,
     backgroundColor,
+    translateX,
+    translateY,
+    scale,
+    opacity,
+    image
   }: {
     stations: StationProps[];
     lines: LineProps[];
     title: string;
     backgroundColor: string;
+    translateX:number;
+    translateY:number;
+    scale:number;
+    opacity: number;
+    image: string;
   } = res;
   const stations = stationsArr.reduce((map, cur) => {
     map.set(cur.stationId, cur);
@@ -127,8 +137,13 @@ export const setDataFromJson = (
     map.set(cur.lineId, cur);
     return map;
   }, new Map());
-  const data = { stations, lines, title, backgroundColor }
+  const data = { stations, lines, title, backgroundColor, translateX, translateY, scale, opacity }
   setData(data);
+  base64ToFile(image).then(backgroundImage=>{
+    setData({...data, backgroundImage});
+  }).catch(e=>{
+    console.error(e);
+  })
   return data;
 };
 

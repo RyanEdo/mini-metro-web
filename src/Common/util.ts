@@ -86,16 +86,54 @@ export function generateRandomColor(): string {
   return `#${finalHex}`;
 }
 
+export async function base64ToFile(base64: string): Promise<File>  {
+  const res = await fetch(base64);
+  const blob = await res.blob();
+  return new File([blob], 'image', { type: blob.type });
+}
+
+export function fileToBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = (error) => reject(error);
+  });
+}
 export function exportJson(content: string, filename: string) {
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(
-    new Blob([content], { type: "application/json" })
+  const exportContent = (content: string) => {
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(
+      new Blob([content], { type: "application/json" })
+    );
+    link.download = filename;
+    link.style.display = "none";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+  readFileFromIndexedDB("image").then(
+    (file) => {
+      fileToBase64(file!).then(
+        (image) => {
+          try {
+            const data = JSON.parse(content);
+            const dataWithImage = { ...data, image };
+            const json = JSON.stringify(dataWithImage);
+            exportContent(json);
+          } catch (e) {
+            exportContent(content);
+          }
+        },
+        () => {
+          exportContent(content);
+        }
+      );
+    },
+    () => {
+      exportContent(content);
+    }
   );
-  link.download = filename;
-  link.style.display = "none";
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
 }
 
 export function exportPNG(content: Blob, filename: string) {
@@ -155,10 +193,28 @@ function parseSelectedFile(input: HTMLInputElement): Promise<any> {
 }
 
 export const stringifyData = (data: UserDataType) => {
-  const { stations: stationsMap, lines: linesMap, title, backgroundColor } = data;
+  const {
+    stations: stationsMap,
+    lines: linesMap,
+    title,
+    backgroundColor,
+    translateX,
+    translateY,
+    scale,
+    opacity
+  } = data;
   const stations = mapToArr(stationsMap);
   const lines = mapToArr(linesMap);
-  return JSON.stringify({ stations, lines, title, backgroundColor });
+  return JSON.stringify({
+    stations,
+    lines,
+    title,
+    backgroundColor,
+    translateX,
+    translateY,
+    scale,
+    opacity
+  });
 };
 
 export const setLocalStorage = (data: UserDataType, callback: Function) => {
@@ -200,45 +256,192 @@ export const mediateMap = (
   const width = maxX - minX;
   const height = maxY - minY;
   const { innerHeight, innerWidth } = window;
-  let scale = 1, transformX = -minX, transformY = -minY;
+  let scale = 1,
+    transformX = -minX,
+    transformY = -minY;
   if (innerWidth > innerHeight) {
-    const margin = innerWidth*0.05;
+    const margin = innerWidth * 0.05;
     scale = (innerWidth - margin) / width;
-    transformX = margin/2-minX*scale;
-    transformY = (innerHeight - height*scale)/2 - minY*scale;
+    transformX = margin / 2 - minX * scale;
+    transformY = (innerHeight - height * scale) / 2 - minY * scale;
   } else {
-    const margin = innerHeight*0.05;
+    const margin = innerHeight * 0.05;
     scale = (innerHeight - margin) / height;
-    transformY = margin/2-minY*scale;
-    transformX = (innerWidth - width*scale)/2 -minX*scale;
+    transformY = margin / 2 - minY * scale;
+    transformX = (innerWidth - width * scale) / 2 - minX * scale;
   }
 
   // small size map
-  if(scale>1){
+  if (scale > 1) {
     scale = 1;
-    transformX = (innerWidth - width)/2 - minX;
-    transformY = (innerHeight - height)/2 - minY;
+    transformX = (innerWidth - width) / 2 - minX;
+    transformY = (innerHeight - height) / 2 - minY;
   }
   setScale(scale);
   setTranslateX(transformX);
   setTranslateY(transformY);
 };
 
-
 export function importImage(): Promise<File | null> {
   return new Promise((resolve, reject) => {
-      const input = document.createElement('input');
-      input.type = 'file';
-      input.accept = 'image/*';
-      input.onchange = (event: Event) => {
-          const target = event.target as HTMLInputElement;
-          if (target.files && target.files.length > 0) {
-              const file = target.files[0];
-              resolve(file);
-          } else {
-              resolve(null);
-          }
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.onchange = (event: Event) => {
+      const target = event.target as HTMLInputElement;
+      if (target.files && target.files.length > 0) {
+        const file = target.files[0];
+        resolve(file);
+      } else {
+        resolve(null);
+      }
+    };
+    input.click();
+  });
+}
+
+interface TransformValues {
+  translateX: number;
+  translateY: number;
+  scale: number;
+}
+
+export function calculateTransform(file: File): Promise<TransformValues> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      img.src = e.target?.result as string;
+    };
+
+    reader.onerror = (e) => {
+      reject(e);
+    };
+
+    img.onload = () => {
+      const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
+
+      const imgWidth = img.width;
+      const imgHeight = img.height;
+      const imgAspectRatio = imgWidth / imgHeight;
+      const screenAspectRatio = screenWidth / screenHeight;
+
+      let scale: number;
+      if (imgAspectRatio > screenAspectRatio) {
+        // Image is wider than the screen
+        scale = (screenWidth * 0.8) / imgWidth;
+      } else {
+        // Image is taller than the screen
+        scale = (screenHeight * 0.8) / imgHeight;
+      }
+
+      const scaledWidth = imgWidth * scale;
+      const scaledHeight = imgHeight * scale;
+
+      const translateX = (screenWidth - scaledWidth) / 2;
+      const translateY = (screenHeight - scaledHeight) / 2;
+
+      resolve({ translateX, translateY, scale });
+    };
+
+    reader.readAsDataURL(file);
+  });
+}
+
+export function storeFileInIndexedDB(
+  file: File,
+  customFileName: string
+): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open("FileDatabase", 1);
+
+    request.onupgradeneeded = (event) => {
+      const db = (event.target as IDBOpenDBRequest).result;
+      if (!db.objectStoreNames.contains("files")) {
+        db.createObjectStore("files", { keyPath: "name" });
+      }
+    };
+
+    request.onsuccess = (event) => {
+      const db = (event.target as IDBOpenDBRequest).result;
+      const transaction = db.transaction("files", "readwrite");
+      const objectStore = transaction.objectStore("files");
+      const fileRecord = {
+        name: customFileName,
+        content: file,
       };
-      input.click();
+
+      const addRequest = objectStore.put(fileRecord);
+
+      addRequest.onsuccess = () => {
+        resolve();
+      };
+
+      addRequest.onerror = (event) => {
+        reject((event.target as IDBRequest).error);
+      };
+    };
+
+    request.onerror = (event) => {
+      reject((event.target as IDBRequest).error);
+    };
+  });
+}
+
+export function readFileFromIndexedDB(fileName: string): Promise<File | null> {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open("FileDatabase", 1);
+
+    request.onsuccess = (event) => {
+      const db = (event.target as IDBOpenDBRequest).result;
+      const transaction = db.transaction("files", "readonly");
+      const objectStore = transaction.objectStore("files");
+      const getRequest = objectStore.get(fileName);
+
+      getRequest.onsuccess = (event) => {
+        const result = (event.target as IDBRequest).result;
+        if (result) {
+          resolve(result.content);
+        } else {
+          resolve(null);
+        }
+      };
+
+      getRequest.onerror = (event) => {
+        reject((event.target as IDBRequest).error);
+      };
+    };
+
+    request.onerror = (event) => {
+      reject((event.target as IDBRequest).error);
+    };
+  });
+}
+
+
+export function deleteFileFromIndexedDB(fileName: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open("FileDatabase", 1);
+
+    request.onsuccess = (event) => {
+      const db = (event.target as IDBOpenDBRequest).result;
+      const transaction = db.transaction("files", "readwrite");
+      const objectStore = transaction.objectStore("files");
+      const deleteRequest = objectStore.delete(fileName);
+
+      deleteRequest.onsuccess = () => {
+        resolve();
+      };
+
+      deleteRequest.onerror = (event) => {
+        reject((event.target as IDBRequest).error);
+      };
+    };
+
+    request.onerror = (event) => {
+      reject((event.target as IDBRequest).error);
+    };
   });
 }

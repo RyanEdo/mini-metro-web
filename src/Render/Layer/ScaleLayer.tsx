@@ -74,12 +74,12 @@ function ScaleLayer({
   setAutoHiddenName,
   drawing,
   setDrawing,
-  scale,
-  setScale,
-  translateX,
-  translateY,
-  setTranslateX,
-  setTranslateY,
+  scale: scaleForMap,
+  setScale: setScaleForMap,
+  translateX: translateXForMap,
+  translateY: translateYForMap,
+  setTranslateX: setTranslateXForMap,
+  setTranslateY: setTranslateYForMap,
   page,
 }: ScaleLayerProp) {
   // mouseRefPoint
@@ -108,8 +108,65 @@ function ScaleLayer({
   // touches or mouse moved, that means user trying to scale or move, not adding station
   const [moved, setMoved] = useState(false);
 
-  // translate and scale used for map or background image
+  const {
+    scale: scaleForImage = 1,
+    translateX: translateXForImage = 0,
+    translateY: translateYForImage = 0,
+  } = data;
+  let scale = scaleForMap,
+    translateX = translateXForMap,
+    translateY = translateYForMap;
+  if (functionMode === FunctionMode.editingCustomBackgroundPosition) {
+    scale = scaleForImage * scaleForMap;
+    translateX = translateXForImage * scaleForMap + translateXForMap;
+    translateY = translateYForImage * scaleForMap + translateYForMap;
+  }
 
+  const getRelativeValue = (
+    value: number,
+    type: "scale" | "translateX" | "translateY"
+  ) => {
+    switch (type) {
+      case "scale": {
+        return value / scaleForMap;
+      }
+      case "translateX": {
+        return (value - translateXForMap) / scaleForMap;
+      }
+      case "translateY": {
+        return (value - translateYForMap) / scaleForMap;
+      }
+    }
+  };
+  // translate and scale used for map or background image
+  const createSetter = (
+    key: "scale" | "translateX" | "translateY",
+    originalSetter: (value: number | ((prev: number) => number)) => void
+  ) => {
+    return functionMode === FunctionMode.editingCustomBackgroundPosition
+      ? (value: number | ((prev: number) => number)) => {
+          if (typeof value === "number") {
+            setData((data) => ({
+              ...data,
+              [key]: getRelativeValue(value, key),
+            }));
+          } else {
+            setData((data) => ({
+              ...data,
+              [key]: getRelativeValue(value(data[key]!), key),
+            }));
+          }
+        }
+      : originalSetter;
+  };
+
+  const setScale = createSetter("scale", setScaleForMap);
+  const setTranslateX = createSetter("translateX", setTranslateXForMap);
+  const setTranslateY = createSetter("translateY", setTranslateYForMap);
+
+  // const scaleRelative = scaleForImage/scale;
+  // const translateXRelative = translateX - translateXForImage;
+  // const translateYRelative = translateY - translateYForImage;
   const { stations, backgroundColor, backgroundImage, opacity } = data;
   // const backgroundColor =
   //   _backgroundColor === "image" ? "transparent" : _backgroundColor;
@@ -121,7 +178,7 @@ function ScaleLayer({
     backgroundColor,
     transform: drawing
       ? `scale(2)`
-      : `translate(${translateX}px,${translateY}px) scale(${scale})`,
+      : `translate(${translateXForMap}px,${translateYForMap}px) scale(${scaleForMap})`,
     width: drawing ? drawerX * 2 : undefined,
     height: drawing ? drawerY * 2 : undefined,
   };
@@ -152,7 +209,8 @@ function ScaleLayer({
           translateX,
           translateY,
           setTranslateX,
-          setTranslateY
+          setTranslateY,
+          functionMode
         )
       }
       onMouseDown={(event) =>
@@ -253,21 +311,35 @@ function ScaleLayer({
       style={{ cursor: getCursor(editingMode), backgroundColor }}
     >
       <div className="layer-for-welcome-tour"></div>
-
+      {/* <img
+        className="background-layer"
+        src={imageSrc}
+        style={{
+          opacity,
+          transform: `translate(${translateXForImage * scaleForMap +translateXForMap}px,${translateYForImage * scaleForMap +translateYForMap}px) scale(${scaleForImage*scaleForMap})`,
+        }}
+      /> */}
       <div className="transform-layer" style={style}>
         <img
           className="background-layer"
           src={imageSrc}
           style={{
             opacity,
+            transform: drawing
+              ? `translate(${
+                  (translateXForImage + 200   - minX )
+                }px,${
+                  (translateYForImage + 200  - minY )
+                }px) scale(${scaleForImage})`
+              : `translate(${translateXForImage}px,${translateYForImage}px) scale(${scaleForImage})`,
           }}
         />
         <RenderLayer
           data={drawing ? drawingData : data}
           setData={setData}
-          translateX={translateX}
-          translateY={translateY}
-          scale={scale}
+          translateX={translateXForMap}
+          translateY={translateYForMap}
+          scale={scaleForMap}
           functionMode={functionMode}
           setFunctionMode={setFunctionMode}
           record={record}

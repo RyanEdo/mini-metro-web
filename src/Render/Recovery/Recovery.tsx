@@ -5,7 +5,7 @@ import { ReactComponent as NoIcon } from "../../Resource/Icon/no.svg";
 
 import "./Recovery.scss";
 import { setDataFromJson, UserDataType } from "../../Data/UserData";
-import { mediateMap } from "../../Common/util";
+import { mediateMap, readFileFromIndexedDB } from "../../Common/util";
 import classNames from "classnames";
 export function Recovery({
   data,
@@ -74,6 +74,16 @@ useEffect(() => {
             const current = localStorage.getItem("current");
             if (current) {
               const data = setDataFromJson(setData, current);
+              readFileFromIndexedDB("image").then(
+                (file) => {
+                  setData((data) => ({
+                    ...data,
+                    // backgroundColor: "image",
+                    backgroundImage: file as File,
+                  }));
+                },
+                () => {}
+              );
               mediateMap(data, transfromTools);
             }
             setShowNotification(false);

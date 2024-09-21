@@ -235,6 +235,17 @@
                                 // text-decoration: underline;
                             }
                         }
+                        &.friend{
+                            position: relative;
+                            svg{
+                                margin-left: 5px;
+                                position: absolute;
+                                margin-top: 3px;
+                                width: 17px;
+                                // height: 25px;
+                                // vertical-align: bottom;
+                            }
+                        }
                     }
                 }
             }
