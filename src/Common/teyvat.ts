@@ -658,4 +658,5 @@ export const teyvat: UserDataType = {
     return map;
   }, new Map()),
   title: "提瓦特",
+  backgroundColor: '#ffffff',
 };

@@ -30,14 +30,15 @@ export const onWheel = (
   translateX: number,
   translateY: number,
   setTranslateX: Dispatch<SetStateAction<number>>,
-  setTranslateY: Dispatch<SetStateAction<number>>
+  setTranslateY: Dispatch<SetStateAction<number>>,
+  functionMode: FunctionMode,
 ) => {
   const { deltaY, clientX, clientY } = event;
 
   const nextScale = deltaY * sensitivity + preScale;
   const scaleRatio = nextScale / preScale;
   const refPoint = new Point(clientX, clientY);
-  if (nextScale > 0.1) {
+  if (nextScale > 0.1 || (functionMode ===FunctionMode.editingCustomBackgroundPosition && nextScale > 0)) {
     const transform = scaleByPointer(
       scaleRatio,
       translateX,

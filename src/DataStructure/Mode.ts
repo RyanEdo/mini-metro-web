@@ -11,6 +11,9 @@ export enum Mode {
     addingStation,
     dragingStation,
     lineEditing,
+    backgroundEditing,
+    customBackground,
+    editingCustomBackgroundPosition,
     selectingStation,
     choosingExistMap,
   }
