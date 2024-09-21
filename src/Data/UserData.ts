@@ -55,7 +55,7 @@ export class UserDataType {
   stations!: Map<number | string, StationProps>;
   lines!: Map<number | string, LineProps>;
   title?: string;
-  backgroundColor?: string; 
+  backgroundColor?: string;
   backgroundImage?: File;
   opacity?: number;
   translateX?: number;
@@ -117,15 +117,15 @@ export const setDataFromJson = (
     translateY,
     scale,
     opacity,
-    image
+    image,
   }: {
     stations: StationProps[];
     lines: LineProps[];
     title: string;
     backgroundColor: string;
-    translateX:number;
-    translateY:number;
-    scale:number;
+    translateX: number;
+    translateY: number;
+    scale: number;
     opacity: number;
     image: string;
   } = res;
@@ -137,13 +137,25 @@ export const setDataFromJson = (
     map.set(cur.lineId, cur);
     return map;
   }, new Map());
-  const data = { stations, lines, title, backgroundColor, translateX, translateY, scale, opacity }
+  const data = {
+    stations,
+    lines,
+    title,
+    backgroundColor,
+    translateX,
+    translateY,
+    scale,
+    opacity,
+  };
   setData(data);
-  base64ToFile(image).then(backgroundImage=>{
-    setData({...data, backgroundImage});
-  }).catch(e=>{
-    console.error(e);
-  })
+  if (image)
+    base64ToFile(image)
+      .then((backgroundImage) => {
+        setData({ ...data, backgroundImage });
+      })
+      .catch((e) => {
+        console.error(e);
+      });
   return data;
 };
 
