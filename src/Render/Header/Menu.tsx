@@ -7,7 +7,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import {ReactComponent as ShareIcon} from '../../Resource/Icon/share.svg';
+import { ReactComponent as ShareIcon } from "../../Resource/Icon/share.svg";
 import { AutoGrowthInput } from "../../Common/AutoGrowthInput";
 import "./Menu.scss";
 import classNames from "classnames";
@@ -810,16 +810,17 @@ export const Menu = forwardRef(function (
                   const current = localStorage.getItem("current");
                   if (current) {
                     const data = setDataFromJson(setData, current);
-                    readFileFromIndexedDB("image").then(
-                      (file) => {
+                    readFileFromIndexedDB("image")
+                      .then((file) => {
                         setData((data) => ({
                           ...data,
                           // backgroundColor: "image",
                           backgroundImage: file as File,
                         }));
-                      },
-                      () => {}
-                    );
+                      })
+                      .catch((e) => {
+                        console.error(e);
+                      });
 
                     mediateMap(data, transfromTools);
                   }
@@ -895,11 +896,14 @@ export const Menu = forwardRef(function (
                 className="column-item friend"
                 onClick={(e) => {
                   e.stopPropagation();
-                  window.open("https://railmapgen.org/?utm_source=mini-metro-web", "_blank");
+                  window.open(
+                    "https://railmapgen.org/?utm_source=mini-metro-web",
+                    "_blank"
+                  );
                 }}
               >
                 线路图工具包
-                <ShareIcon/>
+                <ShareIcon />
               </div>
               <div className="column-item small">版本 : 1.1.0</div>
               <div
@@ -911,8 +915,6 @@ export const Menu = forwardRef(function (
               >
                 作者 : 江户川瑞安
               </div>
-
-
             </div>
           </div>
         </div>

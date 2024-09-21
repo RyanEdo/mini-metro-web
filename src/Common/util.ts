@@ -86,10 +86,10 @@ export function generateRandomColor(): string {
   return `#${finalHex}`;
 }
 
-export async function base64ToFile(base64: string): Promise<File>  {
+export async function base64ToFile(base64: string): Promise<File> {
   const res = await fetch(base64);
   const blob = await res.blob();
-  return new File([blob], 'image', { type: blob.type });
+  return new File([blob], "image", { type: blob.type });
 }
 
 export function fileToBase64(file: File): Promise<string> {
@@ -112,8 +112,8 @@ export function exportJson(content: string, filename: string) {
     link.click();
     document.body.removeChild(link);
   };
-  readFileFromIndexedDB("image").then(
-    (file) => {
+  readFileFromIndexedDB("image")
+    .then((file) => {
       fileToBase64(file!).then(
         (image) => {
           try {
@@ -129,11 +129,11 @@ export function exportJson(content: string, filename: string) {
           exportContent(content);
         }
       );
-    },
-    () => {
+    })
+    .catch((e) => {
+      console.error(e);
       exportContent(content);
-    }
-  );
+    });
 }
 
 export function exportPNG(content: Blob, filename: string) {
@@ -201,7 +201,7 @@ export const stringifyData = (data: UserDataType) => {
     translateX,
     translateY,
     scale,
-    opacity
+    opacity,
   } = data;
   const stations = mapToArr(stationsMap);
   const lines = mapToArr(linesMap);
@@ -213,7 +213,7 @@ export const stringifyData = (data: UserDataType) => {
     translateX,
     translateY,
     scale,
-    opacity
+    opacity,
   });
 };
 
@@ -366,22 +366,29 @@ export function storeFileInIndexedDB(
 
     request.onsuccess = (event) => {
       const db = (event.target as IDBOpenDBRequest).result;
-      const transaction = db.transaction("files", "readwrite");
-      const objectStore = transaction.objectStore("files");
-      const fileRecord = {
-        name: customFileName,
-        content: file,
-      };
+      if (!db.objectStoreNames.contains("files")) {
+        db.close();
+        indexedDB.deleteDatabase("FileDatabase").onsuccess = () => {
+          storeFileInIndexedDB(file, customFileName).then(resolve).catch(reject);
+        };
+      } else {
+        const transaction = db.transaction("files", "readwrite");
+        const objectStore = transaction.objectStore("files");
+        const fileRecord = {
+          name: customFileName,
+          content: file,
+        };
 
-      const addRequest = objectStore.put(fileRecord);
+        const addRequest = objectStore.put(fileRecord);
 
-      addRequest.onsuccess = () => {
-        resolve();
-      };
+        addRequest.onsuccess = () => {
+          resolve();
+        };
 
-      addRequest.onerror = (event) => {
-        reject((event.target as IDBRequest).error);
-      };
+        addRequest.onerror = (event) => {
+          reject((event.target as IDBRequest).error);
+        };
+      }
     };
 
     request.onerror = (event) => {
@@ -395,23 +402,28 @@ export function readFileFromIndexedDB(fileName: string): Promise<File | null> {
     const request = indexedDB.open("FileDatabase", 1);
 
     request.onsuccess = (event) => {
-      const db = (event.target as IDBOpenDBRequest).result;
-      const transaction = db.transaction("files", "readonly");
-      const objectStore = transaction.objectStore("files");
-      const getRequest = objectStore.get(fileName);
+      try {
+        const db = (event.target as IDBOpenDBRequest).result;
+        const transaction = db.transaction("files", "readonly");
+        const objectStore = transaction.objectStore("files");
+        const getRequest = objectStore.get(fileName);
 
-      getRequest.onsuccess = (event) => {
-        const result = (event.target as IDBRequest).result;
-        if (result) {
-          resolve(result.content);
-        } else {
-          resolve(null);
-        }
-      };
+        getRequest.onsuccess = (event) => {
+          const result = (event.target as IDBRequest).result;
+          if (result) {
+            resolve(result.content);
+          } else {
+            resolve(null);
+          }
+        };
 
-      getRequest.onerror = (event) => {
-        reject((event.target as IDBRequest).error);
-      };
+        getRequest.onerror = (event) => {
+          reject((event.target as IDBRequest).error);
+        };
+      } catch (e) {
+        console.error(e);
+        reject(e);
+      }
     };
 
     request.onerror = (event) => {
@@ -419,7 +431,6 @@ export function readFileFromIndexedDB(fileName: string): Promise<File | null> {
     };
   });
 }
-
 
 export function deleteFileFromIndexedDB(fileName: string): Promise<void> {
   return new Promise((resolve, reject) => {

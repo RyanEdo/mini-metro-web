@@ -320,7 +320,7 @@ function ScaleLayer({
         }}
       /> */}
       <div className="transform-layer" style={style}>
-        <img
+        {imageSrc?<img
           className="background-layer"
           src={imageSrc}
           style={{
@@ -333,7 +333,7 @@ function ScaleLayer({
                 }px) scale(${scaleForImage})`
               : `translate(${translateXForImage}px,${translateYForImage}px) scale(${scaleForImage})`,
           }}
-        />
+        />:<></>}
         <RenderLayer
           data={drawing ? drawingData : data}
           setData={setData}

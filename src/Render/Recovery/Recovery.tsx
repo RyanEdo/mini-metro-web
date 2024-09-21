@@ -1,4 +1,10 @@
-import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { ReactComponent as RecoverIcon } from "../../Resource/Icon/clock.arrow.circlepath.svg";
 import { ReactComponent as OkIcon } from "../../Resource/Icon/ok.svg";
 import { ReactComponent as NoIcon } from "../../Resource/Icon/no.svg";
@@ -29,13 +35,16 @@ export function Recovery({
 }) {
   const notificationRef = useRef<HTMLDivElement>(null);
   const [showNotification, setShowNotification] = useState(false);
-useEffect(() => {
-  const current = localStorage.getItem("current");
+  useEffect(() => {
+    const current = localStorage.getItem("current");
     const show = current && !recoveredFromError;
     setRecoveredFromError(false);
     setShowNotification(!!show);
     const handleClickCapture = (event: TouchEvent | MouseEvent) => {
-      if (notificationRef.current&&!notificationRef.current.contains(event.target as Node)) {
+      if (
+        notificationRef.current &&
+        !notificationRef.current.contains(event.target as Node)
+      ) {
         console.log("recovery focusout");
         setShowNotification(false);
       }
@@ -46,15 +55,15 @@ useEffect(() => {
       document.removeEventListener("touchstart", handleClickCapture, true);
       document.addEventListener("click", handleClickCapture, true);
     };
-
-}, [])
+  }, []);
   return (
-    <div 
-    ref={notificationRef}
-    className={classNames({
-      "recovery-notification-container": 1,
-      show: showNotification,
-    })}>
+    <div
+      ref={notificationRef}
+      className={classNames({
+        "recovery-notification-container": 1,
+        show: showNotification,
+      })}
+    >
       <div
         className={classNames({
           "recovery-notification": 1,
@@ -74,16 +83,17 @@ useEffect(() => {
             const current = localStorage.getItem("current");
             if (current) {
               const data = setDataFromJson(setData, current);
-              readFileFromIndexedDB("image").then(
-                (file) => {
+              readFileFromIndexedDB("image")
+                .then((file) => {
                   setData((data) => ({
                     ...data,
                     // backgroundColor: "image",
                     backgroundImage: file as File,
                   }));
-                },
-                () => {}
-              );
+                })
+                .catch((e) => {
+                  console.error(e);
+                });
               mediateMap(data, transfromTools);
             }
             setShowNotification(false);

@@ -50,7 +50,9 @@ function App() {
   const menuRef = useRef();
   const [saved, setSaved] = useState(true);
   const [showTour, setShowTour] = useState(() => {
-    return  window.innerWidth>=710 && !localStorage.getItem("skip-tour-viewed");
+    return (
+      window.innerWidth >= 710 && !localStorage.getItem("skip-tour-viewed")
+    );
   });
   const [recoveredFromError, setRecoveredFromError] = useState(false);
   const [showConfirmation, setShowConfirmation] =
@@ -82,113 +84,114 @@ function App() {
   };
   return (
     <ErrorBoundary
-    FallbackComponent={ErrorFallback}
-    onReset={() => {
-      const last = localStorage.getItem("last");
-      if (last) {
-        const data = setDataFromJson(setData, last);
-        readFileFromIndexedDB("image").then(
-          (file) => {
-            setData((data) => ({
-              ...data,
-              // backgroundColor: "image",
-              backgroundImage: file as File,
-            }));
-          },
-          () => {}
-        );
-        mediateMap(data, transfromTools);
-      }
-      setRecoveredFromError(true);
-    }}
-  >
-    <div className="App">
-      <Menu
-        setEditingMode={setEditingMode}
-        functionMode={functionMode}
-        setFunctionMode={setFunctionMode}
-        record={record}
-        setRecord={setRecord}
-        currentRecordIndex={currentRecordIndex}
-        setCurrentRecordIndex={setCurrentRecordIndex}
-        data={data}
-        setData={setData}
-        ref={menuRef}
-        insertInfo={insertInfo}
-        setInsertInfo={setInsertInfo}
-        showName={showName}
-        setShowName={setShowName}
-        autoHiddenName={autoHiddenName}
-        setAutoHiddenName={setAutoHiddenName}
-        drawing={drawing}
-        setDrawing={setDrawing}
-        cardShowing={cardShowing}
-        setCardShowing={setCardShowing}
-        translateX={translateX}
-        translateY={translateY}
-        scale={scale}
-        setTranslateX={setTranslateX}
-        setTranslateY={setTranslateY}
-        setScale={setScale}
-        saved={saved}
-        setSaved={setSaved}
-        showTour={showTour}
-        setShowTour={setShowTour}
-        page={page}
-        setPage={setPage}
-      />
-      <DeleteConfirmation ref={ref} />
-      <ScaleLayer
-        editingMode={editingMode}
-        setEditingMode={setEditingMode}
-        data={data}
-        setData={setData}
-        functionMode={functionMode}
-        setFunctionMode={setFunctionMode}
-        record={record}
-        setRecord={setRecord}
-        currentRecordIndex={currentRecordIndex}
-        setCurrentRecordIndex={setCurrentRecordIndex}
-        insertInfo={insertInfo}
-        setInsertInfo={setInsertInfo}
-        cardShowing={cardShowing}
-        setCardShowing={setCardShowing}
-        showName={showName}
-        setShowName={setShowName}
-        autoHiddenName={autoHiddenName}
-        setAutoHiddenName={setAutoHiddenName}
-        drawing={drawing}
-        setDrawing={setDrawing}
-        translateX={translateX}
-        translateY={translateY}
-        scale={scale}
-        setTranslateX={setTranslateX}
-        setTranslateY={setTranslateY}
-        setScale={setScale}
-        page={page}
-        setPage={setPage}
-      />
-      <Cards
-        functionMode={functionMode}
-        setFunctionMode={setFunctionMode}
-        data={data}
-        setData={setData}
-        showConfirmation={showConfirmation}
-        menuRef={menuRef}
-        insertInfo={insertInfo}
-        setInsertInfo={setInsertInfo}
-        cardShowing={cardShowing}
-        setCardShowing={setCardShowing}
-      />
-      <WelcomeTour showTour={showTour} setShowTour={setShowTour} />
-      <Recovery         
-        data={data}
-        setData={setData}
-        recoveredFromError={recoveredFromError}
-        setRecoveredFromError={setRecoveredFromError}
-        transfromTools={transfromTools}
+      FallbackComponent={ErrorFallback}
+      onReset={() => {
+        const last = localStorage.getItem("last");
+        if (last) {
+          const data = setDataFromJson(setData, last);
+          readFileFromIndexedDB("image")
+            .then((file) => {
+              setData((data) => ({
+                ...data,
+                // backgroundColor: "image",
+                backgroundImage: file as File,
+              }));
+            })
+            .catch((e) => {
+              console.error(e);
+            });
+          mediateMap(data, transfromTools);
+        }
+        setRecoveredFromError(true);
+      }}
+    >
+      <div className="App">
+        <Menu
+          setEditingMode={setEditingMode}
+          functionMode={functionMode}
+          setFunctionMode={setFunctionMode}
+          record={record}
+          setRecord={setRecord}
+          currentRecordIndex={currentRecordIndex}
+          setCurrentRecordIndex={setCurrentRecordIndex}
+          data={data}
+          setData={setData}
+          ref={menuRef}
+          insertInfo={insertInfo}
+          setInsertInfo={setInsertInfo}
+          showName={showName}
+          setShowName={setShowName}
+          autoHiddenName={autoHiddenName}
+          setAutoHiddenName={setAutoHiddenName}
+          drawing={drawing}
+          setDrawing={setDrawing}
+          cardShowing={cardShowing}
+          setCardShowing={setCardShowing}
+          translateX={translateX}
+          translateY={translateY}
+          scale={scale}
+          setTranslateX={setTranslateX}
+          setTranslateY={setTranslateY}
+          setScale={setScale}
+          saved={saved}
+          setSaved={setSaved}
+          showTour={showTour}
+          setShowTour={setShowTour}
+          page={page}
+          setPage={setPage}
         />
-    </div>
+        <DeleteConfirmation ref={ref} />
+        <ScaleLayer
+          editingMode={editingMode}
+          setEditingMode={setEditingMode}
+          data={data}
+          setData={setData}
+          functionMode={functionMode}
+          setFunctionMode={setFunctionMode}
+          record={record}
+          setRecord={setRecord}
+          currentRecordIndex={currentRecordIndex}
+          setCurrentRecordIndex={setCurrentRecordIndex}
+          insertInfo={insertInfo}
+          setInsertInfo={setInsertInfo}
+          cardShowing={cardShowing}
+          setCardShowing={setCardShowing}
+          showName={showName}
+          setShowName={setShowName}
+          autoHiddenName={autoHiddenName}
+          setAutoHiddenName={setAutoHiddenName}
+          drawing={drawing}
+          setDrawing={setDrawing}
+          translateX={translateX}
+          translateY={translateY}
+          scale={scale}
+          setTranslateX={setTranslateX}
+          setTranslateY={setTranslateY}
+          setScale={setScale}
+          page={page}
+          setPage={setPage}
+        />
+        <Cards
+          functionMode={functionMode}
+          setFunctionMode={setFunctionMode}
+          data={data}
+          setData={setData}
+          showConfirmation={showConfirmation}
+          menuRef={menuRef}
+          insertInfo={insertInfo}
+          setInsertInfo={setInsertInfo}
+          cardShowing={cardShowing}
+          setCardShowing={setCardShowing}
+        />
+        <WelcomeTour showTour={showTour} setShowTour={setShowTour} />
+        <Recovery
+          data={data}
+          setData={setData}
+          recoveredFromError={recoveredFromError}
+          setRecoveredFromError={setRecoveredFromError}
+          transfromTools={transfromTools}
+        />
+      </div>
     </ErrorBoundary>
   );
 }
