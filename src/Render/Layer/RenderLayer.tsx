@@ -388,6 +388,8 @@ function RenderLayer({
                     {
                       fill: emphasisColor,
                       stroke: emphasisColor,
+                      // width: 31,
+                      // height: 31
                     },
                     "shadow"
                   )[shape]}

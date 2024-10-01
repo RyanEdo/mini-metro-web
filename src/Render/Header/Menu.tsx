@@ -52,6 +52,7 @@ import { toPng, toJpeg, toBlob, toPixelData, toSvg } from "html-to-image";
 import download from "downloadjs";
 import { getExistMap } from "../../Common/api";
 import OpacityControl from "./Component/OpacityControl";
+import ShapeSelector from "./Component/ShapeSelector";
 
 type MenuType = {
   setEditingMode: React.Dispatch<React.SetStateAction<Mode>>;
@@ -69,6 +70,8 @@ type MenuType = {
   setCardShowing: Dispatch<SetStateAction<CardShowing>>;
   saved: boolean;
   setSaved: Dispatch<SetStateAction<boolean>>;
+  defaultShape: string,
+  setDefaultShape: Dispatch<SetStateAction<string>>;
 } & ShowNameProps &
   DrawProps &
   TransformProps &
@@ -106,6 +109,8 @@ export const Menu = forwardRef(function (
     setShowTour,
     page,
     setPage,
+    defaultShape,
+    setDefaultShape,
   }: MenuType,
   ref
 ) {
@@ -197,6 +202,8 @@ export const Menu = forwardRef(function (
                 ? `已添加${currentRecordIndex + 1}站`
                 : "点击空白处新增站点"}
             </div>
+            <ShapeSelector          defaultShape={defaultShape}
+          setDefaultShape={setDefaultShape}/>
             <div
               className={classNames({ tool: 1, disabled: !undoCondition })}
               onClick={(e) => {
@@ -905,7 +912,7 @@ export const Menu = forwardRef(function (
                 线路图工具包
                 <ShareIcon />
               </div>
-              <div className="column-item small">版本 : 1.1.0</div>
+              <div className="column-item small">版本 : 1.1.1</div>
               <div
                 className="column-item small author"
                 onClick={(e) => {

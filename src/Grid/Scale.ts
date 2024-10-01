@@ -110,6 +110,7 @@ export const onMouseUp = (
   setCurrentRecordIndex: React.Dispatch<React.SetStateAction<number>>,
   cardShowing: CardShowing,
   setCardShowing: Dispatch<SetStateAction<CardShowing>>,
+  defaultShape: string,
 ) => {
   // console.log(event);
   setEditingMode(Mode.normal);
@@ -129,6 +130,7 @@ export const onMouseUp = (
       setCurrentRecordIndex,
       cardShowing,
       setCardShowing,
+      defaultShape,
     );
   }
   const {currentTarget, target} = event;
@@ -268,6 +270,7 @@ export const onTouchEnd = (
   setCurrentRecordIndex: React.Dispatch<React.SetStateAction<number>>,
   cardShowing: CardShowing,
   setCardShowing: Dispatch<SetStateAction<CardShowing>>,
+  defaultShape: string,
 ) => {
   event.preventDefault();
   const { changedTouches } = event;
@@ -293,6 +296,7 @@ export const onTouchEnd = (
       setCurrentRecordIndex,
       cardShowing,
       setCardShowing,
+      defaultShape,
     );
   }
   const {currentTarget, target} = event;

@@ -49,6 +49,7 @@ function App() {
   const ref = useRef<any>();
   const menuRef = useRef();
   const [saved, setSaved] = useState(true);
+  const [defaultShape, setDefaultShape] = useState('cicle');
   const [showTour, setShowTour] = useState(() => {
     return (
       window.innerWidth >= 710 && !localStorage.getItem("skip-tour-viewed")
@@ -139,6 +140,8 @@ function App() {
           setShowTour={setShowTour}
           page={page}
           setPage={setPage}
+          defaultShape={defaultShape}
+          setDefaultShape={setDefaultShape}
         />
         <DeleteConfirmation ref={ref} />
         <ScaleLayer
@@ -170,6 +173,7 @@ function App() {
           setScale={setScale}
           page={page}
           setPage={setPage}
+          defaultShape={defaultShape}
         />
         <Cards
           functionMode={functionMode}

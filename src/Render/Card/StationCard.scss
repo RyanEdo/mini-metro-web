@@ -160,6 +160,12 @@
                         &.pentagon {
                             zoom: 1.1;
                         }
+                        &.diamond{
+                            zoom: 1.15;
+                        }
+                        &.leaf{
+                            zoom: 0.9;
+                        }
                     }
                 }
             }
