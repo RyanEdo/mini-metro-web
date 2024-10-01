@@ -10,11 +10,14 @@
   justify-content: center;
   align-items: center;
   opacity: 0;
-  transition: 0.3s ease-in-out opacity, 0.3s ease-in-out z-index;
-  &.before-animated,&.before-disappear{
+  transition:
+    0.3s ease-in-out opacity,
+    0.3s ease-in-out z-index;
+  &.before-animated,
+  &.before-disappear {
     backdrop-filter: blur(1px);
   }
-  &.animated{
+  &.animated {
     opacity: 1;
     backdrop-filter: blur(10px);
     z-index: 1000;
@@ -45,65 +48,74 @@
       // &>div{
       //   transform: translateY(-50%);
       // }
-      .preview-content{
+      .preview-content {
         display: flex;
         justify-content: center;
         align-items: center;
-              .icon {
-        display: inline-block;
-        margin-left: 40px;
+        .icon {
+          display: inline-block;
+          margin-left: 40px;
 
-        .line {
-          // width: 35.5px;
-          margin-right: 35.5px;
-
-          .sign-input {
+          .line {
             // width: 35.5px;
-            * {
-              min-width: 35.5px;
-              height: 35.5px;
-              border: none;
-              border-radius: 8.87px;
-              background-color: #ea0b2a;
-              font-size: 23.25px;
-              color: white;
-              text-align: center;
+            margin-right: 35.5px;
+
+            .sign-input {
+              // width: 35.5px;
+              * {
+                min-width: 35.5px;
+                height: 35.5px;
+                border: none;
+                border-radius: 8.87px;
+                background-color: #ea0b2a;
+                font-size: 23.25px;
+                color: white;
+                text-align: center;
+              }
+            }
+          }
+          .station {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 25.8px;
+            svg {
+              &.square {
+                zoom: 0.9;
+              }
+              &.triangle {
+                zoom: 1.05;
+              }
+              &.start {
+                zoom: 1.15;
+              }
+              &.hexagon {
+                zoom: 0.9;
+              }
+              &.pentagon {
+                zoom: 1.1;
+              }
+              &.diamond {
+                zoom: 1.15;
+              }
+              &.leaf {
+                zoom: 0.9;
+              }
+              &.ginkgo {
+                zoom: 0.8;
+              }
             }
           }
         }
-        .station {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          margin-right: 25.8px;
-          svg {
-            &.square {
-              zoom: 0.9;
-            }
-            &.triangle {
-              zoom: 1.05;
-            }
-            &.start {
-              zoom: 1.15;
-            }
-            &.hexagon {
-              zoom: 0.9;
-            }
-            &.pentagon {
-              zoom: 1.1;
-            }
-          }
+        .text {
+          margin-right: 40px;
+          display: inline-block;
+          font-weight: 500;
+          font-size: 18px;
+
+          line-height: 35.5px;
+          // vertical-align: middle;
         }
-      }
-      .text {
-        margin-right: 40px;
-        display: inline-block;
-        font-weight: 500;
-        font-size: 18px;
-     
-        line-height: 35.5px;
-        // vertical-align: middle;
-      }
       }
 
       .delete-line {
