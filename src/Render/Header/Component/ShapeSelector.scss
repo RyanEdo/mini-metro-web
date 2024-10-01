@@ -5,11 +5,11 @@
     perspective: 1000px;
     perspective-origin: 0 50%;
 
-    &:has(.slider-container) {
+    &:has(.shape-selector-container) {
         z-index: 600;
     }
 
-    .slider-container {
+    .shape-selector-container {
         .color-detail {
             .color-detail-choosing {
                 box-sizing: border-box;
