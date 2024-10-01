@@ -84,7 +84,7 @@ const ShapeSelector: React.FC<OpacityControlProps> = ({
       }
       {
         <div
-          className={classNames({ "slider-container": 1, show: showSlider })}
+          className={classNames({ "shape-selector-container": 1, show: showSlider })}
           ref={sliderRef}
           onClick={(e) => e.stopPropagation()}
           style={{} as CSSProperties}
