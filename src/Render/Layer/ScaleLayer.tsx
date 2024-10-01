@@ -49,6 +49,7 @@ type ScaleLayerProp = {
   setInsertInfo: React.Dispatch<React.SetStateAction<InsertInfo | undefined>>;
   cardShowing: CardShowing;
   setCardShowing: Dispatch<SetStateAction<CardShowing>>;
+  defaultShape: string;
 } & ShowNameProps &
   DrawProps &
   TransformProps &
@@ -81,6 +82,7 @@ function ScaleLayer({
   setTranslateX: setTranslateXForMap,
   setTranslateY: setTranslateYForMap,
   page,
+  defaultShape
 }: ScaleLayerProp) {
   // mouseRefPoint
   // in mouse drag mode: this point record mouse start point
@@ -146,12 +148,12 @@ function ScaleLayer({
     return functionMode === FunctionMode.editingCustomBackgroundPosition
       ? (value: number | ((prev: number) => number)) => {
           if (typeof value === "number") {
-            setData((data) => ({
+            setData((data: UserDataType) => ({
               ...data,
               [key]: getRelativeValue(value, key),
             }));
           } else {
-            setData((data) => ({
+            setData((data: UserDataType) => ({
               ...data,
               [key]: getRelativeValue(value(data[key]!), key),
             }));
@@ -241,7 +243,8 @@ function ScaleLayer({
           currentRecordIndex,
           setCurrentRecordIndex,
           cardShowing,
-          setCardShowing
+          setCardShowing,
+          defaultShape
         )
       }
       onMouseLeave={(event) => onMouseLeave(event, setEditingMode)}
@@ -305,7 +308,8 @@ function ScaleLayer({
           currentRecordIndex,
           setCurrentRecordIndex,
           cardShowing,
-          setCardShowing
+          setCardShowing,
+          defaultShape
         )
       }
       style={{ cursor: getCursor(editingMode), backgroundColor }}

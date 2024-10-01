@@ -394,7 +394,8 @@ export const addNewStation = (
   currentRecordIndex: number,
   setCurrentRecordIndex: React.Dispatch<React.SetStateAction<number>>,
   cardShowing: CardShowing,
-  setCardShowing: Dispatch<SetStateAction<CardShowing>>
+  setCardShowing: Dispatch<SetStateAction<CardShowing>>,
+  defaultShape: string,
 ) => {
   const { stations } = data;
   let max = 0;
@@ -406,7 +407,7 @@ export const addNewStation = (
     stationId,
     stationName: `新增站点 ${max + 1}`,
     position: [x, y].map(Math.round),
-    shape: "square",
+    shape: defaultShape,
     lineIds: [],
   };
   setCardShowing({ stationIds: [stationId] });
