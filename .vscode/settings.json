@@ -1,0 +1,13 @@
+{
+  "i18n-ally.localesPaths": ["src/i18n/locales"],
+  "i18n-ally.extract.autoDetect": true,
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.sourceLanguage": "zh",
+  "i18n-ally.displayLanguage": "zh",
+  "i18n-ally.extract.ignored": [
+    "“\n              ",
+    "”\n            ",
+    "”\n            ",
+    "\n              重做\n            "
+  ]
+}

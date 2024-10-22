@@ -1,3 +1,4 @@
+import '../i18n/config';
 import { ErrorBoundary } from "react-error-boundary";
 import {
   browserInfo,
