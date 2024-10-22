@@ -272,7 +272,7 @@ export const Menu = forwardRef(function (
                 }
               }}
             >
-              {t('withdraw')}
+              {t('menu.withdraw')}
             </div>
             <div
               className={classNames({ tool: 1, disabled: !redoCondition })}
@@ -691,7 +691,7 @@ export const Menu = forwardRef(function (
                 className="column-item"
                 onClick={(e) => showTools(e, FunctionMode.lineEditing)}
               >
-                插入站点...
+                {t('menu.insertStation')}
               </div>
               <div
                 className="column-item"
@@ -699,18 +699,18 @@ export const Menu = forwardRef(function (
                   mediateMap(data, transfromTools);
                 }}
               >
-                居中路线图...
+                {t('menu.mediateMap')}
               </div>
               <div
                 className="column-item"
                 onClick={(e) => showTools(e, FunctionMode.backgroundEditing)}
               >
-                设定背景...
+                {t('menu.addBackgroundImage')}
               </div>
             </div>
           </div>
           <div className="column">
-            <div className="column-title">数据</div>
+            <div className="column-title">{t('menu.data')}</div>
             <div className="column-items">
               <div
                 className="column-item new-map-btn"
@@ -731,7 +731,7 @@ export const Menu = forwardRef(function (
                   showTools(e, FunctionMode.addingStation);
                 }}
               >
-                新建空白地图...
+                {t('menu.addNewMap')}
               </div>
               <div
                 className="column-item existed-map-btn"
@@ -741,7 +741,7 @@ export const Menu = forwardRef(function (
                   showTools(e, FunctionMode.choosingExistMap);
                 }}
               >
-                从已有地图新建...
+                {t('menu.addFromTemplate')}
               </div>
               <div
                 className="column-item import-file-btn"
@@ -753,7 +753,7 @@ export const Menu = forwardRef(function (
                   });
                 }}
               >
-                导入文件...
+                {t('menu.importFile')}
               </div>
               {engine.name === "WebKit" ? (
                 <></>
@@ -765,7 +765,7 @@ export const Menu = forwardRef(function (
                     setDrawing(true);
                   }}
                 >
-                  作为图片导出...
+                  {t('menu.exportAsImage')}
                 </div>
               )}
 
@@ -796,7 +796,7 @@ export const Menu = forwardRef(function (
                   }, 300);
                 }}
               >
-                作为矢量图片导出...
+                {t('menu.exportAsSVG')}
               </div>
               <div
                 className="column-item export-as-file-btn"
@@ -810,7 +810,7 @@ export const Menu = forwardRef(function (
                   );
                 }}
               >
-                作为文件导出...
+                {t('menu.exportAsFile')}
               </div>
               <div
                 className="column-item recover-btn"
@@ -835,7 +835,7 @@ export const Menu = forwardRef(function (
                   }
                 }}
               >
-                恢复数据...
+                {t('menu.recoverData')}
               </div>
               <div
                 className="column-item export-recover-btn"
@@ -850,13 +850,13 @@ export const Menu = forwardRef(function (
                   );
                 }}
               >
-                导出恢复数据...
+                {t('menu.exportRecoveryData')}
               </div>
             </div>
           </div>
 
           <div className="column">
-            <div className="column-title">关于</div>
+            <div className="column-title">{t('menu.about')}</div>
             <div className="column-items">
               <div
                 className="column-item"
@@ -868,7 +868,7 @@ export const Menu = forwardRef(function (
                   );
                 }}
               >
-                项目地址...
+                {t('menu.projectAddress')}
               </div>
               <div
                 className="column-item tour-btn"
@@ -883,7 +883,7 @@ export const Menu = forwardRef(function (
                   }
                 }}
               >
-                使用教程...
+                {t('menu.guide')}
               </div>
               {window.innerWidth >= 710 ? (
                 <div
@@ -896,7 +896,7 @@ export const Menu = forwardRef(function (
                     );
                   }}
                 >
-                  视频教程...
+                  {t('menu.videoGuild')}
                 </div>
               ) : (
                 <></>
@@ -911,10 +911,10 @@ export const Menu = forwardRef(function (
                   );
                 }}
               >
-                线路图工具包
+                {t('menu.RMP')}
                 <ShareIcon />
               </div>
-              <div className="column-item small">版本 : 1.1.1</div>
+              <div className="column-item small">{t('menu.version')}1.1.1</div>
               <div
                 className="column-item small author"
                 onClick={(e) => {
@@ -922,7 +922,7 @@ export const Menu = forwardRef(function (
                   window.open("https://space.bilibili.com/8217854", "_blank");
                 }}
               >
-                作者 : 江户川瑞安
+                {t('menu.author')}
               </div>
             </div>
           </div>
