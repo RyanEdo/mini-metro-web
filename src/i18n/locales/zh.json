@@ -274,5 +274,19 @@
   "dian-ji-ci-chu-she-zhi-zhan-dian-ming-cheng-wei-zhi": "点击此处设置站点名称位置",
   "zhan-dian-ming-wei-zhi": "站点名位置",
   "dian-ji-hui-se-de-fang-kuai-xuan-ze-fang-wei": "点击灰色的方块选择方位",
-  "dian-ji-zhong-jian-de-wen-zi-hui-fu-zi-dong-wei-zhi": "点击中间的文字恢复自动位置"
+  "dian-ji-zhong-jian-de-wen-zi-hui-fu-zi-dong-wei-zhi": "点击中间的文字恢复自动位置",
+  "dian-ji-biao-ti-da-kai-cai-dan-1": "点击标题打开菜单",
+  "guan-bi-zi-dong-yin-cang": "关闭自动隐藏",
+  "zhan-dian-ming-hui-zai-di-tu-suo-fang-dao-xiao-chi-du-shi-zi-dong-yin-cang-guan-bi-zi-dong-yin-cang-yi-que-bao-ke-yi-yi-zhi-xian-shi-zhan-dian-ming-cheng": "站点名会在地图缩放到小尺度时自动隐藏。关闭自动隐藏以确保可以一直显示站点名称",
+  "dian-ji-ren-yi-kong-bai-qu-yu-tui-chu-cai-dan-0": "点击任意空白区域退出菜单",
+  "tui-chu-cai-dan-0": "退出菜单",
+  "yi-da-kai-zhan-dian-ka-pian-1": "以打开站点卡片",
+  "zai-zhe-li-xiang-xia-gun-dong-yi-xia": "在这里向下滚动一下",
+  "zai-dian-ji-biao-qian-an-niu": "再点击标签按钮",
+  "chang-shi-gai-bian-zhan-dian-ming-dao-you-xia-jiao": "尝试改变站点名到右下角",
+  "dian-ji-you-xia-jiao-de-hui-se-fang-kuai": "点击右下角的灰色方块",
+  "ke-yi-kan-dao-zhan-dian-ming-yi-jing-wei-yu-zhan-dian-you-xia-jiao-le": "可以看到站点名已经位于站点右下角了",
+  "ke-yi-yong-zhe-zhong-fang-fa-xiu-gai-zhan-dian-ming-wei-zhi": "可以用这种方法修改站点名位置",
+  "dian-ji-zhong-jian-de-wen-zi-hui-fu-dao-zi-dong-xuan-ze-wei-zhi": "点击中间的文字恢复到自动选择位置",
+  "hui-fu-dao-zi-dong-xuan-ze-wei-zhi": "恢复到自动选择位置"
 }

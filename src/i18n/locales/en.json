@@ -274,5 +274,19 @@
   "shan-chu-huo-xin-jian": "Delete or create new",
   "xiu-gai-xing-zhuang": "Modify shape",
   "yi-da-kai-zhan-dian-ka-pian-0": "to open the site card",
-  "zhan-dian-ming-wei-zhi": "Site name location"
+  "zhan-dian-ming-wei-zhi": "Site name location",
+  "chang-shi-gai-bian-zhan-dian-ming-dao-you-xia-jiao": "Try changing the site name to the lower right corner",
+  "dian-ji-biao-ti-da-kai-cai-dan-1": "Click on the title to open the menu",
+  "dian-ji-ren-yi-kong-bai-qu-yu-tui-chu-cai-dan-0": "Click on any empty area to exit the menu",
+  "dian-ji-you-xia-jiao-de-hui-se-fang-kuai": "Click on the gray square in the lower right corner",
+  "dian-ji-zhong-jian-de-wen-zi-hui-fu-dao-zi-dong-xuan-ze-wei-zhi": "Click on the text in the middle to return to the automatically selected position",
+  "guan-bi-zi-dong-yin-cang": "Turn off auto-hide",
+  "hui-fu-dao-zi-dong-xuan-ze-wei-zhi": "Revert to automatically selected location",
+  "ke-yi-kan-dao-zhan-dian-ming-yi-jing-wei-yu-zhan-dian-you-xia-jiao-le": "You can see that the site name is already in the lower right corner of the site",
+  "ke-yi-yong-zhe-zhong-fang-fa-xiu-gai-zhan-dian-ming-wei-zhi": "You can use this method to modify the location of the site name",
+  "tui-chu-cai-dan-0": "Exit menu",
+  "yi-da-kai-zhan-dian-ka-pian-1": "to open the site card",
+  "zai-dian-ji-biao-qian-an-niu": "Click the label button again",
+  "zai-zhe-li-xiang-xia-gun-dong-yi-xia": "Scroll down a bit here",
+  "zhan-dian-ming-hui-zai-di-tu-suo-fang-dao-xiao-chi-du-shi-zi-dong-yin-cang-guan-bi-zi-dong-yin-cang-yi-que-bao-ke-yi-yi-zhi-xian-shi-zhan-dian-ming-cheng": "Site names are automatically hidden when the map is zoomed to a smaller scale. \nTurn off auto-hide to ensure the site name is always visible"
 }
