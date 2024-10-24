@@ -9,5 +9,10 @@
     "”\n            ",
     "”\n            ",
     "\n              重做\n            "
-  ]
+  ],
+  "i18n-ally.extract.ignoredByFiles": {
+    "src/WelcomeTour/WelcomeTour.tsx": [
+      ".welcome-tour .body"
+    ]
+  }
 }

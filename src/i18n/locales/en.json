@@ -126,5 +126,16 @@
     "orYouCould": "Or you can ",
     "recoverFromCache": "Restore the pre-error map from cache",
     "sendAuthor": "In order to send it to the author to analyze the cause of the error."
+  },
+  "huan-ying-shi-yong": "Welcome",
+  "welcome": {
+    "done": "Finish",
+    "goOn": "continue",
+    "restart": "restart",
+    "skip": "Skip for now",
+    "welcome": "Welcome"
+  },
+  "welecome": {
+    "minimetroweb": "Mini Metro Map Building Tool"
   }
 }

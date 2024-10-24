@@ -126,5 +126,16 @@
     "orYouCould": "或者您可以",
     "exportError": "导出当前包含错误的地图文件...",
     "sendAuthor": "以便发送给作者分析错误原因。"
+  },
+  "huan-ying-shi-yong": "欢迎使用",
+  "welcome": {
+    "welcome": "欢迎使用",
+    "skip": "暂时跳过",
+    "goOn": "继续",
+    "restart": "重新开始",
+    "done": "完成"
+  },
+  "welecome": {
+    "minimetroweb": "迷你地铁地图构建工具"
   }
 }
