@@ -61,8 +61,10 @@
                     color: rgba(255, 255, 255, 0.6);
                     margin: 0 20px;
                     cursor: pointer;
+                    // text-transform: capitalize;
                 }
                 .start-tour {
+                    text-transform: capitalize;
                     cursor: pointer;
                     color: white;
                     padding: 7.33px 20px;
@@ -112,6 +114,7 @@
                     }
                     .title {
                         margin-left: 5px;
+                        text-transform: capitalize;
                     }
                 }
                 .detail-card {
@@ -155,6 +158,9 @@
                     .title {
                         margin-top: 20.67px;
                         margin-left: 24px;
+                        width: 265px;
+                        white-space: normal;
+                        text-transform: capitalize;
                     }
                     .left-down {
                         position: absolute;
@@ -162,6 +168,7 @@
                         bottom: 20.67px;
                         .intro-text {
                             .intro-text-line {
+                                text-transform: capitalize;
                                 :not(.emphasis) {
                                     color: rgba(255, 255, 255, 0.6);
                                 }
@@ -175,6 +182,7 @@
                                 opacity: 0.9;
                             }
                             .more-text {
+                                text-transform: capitalize;
                                 &.finished{
                                     opacity: 0.6;
                                 }

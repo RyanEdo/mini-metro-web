@@ -1,7 +1,7 @@
 import { driver as Driver, Config } from "driver.js";
 export const showTour = async (id: string, callback: Function) => {
   const driver = Driver();
-  const { getSteps } = await import(`./Steps/${id}`);
+  const { getSteps } = await import(/* webpackMode: "eager" */ `./Steps/${id}`);
   const eventListeners: EventListenerOrEventListenerObject[] = [];
   const touch = window.ontouchend === null;
   const eventName =// touch ? "touchend" : 

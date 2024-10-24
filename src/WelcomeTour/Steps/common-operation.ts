@@ -1,12 +1,13 @@
 import { DriveStep, Driver } from "driver.js";
+import {t} from 'i18next';
 
 export const getSteps = (driver: Driver): DriveStep[] => [
   {
     element: ".ScaleLayer",
     onHighlighted:()=>{},
     popover: {
-      title: "尝试缩放或者移动地图",
-      description: window.ontouchend === null? "单指拖动地图，双指缩放地图": "按住鼠标左键拖动移动地图，滚动鼠标滚轮缩放地图",
+      title: t('tour.tryScale'),
+      description: window.ontouchend === null? t('tour.touchScale'): t('tour.mouseScale'),
       showButtons:['next'],
       onNextClick:driver.moveNext
     },
@@ -14,36 +15,36 @@ export const getSteps = (driver: Driver): DriveStep[] => [
   {
     element: ".title .click-panel",
     popover: {
-      title: "点击标题",
-      description: "点击标题打开菜单",
+      title: t('tour.clickTile'),
+      description: t('tour.clickOpenMenu'),
     },
   },
   {
     element: ".title",
     popover: {
-      title: "再次点击标题",
-      description: "可以修改标题",
+      title: t('zai-ci-dian-ji-biao-ti'),
+      description: t('ke-yi-xiu-gai-biao-ti'),
     },
   },
   {
     element: ".menu",
     popover: {
-      title: "点击任意空白区域退出菜单",
-      description: "退出菜单",
+      title: t('dian-ji-ren-yi-kong-bai-qu-yu-tui-chu-cai-dan'),
+      description: t('tui-chu-cai-dan'),
     },
   },
   {
     element: ".station-descend-31",
     popover: {
-      title: "点击站点",
-      description: "以打开站点卡片",
+      title: t('dian-ji-zhan-dian'),
+      description: t('yi-da-kai-zhan-dian-ka-pian'),
     },
   },
   {
     element: ".station-card",
     popover: {
-      title: "站点卡片",
-      description: "可以在这里编辑站点的所有设置",
+      title: t('zhan-dian-ka-pian'),
+      description: t('ke-yi-zai-zhe-li-bian-ji-zhan-dian-de-suo-you-she-zhi'),
       showButtons:["next"],
     //   onNextClick:driver.moveNext
     },
@@ -51,15 +52,15 @@ export const getSteps = (driver: Driver): DriveStep[] => [
   {
     element: ".ScaleLayer",
     popover: {
-      title: "尝试点击线路",
-      description: "图中的彩色线条即为线路,如果无法选中可以尝试放大地图再点选",
+      title: t('chang-shi-dian-ji-xian-lu'),
+      description: t('tu-zhong-de-cai-se-xian-tiao-ji-wei-xian-lu-ru-guo-wu-fa-xuan-zhong-ke-yi-chang-shi-fang-da-di-tu-zai-dian-xuan'),
     },
   },
   {
     element: ".line-card",
     popover: {
-      title: "线路卡片",
-      description: "可以在这里编辑线路的所有设置",
+      title: t('xian-lu-ka-pian'),
+      description: t('ke-yi-zai-zhe-li-bian-ji-xian-lu-de-suo-you-she-zhi'),
       showButtons:["next"],
     //   onNextClick:driver.moveNext
     },

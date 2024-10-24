@@ -8,7 +8,9 @@
     "“\n              ",
     "”\n            ",
     "”\n            ",
-    "\n              重做\n            "
+    "\n              重做\n            ",
+    ".title .click-panel",
+    ".title .click-panel"
   ],
   "i18n-ally.extract.ignoredByFiles": {
     "src/WelcomeTour/WelcomeTour.tsx": [
