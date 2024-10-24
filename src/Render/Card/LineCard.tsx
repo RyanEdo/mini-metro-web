@@ -4,6 +4,7 @@ import React, {
   SetStateAction,
   useEffect,
   useState,
+  useTransition,
 } from "react";
 import { Line } from "../../DataStructure/Line";
 import { Station } from "../../DataStructure/Station";
@@ -37,6 +38,8 @@ import { colorSH, colorSHMap } from "../../Common/color";
 import { showConfirmationInterface } from "../Delete/DeleteConfirmation";
 import { FunctionMode } from "../../DataStructure/Mode";
 import { Point } from "../../DataStructure/Point";
+import { useTranslation } from "react-i18next";
+import i18n from "../../i18n/config";
 export function LineCard({
   line,
   setData,
@@ -83,7 +86,7 @@ export function LineCard({
     deleteLine,
     setSubLine,
   } = dataProcessor(lineId, setData, data);
-  const colorName = colorSHMap.get(colorSelected)?.color_name || colorSelected;
+  const colorName = i18n.language === "zh" && colorSHMap.get(colorSelected)?.color_name || colorSelected;
   const firstStation = getStationById(stationIds[0]);
   const lastStation = getStationById(stationIds[stationIds.length - 1]);
   // if (!firstStation) {
@@ -119,6 +122,7 @@ export function LineCard({
   useEffect(() => {
     getExpandWidth();
   }, [expand]);
+  const { t } = useTranslation();
   const editTools = (tab: string) => {
     switch (tab) {
       case "name": {
@@ -126,7 +130,7 @@ export function LineCard({
           <div className="name-detail" onWheel={onWheelX}>
             <div className="name-item sign">
               <div className="title" style={{ color: colorSelected }}>
-                标识
+                {t('menu.symbol')}
               </div>
 
               <AutoGrowthInput
@@ -138,7 +142,7 @@ export function LineCard({
             </div>
             <div className="name-item line-name-item">
               <div className="title" style={{ color: colorSelected }}>
-                名称
+                {t('line.name')}
               </div>
               <AutoGrowthInput
                 onInput={(e) => setLineName(e.currentTarget.value)}
@@ -148,7 +152,7 @@ export function LineCard({
             </div>
             <div className="name-item order">
               <div className="title" style={{ color: colorSelected }}>
-                排序
+                {t('line.order')}
               </div>
 
               <AutoGrowthInput
@@ -216,7 +220,7 @@ export function LineCard({
                 setSubLine(!subLine);
               }}
             >
-              {subLine?'不再作为':'设为'}支线...
+              {subLine?t('line.notSubLineAnymore'):t('line.asSubline')}...
             </div>
             <div
               className="operation-item delete"
@@ -224,7 +228,7 @@ export function LineCard({
                 showConfirmation!({ line }, deleteLine);
               }}
             >
-              删除线路...
+              {t('line.deleteLine')}
             </div>
           </div>
         );
@@ -275,7 +279,7 @@ export function LineCard({
           setCardShowing({ lineIds: [lineId], stationIds });
         }}
       >
-        {stationIds.length}个站点
+        {stationIds.length}{t('line.stations')}
       </div>
 
       <AutoGrowthInput
@@ -290,8 +294,8 @@ export function LineCard({
         <>
           <div className="from-to">
             {firstStation
-              ? `从${firstStation!.stationName}开往${lastStation!.stationName}`
-              : "尚未开通"}
+              ? t('line.fromTo', {from:firstStation!.stationName,to: lastStation!.stationName})
+              : t('line.notInUse')}
           </div>
 
           <div
@@ -359,11 +363,11 @@ export function LineCard({
                     <div className="bend-des">
                       {addingStation || last
                         ? currentInserting
-                          ? "插入到这"
-                          : "插入站点"
+                          ? t('line.insertHere')
+                          : t('line.insertStation')
                         : bendFirst
-                        ? "斜向优先"
-                        : "直线优先"}
+                        ? t('line.bendFirst')
+                        : t('line.straight')}
                     </div>
                   </div>
                   <div
@@ -403,8 +407,8 @@ export function LineCard({
                 setTab("name");
               }}
             >
-              <div className="title">名称</div>
-              <div className="value">1号线</div>
+              <div className="title">{t('line.name')}</div>
+              <div className="value">{lineName}</div>
             </div>
             <div
               className={classNames({
@@ -416,7 +420,7 @@ export function LineCard({
                 setTab("color");
               }}
             >
-              <div className="title">颜色</div>
+              <div className="title">{t('line.color')}</div>
               <div className="value" style={{ color: colorSelected }}>
                 {colorName}
               </div>
@@ -431,14 +435,14 @@ export function LineCard({
                 setTab("operation");
               }}
             >
-              <div className="title">操作</div>
-              <div className="value">删除</div>
+              <div className="title">{t('line.operation')}</div>
+              <div className="value">{t('line.delete')}</div>
             </div>
           </div>
 
           <div className="done" onClick={() => setEdit(false)}>
             <EditIcon className="done-icon" />
-            <span className="done-des">完成</span>
+            <span className="done-des">{t('line.done')}</span>
           </div>
         </div>
       }

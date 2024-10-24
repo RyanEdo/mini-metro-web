@@ -8,6 +8,7 @@ import React, {
 import "./OpacityControl.scss";
 import classNames from "classnames";
 import { browserInfo } from "../../../Common/util";
+import { useTranslation } from "react-i18next";
 interface OpacityControlProps {
   opacity: number;
   setOpacity: (value: number) => void;
@@ -22,7 +23,7 @@ const OpacityControl: React.FC<OpacityControlProps> = ({
   const sliderRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const toolRef = useRef<HTMLDivElement>(null);
-
+  const { t } = useTranslation();
   const handleClick = () => {
     setShowSlider(!showSlider);
   };
@@ -77,7 +78,7 @@ const OpacityControl: React.FC<OpacityControlProps> = ({
   const safari = engine.name === "WebKit";
   return (
     <div className="tool" onClick={handleClick} ref={toolRef}>
-      透明度
+      {t('opacity')}
       {
         <div
           className={classNames({ "slider-container": 1, show: showSlider })}

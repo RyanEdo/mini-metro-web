@@ -5,6 +5,7 @@ import React, {
   useEffect,
   useRef,
   useState,
+  useTransition,
 } from "react";
 import "./WelcomeTour.scss";
 import Infinity from "../Resource/Icon/infinity";
@@ -16,11 +17,13 @@ import { showTour } from "./Driver";
 import { ShowTourProps, UserDataType } from "../Data/UserData";
 import FinishedIcon from "../Resource/Icon/finished";
 import QRCode from "qrcode";
+import { useTranslation } from "react-i18next";
 export function WelcomeTour({
   showTour: show,
   setShowTour: setShow,
 }: ShowTourProps) {
   const [qrCode, setQRCode] = useState(false);
+  const {t} = useTranslation();
   const [visitedSteps, setVisitedSteps] = useState<string[]>(() => {
     const visitedStepsJson = localStorage.getItem("visited-steps");
     return visitedStepsJson ? JSON.parse(visitedStepsJson) : [];
@@ -72,8 +75,8 @@ export function WelcomeTour({
             <img src="/app-icon.png" />
           </span>
           <span className="title">
-            <div className="sub-title">欢迎使用</div>
-            <div className="main-title">迷你地铁地图构建工具</div>
+            <div className="sub-title">{t('welcome.welcome')}</div>
+            <div className="main-title">{t('welecome.minimetroweb')}</div>
           </span>
           <div className="control">
             {next ? (
@@ -88,7 +91,7 @@ export function WelcomeTour({
                     //   });
                   }}
                 >
-                  暂时跳过
+                  {t('welcome.skip')}
                 </span>
                 <span
                   className="start-tour"
@@ -105,14 +108,14 @@ export function WelcomeTour({
                     }
                   }}
                 >
-                  {visitedSteps.length ? "继续" : ""}
+                  {visitedSteps.length ? t('welcome.goOn') : ""}
                   {next.more}
                 </span>
               </>
             ) : (
               <>
                 <span className="skip-tour" onClick={reset}>
-                  重新开始
+                  {t('welcome.restart')}
                 </span>
                 <span
                   className="start-tour"
@@ -121,7 +124,7 @@ export function WelcomeTour({
                     setShow(false);
                   }}
                 >
-                  完成
+                  {t('welcome.done')}
                 </span>
               </>
             )}
@@ -146,7 +149,7 @@ export function WelcomeTour({
                         const emphasisStart = line[0];
                         const lineText = line.slice(1);
                         return (
-                          <div className="intro-text-line">
+                          <div className={`intro-text-line ${id}-text`}>
                             {lineText.map((text, index) => {
                               const emphasis =
                                 (Number(emphasisStart) + index) % 2;

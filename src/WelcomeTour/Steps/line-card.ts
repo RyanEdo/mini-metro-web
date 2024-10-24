@@ -1,18 +1,18 @@
 import { DriveStep, Driver } from "driver.js";
-
+import {t} from 'i18next';
 export const getSteps = (driver: Driver): DriveStep[] => [
   {
     element: ".ScaleLayer",
     popover: {
-      title: "点击任意线路",
-      description: "图中彩色曲线表示地铁线路",
+      title: t('dian-ji-ren-yi-xian-lu'),
+      description: t('tu-zhong-cai-se-qu-xian-biao-shi-di-tie-xian-lu'),
     },
   },
   {
     element: ".line-card",
     popover: {
-      title: "线路卡片",
-      description: "可以在这里编辑线路的所有设置",
+      title: t('xian-lu-ka-pian-0'),
+      description: t('ke-yi-zai-zhe-li-bian-ji-xian-lu-de-suo-you-she-zhi-0'),
       showButtons:["next"],
       // onNextClick:driver.moveNext
     },
@@ -20,40 +20,40 @@ export const getSteps = (driver: Driver): DriveStep[] => [
   {
     element: ".bend-first",
     popover: {
-      title: "点击此处控制线路在两站之间的走向",
-      description: "站点区间连线只有两种方式，斜线与直线",
+      title: t('dian-ji-ci-chu-kong-zhi-xian-lu-zai-liang-zhan-zhi-jian-de-zou-xiang'),
+      description: t('zhan-dian-qu-jian-lian-xian-zhi-you-liang-zhong-fang-shi-xie-xian-yu-zhi-xian'),
     },
   },
   {
     element: ".expand",
-    popover: { title: "放大按钮", description: "可以拓宽线路卡片" },
+    popover: { title: t('fang-da-an-niu'), description: t('ke-yi-tuo-kuan-xian-lu-ka-pian') },
   },
   {
     element: ".shrink",
-    popover: { title: "缩小按钮", description: "在缩小状态可以点击更多设置" },
+    popover: { title: t('suo-xiao-an-niu'), description: t('zai-suo-xiao-zhuang-tai-ke-yi-dian-ji-geng-duo-she-zhi') },
   },
   {
     element: ".edit",
-    popover: { title: "编辑按钮", description: "进入更多设置面板" },
+    popover: { title: t('bian-ji-an-niu'), description: t('jin-ru-geng-duo-she-zhi-mian-ban') },
   },
   {
     element: ".name-detail",
-    popover: { title: "此处修改线路名称与标识", description: "排序可以控制线路间的遮挡关系" ,showButtons:["next"],onNextClick:driver.moveNext},
+    popover: { title: t('ci-chu-xiu-gai-xian-lu-ming-cheng-yu-biao-shi'), description: t('pai-xu-ke-yi-kong-zhi-xian-lu-jian-de-zhe-dang-guan-xi') ,showButtons:["next"],onNextClick:driver.moveNext},
   },
   {
     element: ".edit-tool.color",
-    popover: { title: "点击此处修改线路标识色", description: "左下角的颜色选择器可以取色" ,side:"right"},
+    popover: { title: t('dian-ji-ci-chu-xiu-gai-xian-lu-biao-shi-se'), description: t('zuo-xia-jiao-de-yan-se-xuan-ze-qi-ke-yi-qu-se') ,side:"right"},
   },
   {
     element: ".edit-tool.operation",
-    popover: { title: "点击此处删除线路或者设置支线", description: "设置支线后线路会以虚线显示，且连接处不再显示把手",side:"right" },
+    popover: { title: t('dian-ji-ci-chu-shan-chu-xian-lu-huo-zhe-she-zhi-zhi-xian'), description: t('she-zhi-zhi-xian-hou-xian-lu-hui-yi-xu-xian-xian-shi-qie-lian-jie-chu-bu-zai-xian-shi-ba-shou'),side:"right" },
   },
   {
     element: ".done",
-    popover: { title: "点击此处完成设置", description: "回到站点页" },
+    popover: { title: t('dian-ji-ci-chu-wan-cheng-she-zhi'), description: t('hui-dao-zhan-dian-ye') },
   },
   {
     element: ".stations-count",
-    popover: { title: "显示途径站点卡片", description: "点击此处所以途径的站点卡片" },
+    popover: { title: t('xian-shi-tu-jing-zhan-dian-ka-pian'), description: t('dian-ji-ci-chu-suo-yi-tu-jing-de-zhan-dian-ka-pian') },
   },
 ];

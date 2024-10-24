@@ -27,6 +27,7 @@ import {
 } from "../../Common/util";
 import { showConfirmationInterface } from "../Delete/DeleteConfirmation";
 import { FunctionMode } from "../../DataStructure/Mode";
+import { useTranslation } from "react-i18next";
 export function StationCard({
   station,
   setData,
@@ -76,16 +77,17 @@ export function StationCard({
   const lineCount = lineIds.length;
   const [tab, setTab] = useState("name");
   const { engine } = browserInfo;
+  const { t } = useTranslation();
   const tags = [
-    "顶端",
-    "右上角",
-    "右侧",
-    "右下角",
-    "底部",
-    "左下角",
-    "左侧",
-    "左上角",
-    "自动"
+    t('station.up'),
+    t('station.upRight'),
+    t('station.right'),
+    t('station.rightDown'),
+    t('station.down'),
+    t('station.downLeft'),
+    t('station.left'),
+    t('station.leftUp'),
+    t('station.auto')
   ];
   const editTools = (tab: string) => {
     switch (tab) {
@@ -93,7 +95,7 @@ export function StationCard({
         return (
           <div className="name-detail">
             <div className="name-item sign">
-              <div className="title">横坐标</div>
+              <div className="title">{t('station.x')}</div>
               <AutoGrowthInput
                 value={x}
                 onInput={(x) => setX(Number(x.currentTarget.value))}
@@ -101,7 +103,7 @@ export function StationCard({
               />
             </div>
             <div className="name-item order">
-              <div className="title">纵坐标</div>
+              <div className="title">{t('station.y')}</div>
               <AutoGrowthInput
                 value={y}
                 onInput={(y) => setY(Number(y.currentTarget.value))}
@@ -167,7 +169,7 @@ export function StationCard({
                 }
               }}
             >
-              以此为起点新建线路...
+              {t('station.startHere')}
             </div>
             {lineIds.map((lineId) => {
               const line = getLineById(lineId);
@@ -185,7 +187,7 @@ export function StationCard({
                     });
                   }}
                 >
-                  从{lineName}的第{stationIndex! + 1}站移除...
+                  {t('station.remove',{lineName,stationIndex: stationIndex! + 1})}...
                 </div>
               ));
               return removeStations;
@@ -201,7 +203,7 @@ export function StationCard({
                 });
               }}
             >
-              删除站点...
+              {t('station.delete')}
             </div>
           </div>
         );
@@ -259,7 +261,7 @@ export function StationCard({
           });
         }}
       >
-        {lineCount}条线路
+        {lineCount}{t('station.lines')}
       </div>
       <AutoGrowthInput
         onInput={(e) => setStationName(e.currentTarget.value)}
@@ -288,7 +290,7 @@ export function StationCard({
                 setTab("name");
               }}
             >
-              <div className="title">位置</div>
+              <div className="title">{t('station.poisition')}</div>
               <div className="value">
                 X<span className="position">{x}</span>Y
                 <span className="position">{y}</span>
@@ -304,11 +306,10 @@ export function StationCard({
                 setTab("color");
               }}
             >
-              <div className="title">形状</div>
+              <div className="title">{t('station.shape')}</div>
               <div className="value">
                 {
-                  //@ts-ignore
-                  Shape[shapeSelected]
+                  t(`shape.${shapeSelected}`)
                 }
               </div>
             </div>
@@ -322,8 +323,8 @@ export function StationCard({
                 setTab("operation");
               }}
             >
-              <div className="title">操作</div>
-              <div className="value">删除</div>
+              <div className="title">{t('station.operation')}</div>
+              <div className="value">{t('station.operateDes')}</div>
             </div>
             <div
               className={classNames({
@@ -335,7 +336,7 @@ export function StationCard({
                 setTab("tag");
               }}
             >
-              <div className="title">标签</div>
+              <div className="title">{t('station.stationName')}</div>
               <div className="value">{tags[tagDirection]}</div>
             </div>
           </div>

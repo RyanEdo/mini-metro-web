@@ -6,83 +6,83 @@ import BoltIcon from "../Resource/Icon/bolt";
 import TouchIcon from "../Resource/Icon/touch";
 import AutoIcon from "../Resource/Icon/auto";
 import ExportIcon from "../Resource/Icon/export";
-
+import {t} from 'i18next';
 export const hightLights = [
   {
     id:'common-operation',
     icon: <Infinity />,
-    title: "无限资产",
-    subTitle: "无限大画布",
+    title: t('wu-xian-zi-chan'),
+    subTitle: t('wu-xian-da-hua-bu'),
     introText: [
-      [false, "支持", "无限条线路"],
-      [false, "支持", "无限个站点"],
+      [false, t('zhi-chi'), t('wu-xian-tiao-xian-lu')],
+      [false, t('zhi-chi'), t('wu-xian-ge-zhan-dian')],
     ],
-    more: "了解基本操作"
+    more: t('le-jie-ji-ben-cao-zuo')
   },
   {
     id:'line-card',
     icon: <AirWaveIcon className="air"/>,
-    title: "灵活走线",
-    subTitle: "一条线路能多次穿过同一站",
+    title: t('ling-huo-zou-xian'),
+    subTitle: t('yi-tiao-xian-lu-neng-duo-ci-chuan-guo-tong-yi-zhan'),
     introText: [
-      [false, "支持", "Q字走线与α走线"],
-      [false, "支持设置", "支线"],
+      [false, t('zhi-chi'), t('q-zi-zou-xian-yu-zou-xian')],
+      [false, t('zhi-chi-she-zhi'), t('zhi-xian')],
     ],
-    more: "了解线路设置"
+    more: t('le-jie-xian-lu-she-zhi')
   },
   {
     id:'station-card',
     icon: <PageViewIcon />,
-    title: "方便查看",
-    subTitle: "卡片化展示站点与线路",
+    title: t('fang-bian-cha-kan'),
+    subTitle: t('ka-pian-hua-zhan-shi-zhan-dian-yu-xian-lu'),
     introText: [
-      [false, "站点线路互相", "关联"],
-      [true, "高亮", "展示选中站点与线路"],
+      [false, t('zhan-dian-xian-lu-hu-xiang'), t('guan-lian')],
+      [true, t('gao-liang'), t("zhan-shi-xuan-zhong-zhan-dian-yu-xian-lu"),]
     ],
-    more: "了解站点卡片"
+    more: t('le-jie-zhan-dian-ka-pian')
   },
   {
     id:'quick-edit',
     icon: <BoltIcon />,
-    title: "高效编辑",
-    subTitle: "连续创建站点模式",
+    title: t('gao-xiao-bian-ji'),
+    subTitle: t('lian-xu-chuang-jian-zhan-dian-mo-shi'),
     introText: [
-      [true, "连续添加站点", "模式"],
-      [false, "支持", "撤回", "与", "重做"],
+      [true, t('lian-xu-tian-jia-zhan-dian'), t('mo-shi')],
+      [false, t('zhi-chi'), t('che-hui'), t('yu'), t('zhong-zuo')],
     ],
-    more: "了解快速创建"
+    more: t('le-jie-kuai-su-chuang-jian')
   },
   {
     id:'mobile',
     icon: <TouchIcon />,
-    title: "移动端支持",
-    subTitle: "完整的触控事件支持",
+    title: t('yi-dong-duan-zhi-chi'),
+    subTitle: t('wan-zheng-de-chu-kong-shi-jian-zhi-chi'),
     introText: [
-      [true, "单指", "拖动", "双指", "缩放地图"],
-      [false, "识别动作意图", "减少误操作"],
+      [true, t('dan-zhi'), t('tuo-dong'), t('shuang-zhi'), t('suo-fang-di-tu')],
+      [false, t('shi-bie-dong-zuo-yi-tu'), t('jian-shao-wu-cao-zuo')],
     ],
-    more: "在平板上体验"
+    more: t('zai-ping-ban-shang-ti-yan')
   },
   {
     id:'tag-setting',
     icon: <AutoIcon />,
-    title: "自动避让",
-    subTitle: "自动添加偏移值",
+    title: t('zi-dong-bi-rang'),
+    subTitle: t('zi-dong-tian-jia-pian-yi-zhi'),
     introText: [
-      [false, "共线线路", "不会重叠"],
-      [false, "站点名称自动选择摆放位置"],
+      [false, t('gong-xian-xian-lu'), t('bu-hui-zhong-die')],
+      [false, t('zhan-dian-ming-cheng-zi-dong-xuan-ze-bai-fang-wei-zhi')],
     ],
-    more: "了解标签设置"
+    more: t('le-jie-biao-qian-she-zhi')
   },
   {
     id:'export',
     icon: <ExportIcon />,
-    title: "导入导出",
-    subTitle: "导出高分辨率图片",
+    title: t('dao-ru-dao-chu'),
+    subTitle: t('dao-chu-gao-fen-bian-shuai-tu-pian'),
     introText: [
-      [false, "导出", "PNG/SVG图片"],
-      [false, "支持从模版创建"],
+      [false, t('dao-chu'), t('pngsvg-tu-pian')],
+      [false, t('zhi-chi-cong-mo-ban-chuang-jian')],
     ],
-    more: "了解导入导出"
+    more: t('le-jie-dao-ru-dao-chu')
   },
 ];

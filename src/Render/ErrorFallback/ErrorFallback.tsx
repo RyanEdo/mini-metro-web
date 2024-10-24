@@ -4,6 +4,7 @@ import { ReactComponent as RecoverIcon } from "../../Resource/Icon/clock.arrow.c
 import { ReactComponent as ExportIcon } from "../../Resource/Icon/export.svg";
 import { exportFile, exportJson } from "../../Common/util";
 import moment from "moment";
+import { useTranslation } from "react-i18next";
 
 export const ErrorFallback = ({
   error,
@@ -19,33 +20,33 @@ export const ErrorFallback = ({
       `recovery-${key}-${moment().format("YYYY-MM-DD_HH-mm-ss")}.json`
     );
   };
-
+  const { t } = useTranslation();
   return (
     <div className="error-layer">
-      <div className="title">抱歉！程序出现错误</div>
-      <div className="sub-title">不过不用担心，您的地图没有丢失</div>
+      <div className="title">{t('error.metError')}</div>
+      <div className="sub-title">{t('error.dontWorry')}</div>
       <div className="recover-from-cache error-btn" onClick={resetErrorBoundary}>
         <RecoverIcon />
-        <span>从缓存中恢复错误发生前的地图</span>
+        <span>{t('error.recoverFromCache')}</span>
       </div>
       <div
         className="export-from-cache error-btn"
         onClick={() => exportFile("last")}
       >
         <ExportIcon />
-        <span>导出错误发生前的地图文件</span>
+        <span>{t('error.exportNoErrorFile')}</span>
       </div>
       <div className="export-error">
         <div className="or">
-          或者您可以
+          {t('error.orYouCould')}
           <span
             className="export-error-file"
             onClick={() => exportFile("current")}
           >
-            导出当前包含错误的地图文件...
+            {t('error.exportError')}
           </span>
         </div>
-        <div className="for">以便发送给作者分析错误原因。</div>
+        <div className="for">{t('error.sendAuthor')}</div>
       </div>
     </div>
   );

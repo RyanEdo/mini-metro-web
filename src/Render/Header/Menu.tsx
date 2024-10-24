@@ -33,6 +33,7 @@ import {
   PageProps,
 } from "../../Data/UserData";
 import PlusIcon from "../../Resource/Icon/plus";
+import { ReactComponent as GlobeIcon } from "../../Resource/Icon/globe.svg";
 import {
   browserInfo,
   calculateTransform,
@@ -53,6 +54,8 @@ import download from "downloadjs";
 import { getExistMap } from "../../Common/api";
 import OpacityControl from "./Component/OpacityControl";
 import ShapeSelector from "./Component/ShapeSelector";
+import { useTranslation } from "react-i18next";
+import i18n from "../../i18n/config";
 
 type MenuType = {
   setEditingMode: React.Dispatch<React.SetStateAction<Mode>>;
@@ -70,7 +73,7 @@ type MenuType = {
   setCardShowing: Dispatch<SetStateAction<CardShowing>>;
   saved: boolean;
   setSaved: Dispatch<SetStateAction<boolean>>;
-  defaultShape: string,
+  defaultShape: string;
   setDefaultShape: Dispatch<SetStateAction<string>>;
 } & ShowNameProps &
   DrawProps &
@@ -124,6 +127,7 @@ export const Menu = forwardRef(function (
   const undoCondition = currentRecordIndex >= 0;
   const redoCondition = currentRecordIndex < record.length - 1;
   const { title } = data;
+  const { t } = useTranslation();
   const setTitle = (title: string) => setData({ ...data, title });
   const backToTitle = () => {
     setPage("title");
@@ -199,11 +203,15 @@ export const Menu = forwardRef(function (
           <>
             <div className="tool disabled">
               {currentRecordIndex >= 0
-                ? `已添加${currentRecordIndex + 1}站`
-                : "点击空白处新增站点"}
+                ? t("menu.alreadyAddStations", {
+                    count: currentRecordIndex + 1,
+                  })
+                : t("menu.clickBlankToAddStation")}
             </div>
-            <ShapeSelector          defaultShape={defaultShape}
-          setDefaultShape={setDefaultShape}/>
+            <ShapeSelector
+              defaultShape={defaultShape}
+              setDefaultShape={setDefaultShape}
+            />
             <div
               className={classNames({ tool: 1, disabled: !undoCondition })}
               onClick={(e) => {
@@ -216,7 +224,7 @@ export const Menu = forwardRef(function (
                 }
               }}
             >
-              撤销
+              {t("menu.withdraw")}
             </div>
             <div
               className={classNames({ tool: 1, disabled: !redoCondition })}
@@ -229,7 +237,7 @@ export const Menu = forwardRef(function (
                 }
               }}
             >
-              重做
+              {t("menu.redo")}
             </div>
             <div
               className="tool"
@@ -239,7 +247,7 @@ export const Menu = forwardRef(function (
                 setTitleEditable(false);
               }}
             >
-              完成
+              {t("menu.done")}
             </div>
           </>
         );
@@ -250,8 +258,8 @@ export const Menu = forwardRef(function (
           <>
             <div className="tool disabled">
               {currentRecordIndex >= 0
-                ? `已修改${currentRecordIndex + 1}次`
-                : "拖动站点更改位置"}
+                ? t("menu.alreadyModified", { count: currentRecordIndex + 1 })
+                : t("menu.dragToChangePoistion")}
             </div>
             <div
               className={classNames({ tool: 1, disabled: !undoCondition })}
@@ -270,7 +278,7 @@ export const Menu = forwardRef(function (
                 }
               }}
             >
-              撤销
+              {t("menu.withdraw")}
             </div>
             <div
               className={classNames({ tool: 1, disabled: !redoCondition })}
@@ -289,7 +297,7 @@ export const Menu = forwardRef(function (
                 }
               }}
             >
-              重做
+              {t("menu.redo")}
             </div>
             <div
               className="tool"
@@ -298,7 +306,7 @@ export const Menu = forwardRef(function (
                 setTitleEditable(false);
               }}
             >
-              完成
+              {t("menu.done")}
             </div>
           </>
         );
@@ -307,7 +315,7 @@ export const Menu = forwardRef(function (
         return (
           <>
             <div className="tool disabled">
-              先选择一条线路，再点击线路卡片上的“
+              {t("menu.chooseALineFirst")}“
               <PlusIcon className="tool-plus" />”
             </div>
             <div
@@ -317,7 +325,7 @@ export const Menu = forwardRef(function (
                 setTitleEditable(false);
               }}
             >
-              完成
+              {t("menu.done")}
             </div>
           </>
         );
@@ -325,10 +333,11 @@ export const Menu = forwardRef(function (
       case FunctionMode.backgroundEditing: {
         const { backgroundColor = "#ffffff", backgroundImage } = data;
         const setColor = (color: string) =>
-          setData((data) => ({ ...data, backgroundColor: color }));
+          {setData((data) => ({ ...data, backgroundColor: color }));
+      };
         return (
           <>
-            <div className="tool disabled">背景设定</div>
+            <div className="tool disabled">{t("menu.backgroudSetting")}</div>
             <div
               className={classNames({
                 tool: 1,
@@ -336,7 +345,7 @@ export const Menu = forwardRef(function (
               })}
               onClick={() => setColor("#ffffff")}
             >
-              纯白
+              {t("menu.white")}
             </div>
             <div
               className={classNames({
@@ -345,7 +354,7 @@ export const Menu = forwardRef(function (
               })}
               onClick={() => setColor("#fffeea")}
             >
-              浅黄
+              {t("menu.lightYellow")}
             </div>
             <div
               className={classNames({
@@ -354,7 +363,7 @@ export const Menu = forwardRef(function (
               })}
               onClick={() => setColor("transparent")}
             >
-              透明
+              {t("menu.transparent")}
             </div>
             <div className="tool">
               <input
@@ -371,11 +380,11 @@ export const Menu = forwardRef(function (
                   showTools(e, FunctionMode.editingCustomBackgroundPosition);
                 }}
               >
-                修改背景图...
+                {t("menu.changeBackgroudImage")}...
               </div>
             ) : (
               <div className="tool" onClick={importImageClick}>
-                导入背景图...
+                {t("menu.importBackgroudImage")}...
               </div>
             )}
             <div
@@ -385,7 +394,7 @@ export const Menu = forwardRef(function (
                 setTitleEditable(false);
               }}
             >
-              完成
+              {t("menu.done")}
             </div>
           </>
         );
@@ -399,9 +408,11 @@ export const Menu = forwardRef(function (
           setData((data) => ({ ...data, opacity }));
         return (
           <>
-            <div className="tool disabled">背景设定 / 修改背景图</div>
+            <div className="tool disabled">
+              {t("menu.backgroudSetting")} / {t("menu.changeBackgroudImage")}
+            </div>
             <div className="tool" onClick={importImageClick}>
-              导入图片
+              {t("menu.importImage")}
             </div>
             <OpacityControl opacity={opacity} setOpacity={setOpacity} />
             {/* 
@@ -422,13 +433,13 @@ export const Menu = forwardRef(function (
                 deleteFileFromIndexedDB("image");
               }}
             >
-              删除图片
+              {t("menu.deleteImage")}
             </div>
             <div
               className="tool"
               onClick={(e) => showTools(e, FunctionMode.backgroundEditing)}
             >
-              返回
+              {t("menu.back")}
             </div>
           </>
         );
@@ -441,7 +452,10 @@ export const Menu = forwardRef(function (
         return (
           <>
             <div className="tool disabled">
-              点击站点将它插入到{lineName}的第{insertIndex + 1}站
+              {t("menu.clickAddStationToLine", {
+                lineName,
+                insertIndex: insertIndex + 1,
+              })}
             </div>
             <div
               className={classNames({ tool: 1, disabled: !undoCondition })}
@@ -464,7 +478,7 @@ export const Menu = forwardRef(function (
                 }
               }}
             >
-              撤销
+              {t("menu.withdraw")}
             </div>
             <div
               className={classNames({ tool: 1, disabled: !redoCondition })}
@@ -487,7 +501,7 @@ export const Menu = forwardRef(function (
                 }
               }}
             >
-              重做
+              {t("menu.redo")}
             </div>
             <div
               className="tool"
@@ -498,25 +512,25 @@ export const Menu = forwardRef(function (
                 setInsertInfo({ insertIndex: -1, line });
               }}
             >
-              完成
+              {t("menu.done")}
             </div>
           </>
         );
       }
       case FunctionMode.choosingExistMap: {
         const existingMap = [
-          { name: "上海", id: "shanghai", webkit: true },
-          { name: "北京", id: "beijing" },
-          { name: "广州", id: "guangzhou", webkit: true },
-          { name: "深圳", id: "shenzhen", webkit: true },
-          { name: "香港", id: "hongkong", webkit: true },
-          { name: "长沙", id: "changsha", webkit: true },
-          { name: "天津", id: "tianjing", webkit: true },
+          { name: t("shang-hai"), id: "shanghai", webkit: true },
+          { name: t("bei-jing"), id: "beijing" },
+          { name: t("guang-zhou"), id: "guangzhou", webkit: true },
+          { name: t("shen-zhen"), id: "shenzhen", webkit: true },
+          { name: t("xiang-gang"), id: "hongkong", webkit: true },
+          { name: t("chang-sha"), id: "changsha", webkit: true },
+          { name: t("tian-jin"), id: "tianjing", webkit: true },
         ];
         const webkit = engine.name === "WebKit";
         return (
           <>
-            <div className="tool disabled">选择一张地图</div>
+            <div className="tool disabled">{t("menu.chooseAMap")}</div>
             {existingMap
               .filter((x) => (webkit ? x.webkit : true))
               .map(({ name, id }) => {
@@ -554,8 +568,9 @@ export const Menu = forwardRef(function (
                   if (data) setData(data);
                 }}
               >
-                以{existingMap.find((x) => x.id === selectedMap)?.name}
-                为模板新建地图
+                {t("menu.useTemplate", {
+                  name: existingMap.find((x) => x.id === selectedMap)?.name,
+                })}
               </div>
             ) : (
               <></>
@@ -569,7 +584,7 @@ export const Menu = forwardRef(function (
                 setTitleEditable(false);
               }}
             >
-              取消
+              {t("menu.cancel")}
             </div>
           </>
         );
@@ -643,20 +658,20 @@ export const Menu = forwardRef(function (
       <div className="menus" style={{ display }}>
         <div className="columns">
           <div className="column">
-            <div className="column-title">站点</div>
+            <div className="column-title">{t("menu.station")}</div>
             <div className="column-items">
               <div
                 id="menu-add-station"
                 className="column-item"
                 onClick={(e) => showTools(e, FunctionMode.addingStation)}
               >
-                添加站点...
+                {t("menu.addStation")}...
               </div>
               <div
                 className="column-item"
                 onClick={(e) => showTools(e, FunctionMode.dragingStation)}
               >
-                调整站点位置...
+                {t("menu.changeStationPosition")}...
               </div>
               <div
                 className="column-item"
@@ -665,7 +680,8 @@ export const Menu = forwardRef(function (
                   setShowName(!showName);
                 }}
               >
-                {showName ? "隐藏" : "显示"}站点名称...
+                {showName ? t("menu.hidden") : t("menu.show")}
+                {t("menu.stationName")}...
               </div>
               {showName ? (
                 <div
@@ -675,7 +691,8 @@ export const Menu = forwardRef(function (
                     setAutoHiddenName(!autoHiddenName);
                   }}
                 >
-                  {autoHiddenName ? "关闭" : "启用"}自动隐藏...
+                  {autoHiddenName ? t("menu.turnOff") : t("menu.turnOn")}
+                  {t("menu.AutoHidden")}...
                 </div>
               ) : (
                 <></>
@@ -683,13 +700,13 @@ export const Menu = forwardRef(function (
             </div>
           </div>
           <div className="column">
-            <div className="column-title">线路</div>
+            <div className="column-title">{t("menu.line")}</div>
             <div className="column-items">
               <div
                 className="column-item"
                 onClick={(e) => showTools(e, FunctionMode.lineEditing)}
               >
-                插入站点...
+                {t("menu.insertStation")}
               </div>
               <div
                 className="column-item"
@@ -697,18 +714,18 @@ export const Menu = forwardRef(function (
                   mediateMap(data, transfromTools);
                 }}
               >
-                居中路线图...
+                {t("menu.mediateMap")}
               </div>
               <div
                 className="column-item"
                 onClick={(e) => showTools(e, FunctionMode.backgroundEditing)}
               >
-                设定背景...
+                {t("menu.addBackgroundImage")}
               </div>
             </div>
           </div>
           <div className="column">
-            <div className="column-title">数据</div>
+            <div className="column-title">{t("menu.data")}</div>
             <div className="column-items">
               <div
                 className="column-item new-map-btn"
@@ -724,12 +741,12 @@ export const Menu = forwardRef(function (
                   setData({
                     stations: new Map(),
                     lines: new Map(),
-                    title: "新地图",
+                    title: t("menu.newMap"),
                   });
                   showTools(e, FunctionMode.addingStation);
                 }}
               >
-                新建空白地图...
+                {t("menu.addNewMap")}
               </div>
               <div
                 className="column-item existed-map-btn"
@@ -739,7 +756,7 @@ export const Menu = forwardRef(function (
                   showTools(e, FunctionMode.choosingExistMap);
                 }}
               >
-                从已有地图新建...
+                {t("menu.addFromTemplate")}
               </div>
               <div
                 className="column-item import-file-btn"
@@ -751,7 +768,7 @@ export const Menu = forwardRef(function (
                   });
                 }}
               >
-                导入文件...
+                {t("menu.importFile")}
               </div>
               {engine.name === "WebKit" ? (
                 <></>
@@ -763,7 +780,7 @@ export const Menu = forwardRef(function (
                     setDrawing(true);
                   }}
                 >
-                  作为图片导出...
+                  {t("menu.exportAsImage")}
                 </div>
               )}
 
@@ -794,7 +811,7 @@ export const Menu = forwardRef(function (
                   }, 300);
                 }}
               >
-                作为矢量图片导出...
+                {t("menu.exportAsSVG")}
               </div>
               <div
                 className="column-item export-as-file-btn"
@@ -808,7 +825,7 @@ export const Menu = forwardRef(function (
                   );
                 }}
               >
-                作为文件导出...
+                {t("menu.exportAsFile")}
               </div>
               <div
                 className="column-item recover-btn"
@@ -833,7 +850,7 @@ export const Menu = forwardRef(function (
                   }
                 }}
               >
-                恢复数据...
+                {t("menu.recoverData")}
               </div>
               <div
                 className="column-item export-recover-btn"
@@ -848,13 +865,13 @@ export const Menu = forwardRef(function (
                   );
                 }}
               >
-                导出恢复数据...
+                {t("menu.exportRecoveryData")}
               </div>
             </div>
           </div>
 
           <div className="column">
-            <div className="column-title">关于</div>
+            <div className="column-title">{t("menu.about")}</div>
             <div className="column-items">
               <div
                 className="column-item"
@@ -866,7 +883,7 @@ export const Menu = forwardRef(function (
                   );
                 }}
               >
-                项目地址...
+                {t("menu.projectAddress")}
               </div>
               <div
                 className="column-item tour-btn"
@@ -881,7 +898,7 @@ export const Menu = forwardRef(function (
                   }
                 }}
               >
-                使用教程...
+                {t("menu.guide")}
               </div>
               {window.innerWidth >= 710 ? (
                 <div
@@ -894,11 +911,22 @@ export const Menu = forwardRef(function (
                     );
                   }}
                 >
-                  视频教程...
+                  {t("menu.videoGuild")}
                 </div>
               ) : (
                 <></>
               )}
+              <div
+                className="column-item friend"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  console.log(i18n)
+                  i18n.changeLanguage(i18n.language === "zh-CN"? "en-US": "zh-CN");
+                }}
+              >
+                {t("menu.switchLanguage")}...
+                {/* <GlobeIcon /> */}
+              </div>
               <div
                 className="column-item friend"
                 onClick={(e) => {
@@ -909,10 +937,11 @@ export const Menu = forwardRef(function (
                   );
                 }}
               >
-                线路图工具包
+                {t("menu.RMP")}
                 <ShareIcon />
               </div>
-              <div className="column-item small">版本 : 1.1.1</div>
+
+              <div className="column-item small">{t("menu.version")}1.2.0</div>
               <div
                 className="column-item small author"
                 onClick={(e) => {
@@ -920,7 +949,7 @@ export const Menu = forwardRef(function (
                   window.open("https://space.bilibili.com/8217854", "_blank");
                 }}
               >
-                作者 : 江户川瑞安
+                {t("menu.author")}
               </div>
             </div>
           </div>
