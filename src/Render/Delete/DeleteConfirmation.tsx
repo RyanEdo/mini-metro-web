@@ -12,6 +12,7 @@ import { AutoGrowthInput } from "../../Common/AutoGrowthInput";
 import shapes from "../../Resource/Shape/shape";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
+import i18n from "../../i18n/config";
 export interface showConfirmationInterface {
   (
     {
@@ -74,8 +75,13 @@ export const DeleteConfirmation = forwardRef(function (
   const title = t('que-shi-yao-deletetext-ma', {deleteText});
   const { stationName, shape } = station || {};
   const { lineName, sign, color } = line || {};
-  const index = stationIndex ? stationIndex + 1 : 0;
-  const subTitle = t('delete.subtile', {lineName, index});
+  const index = stationIndex ? stationIndex + 1 : 1;
+  const getOrdinalSuffix = (number: number)=> {
+    const suffixes = ["th", "st", "nd", "rd"];
+    const v = number % 100;
+    return number + (suffixes[(v - 20) % 10] || suffixes[v] || suffixes[0]);
+  }
+  const subTitle = t('delete.subtile', {lineName, index:i18n.language === 'en-US'? getOrdinalSuffix(index):index});
 
   return (
     <div
