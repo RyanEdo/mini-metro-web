@@ -86,8 +86,7 @@ function App() {
   };
   const {backgroundColor} = data;
   useEffect(() => {
-    if(backgroundColor)
-    document.getElementById('theme-color')!.setAttribute('content', backgroundColor);
+    document.getElementById('theme-color')!.setAttribute('content', backgroundColor?backgroundColor:"#ffffff");
   }, [backgroundColor])
   return (
     <ErrorBoundary
