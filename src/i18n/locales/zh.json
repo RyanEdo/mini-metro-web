@@ -263,5 +263,16 @@
   "jin-ru-tian-jia-xian-lu-mo-shi": "进入添加线路模式",
   "dian-ji-zhan-dian-0": "点击站点",
   "lian-jie-zhan-dian": "连接站点",
-  "xian-lu-jiu-chuang-jian-hao-le": "线路就创建好了"
+  "xian-lu-jiu-chuang-jian-hao-le": "线路就创建好了",
+  "yi-da-kai-zhan-dian-ka-pian-0": "以打开站点卡片",
+  "bian-ji-zhan-dian-wei-zhi": "编辑站点位置",
+  "dian-ji-zuo-biao-zhi-hou-shi-yong-shu-biao-gun-lun-ke-yi-jing-que-tiao-jie": "点击坐标之后使用鼠标滚轮可以精确调节",
+  "dian-ji-ci-chu-xiu-gai-zhan-dian-xing-zhuang": "点击此处修改站点形状",
+  "xiu-gai-xing-zhuang": "修改形状",
+  "dian-ji-ci-chu-shan-chu-zhan-dian-huo-xin-jian-xian-lu": "点击此处删除站点或新建线路",
+  "shan-chu-huo-xin-jian": "删除或新建",
+  "dian-ji-ci-chu-she-zhi-zhan-dian-ming-cheng-wei-zhi": "点击此处设置站点名称位置",
+  "zhan-dian-ming-wei-zhi": "站点名位置",
+  "dian-ji-hui-se-de-fang-kuai-xuan-ze-fang-wei": "点击灰色的方块选择方位",
+  "dian-ji-zhong-jian-de-wen-zi-hui-fu-zi-dong-wei-zhi": "点击中间的文字恢复自动位置"
 }
