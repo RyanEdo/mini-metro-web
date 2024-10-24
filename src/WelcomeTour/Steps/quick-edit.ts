@@ -1,26 +1,26 @@
 import { DriveStep, Driver } from "driver.js";
-
+import {t} from 'i18next';
 export const getSteps = (driver: Driver): DriveStep[] => [
   {
     element: ".title .click-panel",
     popover: {
-      title: "打开菜单",
-      description: "点击标题打开菜单",
+      title: t('da-kai-cai-dan-0'),
+      description: t('dian-ji-biao-ti-da-kai-cai-dan-0'),
     },
   },
   {
     element: "#menu-add-station",
     popover: {
-      title: "点击添加站点",
-      description: "进入添加站点模式",
+      title: t('dian-ji-tian-jia-zhan-dian'),
+      description: t('jin-ru-tian-jia-zhan-dian-mo-shi'),
     },
   },
   {
     element: ".ScaleLayer",
     onHighlighted: () => {},
     popover: {
-      title: "点击任意空白处添加站点",
-      description: "添加好之后点击下一步（建议您在屏幕左上角的空白区域添加三个站点）",
+      title: t('dian-ji-ren-yi-kong-bai-chu-tian-jia-zhan-dian'),
+      description: t('tian-jia-hao-zhi-hou-dian-ji-xia-yi-bu-jian-yi-nin-zai-ping-mu-zuo-shang-jiao-de-kong-bai-qu-yu-tian-jia-san-ge-zhan-dian'),
       showButtons: ["next"],
       onNextClick: () => {
         driver.moveNext();
@@ -29,37 +29,37 @@ export const getSteps = (driver: Driver): DriveStep[] => [
   },
   {
     element: "#add-station-finish-btn",
-    popover: { title: "点击完成", description: "退出编辑模式" },
+    popover: { title: t('dian-ji-wan-cheng'), description: t('tui-chu-bian-ji-mo-shi') },
   },
   {
     element: ".station-descend-1",
     popover: {
-      title: "点击刚才创建的站点",
-      description: "打开站点信息卡片",
+      title: t('dian-ji-gang-cai-chuang-jian-de-zhan-dian'),
+      description: t('da-kai-zhan-dian-xin-xi-ka-pian'),
     },
   },
   {
     element: ".station-card-operation",
-    popover: { title: "点击操作选项卡", description: "我们来添加线路" },
+    popover: { title: t('dian-ji-cao-zuo-xuan-xiang-ka'), description: t('wo-men-lai-tian-jia-xian-lu') },
   },
   {
     element: ".add-new-line-btn",
     popover: {
-      title: "点击以此为起点新建线路",
-      description: "进入添加线路模式",
+      title: t('dian-ji-yi-ci-wei-qi-dian-xin-jian-xian-lu'),
+      description: t('jin-ru-tian-jia-xian-lu-mo-shi'),
     },
   },
   {
     element: ".station-descend-2",
     popover: {
-      title: "点击站点",
-      description: "连接站点",
+      title: t('dian-ji-zhan-dian-0'),
+      description: t('lian-jie-zhan-dian'),
     },
   },
   {
     element: ".station-descend-3",
     popover: {
-      title: "点击站点",
+      title: {t('dian-ji-zhan-dian')},
       description: "连接站点",
     },
   },

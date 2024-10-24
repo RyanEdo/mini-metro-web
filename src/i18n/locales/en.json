@@ -246,5 +246,21 @@
   "xian-shi-tu-jing-zhan-dian-ka-pian": "Show route site cards",
   "zai-suo-xiao-zhuang-tai-ke-yi-dian-ji-geng-duo-she-zhi": "In the zoomed-out state, you can click on more settings",
   "zhan-dian-qu-jian-lian-xian-zhi-you-liang-zhong-fang-shi-xie-xian-yu-zhi-xian": "There are only two ways to connect sites, diagonal lines and straight lines.",
-  "zuo-xia-jiao-de-yan-se-xuan-ze-qi-ke-yi-qu-se": "The color picker in the lower left corner can select colors"
+  "zuo-xia-jiao-de-yan-se-xuan-ze-qi-ke-yi-qu-se": "The color picker in the lower left corner can select colors",
+  "da-kai-cai-dan-0": "Open menu",
+  "da-kai-zhan-dian-xin-xi-ka-pian": "Open the site information card",
+  "dian-ji-biao-ti-da-kai-cai-dan-0": "Click on the title to open the menu",
+  "dian-ji-cao-zuo-xuan-xiang-ka": "Click on the Actions tab",
+  "dian-ji-gang-cai-chuang-jian-de-zhan-dian": "Click on the site you just created",
+  "dian-ji-ren-yi-kong-bai-chu-tian-jia-zhan-dian": "Click any blank space to add a site",
+  "dian-ji-tian-jia-zhan-dian": "Click to add site",
+  "dian-ji-wan-cheng": "Click Finish",
+  "dian-ji-yi-ci-wei-qi-dian-xin-jian-xian-lu": "Click to create a new route starting from this point",
+  "dian-ji-zhan-dian-0": "click site",
+  "jin-ru-tian-jia-xian-lu-mo-shi": "Enter add line mode",
+  "jin-ru-tian-jia-zhan-dian-mo-shi": "Enter add site mode",
+  "lian-jie-zhan-dian": "connect site",
+  "tian-jia-hao-zhi-hou-dian-ji-xia-yi-bu-jian-yi-nin-zai-ping-mu-zuo-shang-jiao-de-kong-bai-qu-yu-tian-jia-san-ge-zhan-dian": "After adding, click Next (it is recommended that you add three sites in the blank area in the upper left corner of the screen)",
+  "tui-chu-bian-ji-mo-shi": "Exit edit mode",
+  "wo-men-lai-tian-jia-xian-lu": "Let's add the line"
 }
