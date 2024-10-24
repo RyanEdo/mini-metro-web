@@ -1,10 +1,10 @@
 import { UserDataType } from "../Data/UserData";
- 
+import {t} from 'i18next';
 export const teyvat: UserDataType = {
   stations: [
     {
       stationId: 1,
-      stationName: "望风角站",
+      stationName: t('wang-feng-jiao-zhan'),
       position: [678, -52],
       shape: "cicle",
       lineIds: [3],
@@ -12,14 +12,14 @@ export const teyvat: UserDataType = {
     },
     {
       stationId: 2,
-      stationName: "摘星崖站",
+      stationName: t('zhai-xing-ya-zhan'),
       position: [645, 71],
       shape: "cicle",
       lineIds: [3],
     },
     {
       stationId: 3,
-      stationName: "千风神殿站",
+      stationName: t('qian-feng-shen-dian-zhan'),
       position: [640, 191],
       shape: "cicle",
       lineIds: [3],
@@ -657,6 +657,6 @@ export const teyvat: UserDataType = {
     map.set(cur.lineId, cur);
     return map;
   }, new Map()),
-  title: "提瓦特",
+  title: t('teyvat'),
   backgroundColor: '#ffffff',
 };

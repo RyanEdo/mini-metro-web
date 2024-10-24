@@ -51,7 +51,8 @@
     "recoverData": "Recover Data...",
     "version": "Version: ",
     "videoGuild": "Video Tutorial...",
-    "symbol": "logo"
+    "symbol": "logo",
+    "newMap": "New Map"
   },
   "bei-jing": "Beijing",
   "chang-sha": "Changsha",
@@ -101,7 +102,7 @@
     "color": "Color",
     "delete": "delete",
     "deleteLine": "Delete Line...",
-    "done": "Finish",
+    "done": "Done",
     "fromTo": "From {{from}} to {{to}}",
     "insertHere": "insert here",
     "insertStation": "insert station",
@@ -111,7 +112,7 @@
     "operation": "Operate",
     "order": "order",
     "stations": " Stations",
-    "straight": "Straight First"
+    "straight": "Linar First"
   },
   "opacity": "Opacity",
   "recover": {
@@ -290,14 +291,17 @@
   "zai-zhe-li-xiang-xia-gun-dong-yi-xia": "Scroll down a bit here",
   "zhan-dian-ming-hui-zai-di-tu-suo-fang-dao-xiao-chi-du-shi-zi-dong-yin-cang-guan-bi-zi-dong-yin-cang-yi-que-bao-ke-yi-yi-zhi-xian-shi-zhan-dian-ming-cheng": "Site names are automatically hidden when the map is zoomed to a smaller scale. \nTurn off auto-hide to ensure the site name is always visible",
   "di-current-bu-gong-total-bu": "Step {0} of {1} steps",
-  "shang-yi-bu": "Previous step",
+  "shang-yi-bu": "Previous Step",
   "wan-cheng": "Finish",
-  "xia-yi-bu": "Next step",
+  "xia-yi-bu": "Next Step",
   "delete": {
     "cancel": "Cancel",
     "delete": "delete",
     "remove": "Remove",
     "subtile": "No longer the {{index}} station of {{lineName}}"
   },
-  "que-shi-yao-deletetext-ma": "Do you really want to {{deleteText}}?"
+  "que-shi-yao-deletetext-ma": "Do you really want to {{deleteText}}?",
+  "teyvat": "Teyvat",
+  "newStation": "New Station",
+  "lineNo": "Line {{lineId}}"
 }

@@ -51,7 +51,8 @@
     "RMP": "线路图工具包",
     "version": "版本 : ",
     "author": "作者 : 江户川瑞安",
-    "symbol": "标识"
+    "symbol": "标识",
+    "newMap": "新地图"
   },
   "shang-hai": "上海",
   "bei-jing": "北京",
@@ -299,5 +300,11 @@
     "subtile": "不再作为{{lineName}}的第{{index}}站",
     "cancel": "取消"
   },
-  "que-shi-yao-deletetext-ma": "确实要{{deleteText}}吗?"
+  "que-shi-yao-deletetext-ma": "确实要{{deleteText}}吗?",
+  "teyvat": "提瓦特",
+  "wang-feng-jiao-zhan": "望风角站",
+  "zhai-xing-ya-zhan": "摘星崖站",
+  "qian-feng-shen-dian-zhan": "千风神殿站",
+  "newStation": "新增站点",
+  "lineNo": "{{lineId}} 号线"
 }

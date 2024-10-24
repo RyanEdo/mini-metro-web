@@ -3,6 +3,7 @@ import { base64ToFile, generateRandomColor, mapToArr } from "../Common/util";
 import { colorSH } from "../Common/color";
 import { Direct } from "../DataStructure/Direction";
 import { teyvat } from "../Common/teyvat";
+import i18n from "../i18n/config";
 
 export class StationProps {
   stationId!: number;
@@ -346,7 +347,7 @@ export const dataProcessor = (
         const lineId = maxId + 1;
         Object.assign(newLine, {
           lineId: lineId,
-          lineName: lineId + "号线",
+          lineName:i18n.t("lineNo",{lineId}),
           color: colorSH[lineId - 1]
             ? colorSH[lineId - 1].color
             : generateRandomColor(),
@@ -405,7 +406,7 @@ export const addNewStation = (
   const stationId = max + 1;
   const newStation = {
     stationId,
-    stationName: `新增站点 ${max + 1}`,
+    stationName: `${i18n.t('newStation')} ${max + 1}`,
     position: [x, y].map(Math.round),
     shape: defaultShape,
     lineIds: [],

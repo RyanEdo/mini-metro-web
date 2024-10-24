@@ -726,7 +726,7 @@ export const Menu = forwardRef(function (
                   setData({
                     stations: new Map(),
                     lines: new Map(),
-                    title: "新地图",
+                    title: t('menu.newMap'),
                   });
                   showTools(e, FunctionMode.addingStation);
                 }}
