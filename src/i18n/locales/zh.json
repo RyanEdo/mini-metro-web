@@ -50,7 +50,8 @@
     "videoGuild": "视频教程...",
     "RMP": "线路图工具包",
     "version": "版本 : ",
-    "author": "作者 : 江户川瑞安"
+    "author": "作者 : 江户川瑞安",
+    "symbol": "标识"
   },
   "shang-hai": "上海",
   "bei-jing": "北京",
@@ -58,5 +59,72 @@
   "shen-zhen": "深圳",
   "xiang-gang": "香港",
   "chang-sha": "长沙",
-  "tian-jin": "天津"
+  "tian-jin": "天津",
+  "station": {
+    "up": "顶端",
+    "upRight": "右上角",
+    "right": "右侧",
+    "rightDown": "右下角",
+    "down": "底部",
+    "downLeft": "左下角",
+    "left": "左侧",
+    "leftUp": "左上角",
+    "auto": "自动",
+    "x": "横坐标",
+    "y": "纵坐标",
+    "startHere": "以此为起点新建线路...",
+    "remove": "从{lineName}的第{stationIndex}站移除",
+    "delete": "删除站点...",
+    "lines": "条线路",
+    "poisition": "位置",
+    "shape": "形状",
+    "operation": "操作",
+    "operateDes": "删除",
+    "stationName": "标签"
+  },
+  "shape": {
+    "cicle": "圆形",
+    "square": "正方形",
+    "triangle": "三角形",
+    "start": "五角星",
+    "pentagon": "五边形",
+    "hexagon": "六边形",
+    "cross": "十字形",
+    "rhombus": "菱形",
+    "diamond": "钻石",
+    "leaf": "叶子",
+    "ginkgo": "银杏"
+  },
+  "line": {
+    "name": "名称",
+    "order": "排序",
+    "notSubLineAnymore": "不再作为支线",
+    "asSubline": "设为支线",
+    "deleteLine": "删除线路...",
+    "stations": "个站点",
+    "notInUse": "尚未开通",
+    "fromTo": "从{from}开往{to}",
+    "insertHere": "插入到这",
+    "insertStation": "插入站点",
+    "bendFirst": "斜向优先",
+    "straight": "直线优先",
+    "color": "颜色",
+    "operation": "操作",
+    "delete": "删除",
+    "done": "完成"
+  },
+  "opacity": "透明度",
+  "recover": {
+    "text": "需要恢复数据吗？",
+    "subTitle": "缓存中有不久前编辑过的地图"
+  },
+  "error": {
+    "metError": "抱歉！程序出现错误",
+    "dontWorry": "不过不用担心，您的地图没有丢失",
+    "recoverFromCache": "从缓存中恢复错误发生前的地图",
+    "exportNoErrorFile": "导出错误发生前的地图文件",
+    "orYouCould": "或者您可以",
+    "exportError": "导出当前包含错误的地图文件...",
+    "sendAuthor": "以便发送给作者分析错误原因。"
+  }
 }

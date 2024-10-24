@@ -13,6 +13,7 @@ import "./Recovery.scss";
 import { setDataFromJson, UserDataType } from "../../Data/UserData";
 import { mediateMap, readFileFromIndexedDB } from "../../Common/util";
 import classNames from "classnames";
+import { useTranslation } from "react-i18next";
 export function Recovery({
   data,
   setData,
@@ -33,6 +34,7 @@ export function Recovery({
     setTranslateY: React.Dispatch<React.SetStateAction<number>>;
   };
 }) {
+  const {t} = useTranslation();
   const notificationRef = useRef<HTMLDivElement>(null);
   const [showNotification, setShowNotification] = useState(false);
   useEffect(() => {
@@ -74,8 +76,8 @@ export function Recovery({
           <RecoverIcon />
         </div>
         <div className="text">
-          <div className="title">需要恢复数据吗？</div>
-          <div className="sub-title">缓存中有不久前编辑过的地图</div>
+          <div className="title">{t('recover.text')}</div>
+          <div className="sub-title">{t('recover.subTitle')}</div>
         </div>
         <div
           className="ok"

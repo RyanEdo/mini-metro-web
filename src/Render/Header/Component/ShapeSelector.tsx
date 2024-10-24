@@ -12,6 +12,7 @@ import classNames from "classnames";
 import { browserInfo } from "../../../Common/util";
 import shapes from "../../../Resource/Shape/shape";
 import { Shape } from "../../../Data/Shape";
+import { useTranslation } from "react-i18next";
 interface OpacityControlProps {
   defaultShape: string;
   setDefaultShape: Dispatch<SetStateAction<string>>;
@@ -24,7 +25,7 @@ const ShapeSelector: React.FC<OpacityControlProps> = ({
   const [showSlider, setShowSlider] = useState(false);
   const sliderRef = useRef<HTMLDivElement>(null);
   const toolRef = useRef<HTMLDivElement>(null);
-
+  const { t } = useTranslation();
   const handleClick = () => {
     setShowSlider(!showSlider);
   };
@@ -79,8 +80,7 @@ const ShapeSelector: React.FC<OpacityControlProps> = ({
   return (
     <div className="tool" onClick={handleClick} ref={toolRef}>
       {
-        //@ts-ignore
-        Shape[defaultShape]
+        t(`shape.${defaultShape}`)
       }
       {
         <div
