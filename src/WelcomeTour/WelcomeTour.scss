@@ -168,7 +168,9 @@
                         bottom: 20.67px;
                         .intro-text {
                             .intro-text-line {
-                                text-transform: capitalize;
+                                &:not(.line-card-text){
+                                  text-transform: capitalize;  
+                                }
                                 :not(.emphasis) {
                                     color: rgba(255, 255, 255, 0.6);
                                 }

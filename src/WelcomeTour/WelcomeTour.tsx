@@ -149,7 +149,7 @@ export function WelcomeTour({
                         const emphasisStart = line[0];
                         const lineText = line.slice(1);
                         return (
-                          <div className="intro-text-line">
+                          <div className={`intro-text-line ${id}-text`}>
                             {lineText.map((text, index) => {
                               const emphasis =
                                 (Number(emphasisStart) + index) % 2;

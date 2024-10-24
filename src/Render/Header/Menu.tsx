@@ -33,6 +33,7 @@ import {
   PageProps,
 } from "../../Data/UserData";
 import PlusIcon from "../../Resource/Icon/plus";
+import { ReactComponent as GlobeIcon } from "../../Resource/Icon/globe.svg";
 import {
   browserInfo,
   calculateTransform,
@@ -54,6 +55,7 @@ import { getExistMap } from "../../Common/api";
 import OpacityControl from "./Component/OpacityControl";
 import ShapeSelector from "./Component/ShapeSelector";
 import { useTranslation } from "react-i18next";
+import i18n from "../../i18n/config";
 
 type MenuType = {
   setEditingMode: React.Dispatch<React.SetStateAction<Mode>>;
@@ -71,7 +73,7 @@ type MenuType = {
   setCardShowing: Dispatch<SetStateAction<CardShowing>>;
   saved: boolean;
   setSaved: Dispatch<SetStateAction<boolean>>;
-  defaultShape: string,
+  defaultShape: string;
   setDefaultShape: Dispatch<SetStateAction<string>>;
 } & ShowNameProps &
   DrawProps &
@@ -201,11 +203,15 @@ export const Menu = forwardRef(function (
           <>
             <div className="tool disabled">
               {currentRecordIndex >= 0
-                ? t('menu.alreadyAddStations', {count: currentRecordIndex + 1})
-                : t('menu.clickBlankToAddStation')}
+                ? t("menu.alreadyAddStations", {
+                    count: currentRecordIndex + 1,
+                  })
+                : t("menu.clickBlankToAddStation")}
             </div>
-            <ShapeSelector          defaultShape={defaultShape}
-          setDefaultShape={setDefaultShape}/>
+            <ShapeSelector
+              defaultShape={defaultShape}
+              setDefaultShape={setDefaultShape}
+            />
             <div
               className={classNames({ tool: 1, disabled: !undoCondition })}
               onClick={(e) => {
@@ -218,7 +224,7 @@ export const Menu = forwardRef(function (
                 }
               }}
             >
-              {t('menu.withdraw')}
+              {t("menu.withdraw")}
             </div>
             <div
               className={classNames({ tool: 1, disabled: !redoCondition })}
@@ -231,7 +237,7 @@ export const Menu = forwardRef(function (
                 }
               }}
             >
-              {t('menu.redo')}
+              {t("menu.redo")}
             </div>
             <div
               className="tool"
@@ -241,7 +247,7 @@ export const Menu = forwardRef(function (
                 setTitleEditable(false);
               }}
             >
-              {t('menu.done')}
+              {t("menu.done")}
             </div>
           </>
         );
@@ -252,8 +258,8 @@ export const Menu = forwardRef(function (
           <>
             <div className="tool disabled">
               {currentRecordIndex >= 0
-                ? t('menu.alreadyModified', {count:currentRecordIndex + 1})
-                : t('menu.dragToChangePoistion')}
+                ? t("menu.alreadyModified", { count: currentRecordIndex + 1 })
+                : t("menu.dragToChangePoistion")}
             </div>
             <div
               className={classNames({ tool: 1, disabled: !undoCondition })}
@@ -272,7 +278,7 @@ export const Menu = forwardRef(function (
                 }
               }}
             >
-              {t('menu.withdraw')}
+              {t("menu.withdraw")}
             </div>
             <div
               className={classNames({ tool: 1, disabled: !redoCondition })}
@@ -291,7 +297,7 @@ export const Menu = forwardRef(function (
                 }
               }}
             >
-              {t('menu.redo')}
+              {t("menu.redo")}
             </div>
             <div
               className="tool"
@@ -300,7 +306,7 @@ export const Menu = forwardRef(function (
                 setTitleEditable(false);
               }}
             >
-              {t('menu.done')}
+              {t("menu.done")}
             </div>
           </>
         );
@@ -309,7 +315,7 @@ export const Menu = forwardRef(function (
         return (
           <>
             <div className="tool disabled">
-              {t('menu.chooseALineFirst')}“
+              {t("menu.chooseALineFirst")}“
               <PlusIcon className="tool-plus" />”
             </div>
             <div
@@ -319,7 +325,7 @@ export const Menu = forwardRef(function (
                 setTitleEditable(false);
               }}
             >
-              {t('menu.done')}
+              {t("menu.done")}
             </div>
           </>
         );
@@ -327,10 +333,11 @@ export const Menu = forwardRef(function (
       case FunctionMode.backgroundEditing: {
         const { backgroundColor = "#ffffff", backgroundImage } = data;
         const setColor = (color: string) =>
-          setData((data) => ({ ...data, backgroundColor: color }));
+          {setData((data) => ({ ...data, backgroundColor: color }));
+      };
         return (
           <>
-            <div className="tool disabled">{t('menu.backgroudSetting')}</div>
+            <div className="tool disabled">{t("menu.backgroudSetting")}</div>
             <div
               className={classNames({
                 tool: 1,
@@ -338,7 +345,7 @@ export const Menu = forwardRef(function (
               })}
               onClick={() => setColor("#ffffff")}
             >
-              {t('menu.white')}
+              {t("menu.white")}
             </div>
             <div
               className={classNames({
@@ -347,7 +354,7 @@ export const Menu = forwardRef(function (
               })}
               onClick={() => setColor("#fffeea")}
             >
-              {t('menu.lightYellow')}
+              {t("menu.lightYellow")}
             </div>
             <div
               className={classNames({
@@ -356,7 +363,7 @@ export const Menu = forwardRef(function (
               })}
               onClick={() => setColor("transparent")}
             >
-              {t('menu.transparent')}
+              {t("menu.transparent")}
             </div>
             <div className="tool">
               <input
@@ -373,11 +380,11 @@ export const Menu = forwardRef(function (
                   showTools(e, FunctionMode.editingCustomBackgroundPosition);
                 }}
               >
-                {t('menu.changeBackgroudImage')}...
+                {t("menu.changeBackgroudImage")}...
               </div>
             ) : (
               <div className="tool" onClick={importImageClick}>
-                {t('menu.importBackgroudImage')}...
+                {t("menu.importBackgroudImage")}...
               </div>
             )}
             <div
@@ -387,7 +394,7 @@ export const Menu = forwardRef(function (
                 setTitleEditable(false);
               }}
             >
-              {t('menu.done')}
+              {t("menu.done")}
             </div>
           </>
         );
@@ -401,9 +408,11 @@ export const Menu = forwardRef(function (
           setData((data) => ({ ...data, opacity }));
         return (
           <>
-            <div className="tool disabled">{t('menu.backgroudSetting')} / {t('menu.changeBackgroudImage')}</div>
+            <div className="tool disabled">
+              {t("menu.backgroudSetting")} / {t("menu.changeBackgroudImage")}
+            </div>
             <div className="tool" onClick={importImageClick}>
-              {t('menu.importImage')}
+              {t("menu.importImage")}
             </div>
             <OpacityControl opacity={opacity} setOpacity={setOpacity} />
             {/* 
@@ -424,13 +433,13 @@ export const Menu = forwardRef(function (
                 deleteFileFromIndexedDB("image");
               }}
             >
-              {t('menu.deleteImage')}
+              {t("menu.deleteImage")}
             </div>
             <div
               className="tool"
               onClick={(e) => showTools(e, FunctionMode.backgroundEditing)}
             >
-              {t('menu.back')}
+              {t("menu.back")}
             </div>
           </>
         );
@@ -443,7 +452,10 @@ export const Menu = forwardRef(function (
         return (
           <>
             <div className="tool disabled">
-              {t('menu.clickAddStationToLine',{lineName, insertIndex: insertIndex+1})}
+              {t("menu.clickAddStationToLine", {
+                lineName,
+                insertIndex: insertIndex + 1,
+              })}
             </div>
             <div
               className={classNames({ tool: 1, disabled: !undoCondition })}
@@ -466,7 +478,7 @@ export const Menu = forwardRef(function (
                 }
               }}
             >
-              {t('menu.withdraw')}
+              {t("menu.withdraw")}
             </div>
             <div
               className={classNames({ tool: 1, disabled: !redoCondition })}
@@ -489,7 +501,7 @@ export const Menu = forwardRef(function (
                 }
               }}
             >
-              {t('menu.redo')}
+              {t("menu.redo")}
             </div>
             <div
               className="tool"
@@ -500,25 +512,25 @@ export const Menu = forwardRef(function (
                 setInsertInfo({ insertIndex: -1, line });
               }}
             >
-              {t('menu.done')}
+              {t("menu.done")}
             </div>
           </>
         );
       }
       case FunctionMode.choosingExistMap: {
         const existingMap = [
-          { name: t('shang-hai'), id: "shanghai", webkit: true },
-          { name: t('bei-jing'), id: "beijing" },
-          { name: t('guang-zhou'), id: "guangzhou", webkit: true },
-          { name: t('shen-zhen'), id: "shenzhen", webkit: true },
-          { name: t('xiang-gang'), id: "hongkong", webkit: true },
-          { name: t('chang-sha'), id: "changsha", webkit: true },
-          { name: t('tian-jin'), id: "tianjing", webkit: true },
+          { name: t("shang-hai"), id: "shanghai", webkit: true },
+          { name: t("bei-jing"), id: "beijing" },
+          { name: t("guang-zhou"), id: "guangzhou", webkit: true },
+          { name: t("shen-zhen"), id: "shenzhen", webkit: true },
+          { name: t("xiang-gang"), id: "hongkong", webkit: true },
+          { name: t("chang-sha"), id: "changsha", webkit: true },
+          { name: t("tian-jin"), id: "tianjing", webkit: true },
         ];
         const webkit = engine.name === "WebKit";
         return (
           <>
-            <div className="tool disabled">{t('menu.chooseAMap')}</div>
+            <div className="tool disabled">{t("menu.chooseAMap")}</div>
             {existingMap
               .filter((x) => (webkit ? x.webkit : true))
               .map(({ name, id }) => {
@@ -556,8 +568,9 @@ export const Menu = forwardRef(function (
                   if (data) setData(data);
                 }}
               >
-            
-                {t('menu.useTemplate',{name: existingMap.find((x) => x.id === selectedMap)?.name})}
+                {t("menu.useTemplate", {
+                  name: existingMap.find((x) => x.id === selectedMap)?.name,
+                })}
               </div>
             ) : (
               <></>
@@ -571,7 +584,7 @@ export const Menu = forwardRef(function (
                 setTitleEditable(false);
               }}
             >
-              {t('menu.cancel')}
+              {t("menu.cancel")}
             </div>
           </>
         );
@@ -645,20 +658,20 @@ export const Menu = forwardRef(function (
       <div className="menus" style={{ display }}>
         <div className="columns">
           <div className="column">
-            <div className="column-title">{t('menu.station')}</div>
+            <div className="column-title">{t("menu.station")}</div>
             <div className="column-items">
               <div
                 id="menu-add-station"
                 className="column-item"
                 onClick={(e) => showTools(e, FunctionMode.addingStation)}
               >
-                {t('menu.addStation')}...
+                {t("menu.addStation")}...
               </div>
               <div
                 className="column-item"
                 onClick={(e) => showTools(e, FunctionMode.dragingStation)}
               >
-                {t('menu.changeStationPosition')}...
+                {t("menu.changeStationPosition")}...
               </div>
               <div
                 className="column-item"
@@ -667,7 +680,8 @@ export const Menu = forwardRef(function (
                   setShowName(!showName);
                 }}
               >
-                {showName ? t('menu.hidden') : t('menu.show')}{t('menu.stationName')}...
+                {showName ? t("menu.hidden") : t("menu.show")}
+                {t("menu.stationName")}...
               </div>
               {showName ? (
                 <div
@@ -677,7 +691,8 @@ export const Menu = forwardRef(function (
                     setAutoHiddenName(!autoHiddenName);
                   }}
                 >
-                  {autoHiddenName ? t('menu.turnOff') : t('menu.turnOn')}{t('menu.AutoHidden')}...
+                  {autoHiddenName ? t("menu.turnOff") : t("menu.turnOn")}
+                  {t("menu.AutoHidden")}...
                 </div>
               ) : (
                 <></>
@@ -685,13 +700,13 @@ export const Menu = forwardRef(function (
             </div>
           </div>
           <div className="column">
-            <div className="column-title">{t('menu.line')}</div>
+            <div className="column-title">{t("menu.line")}</div>
             <div className="column-items">
               <div
                 className="column-item"
                 onClick={(e) => showTools(e, FunctionMode.lineEditing)}
               >
-                {t('menu.insertStation')}
+                {t("menu.insertStation")}
               </div>
               <div
                 className="column-item"
@@ -699,18 +714,18 @@ export const Menu = forwardRef(function (
                   mediateMap(data, transfromTools);
                 }}
               >
-                {t('menu.mediateMap')}
+                {t("menu.mediateMap")}
               </div>
               <div
                 className="column-item"
                 onClick={(e) => showTools(e, FunctionMode.backgroundEditing)}
               >
-                {t('menu.addBackgroundImage')}
+                {t("menu.addBackgroundImage")}
               </div>
             </div>
           </div>
           <div className="column">
-            <div className="column-title">{t('menu.data')}</div>
+            <div className="column-title">{t("menu.data")}</div>
             <div className="column-items">
               <div
                 className="column-item new-map-btn"
@@ -726,12 +741,12 @@ export const Menu = forwardRef(function (
                   setData({
                     stations: new Map(),
                     lines: new Map(),
-                    title: t('menu.newMap'),
+                    title: t("menu.newMap"),
                   });
                   showTools(e, FunctionMode.addingStation);
                 }}
               >
-                {t('menu.addNewMap')}
+                {t("menu.addNewMap")}
               </div>
               <div
                 className="column-item existed-map-btn"
@@ -741,7 +756,7 @@ export const Menu = forwardRef(function (
                   showTools(e, FunctionMode.choosingExistMap);
                 }}
               >
-                {t('menu.addFromTemplate')}
+                {t("menu.addFromTemplate")}
               </div>
               <div
                 className="column-item import-file-btn"
@@ -753,7 +768,7 @@ export const Menu = forwardRef(function (
                   });
                 }}
               >
-                {t('menu.importFile')}
+                {t("menu.importFile")}
               </div>
               {engine.name === "WebKit" ? (
                 <></>
@@ -765,7 +780,7 @@ export const Menu = forwardRef(function (
                     setDrawing(true);
                   }}
                 >
-                  {t('menu.exportAsImage')}
+                  {t("menu.exportAsImage")}
                 </div>
               )}
 
@@ -796,7 +811,7 @@ export const Menu = forwardRef(function (
                   }, 300);
                 }}
               >
-                {t('menu.exportAsSVG')}
+                {t("menu.exportAsSVG")}
               </div>
               <div
                 className="column-item export-as-file-btn"
@@ -810,7 +825,7 @@ export const Menu = forwardRef(function (
                   );
                 }}
               >
-                {t('menu.exportAsFile')}
+                {t("menu.exportAsFile")}
               </div>
               <div
                 className="column-item recover-btn"
@@ -835,7 +850,7 @@ export const Menu = forwardRef(function (
                   }
                 }}
               >
-                {t('menu.recoverData')}
+                {t("menu.recoverData")}
               </div>
               <div
                 className="column-item export-recover-btn"
@@ -850,13 +865,13 @@ export const Menu = forwardRef(function (
                   );
                 }}
               >
-                {t('menu.exportRecoveryData')}
+                {t("menu.exportRecoveryData")}
               </div>
             </div>
           </div>
 
           <div className="column">
-            <div className="column-title">{t('menu.about')}</div>
+            <div className="column-title">{t("menu.about")}</div>
             <div className="column-items">
               <div
                 className="column-item"
@@ -868,7 +883,7 @@ export const Menu = forwardRef(function (
                   );
                 }}
               >
-                {t('menu.projectAddress')}
+                {t("menu.projectAddress")}
               </div>
               <div
                 className="column-item tour-btn"
@@ -883,7 +898,7 @@ export const Menu = forwardRef(function (
                   }
                 }}
               >
-                {t('menu.guide')}
+                {t("menu.guide")}
               </div>
               {window.innerWidth >= 710 ? (
                 <div
@@ -896,11 +911,22 @@ export const Menu = forwardRef(function (
                     );
                   }}
                 >
-                  {t('menu.videoGuild')}
+                  {t("menu.videoGuild")}
                 </div>
               ) : (
                 <></>
               )}
+              <div
+                className="column-item friend"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  console.log(i18n)
+                  i18n.changeLanguage(i18n.language === "zh-CN"? "en-US": "zh-CN");
+                }}
+              >
+                {t("menu.switchLanguage")}...
+                {/* <GlobeIcon /> */}
+              </div>
               <div
                 className="column-item friend"
                 onClick={(e) => {
@@ -911,10 +937,11 @@ export const Menu = forwardRef(function (
                   );
                 }}
               >
-                {t('menu.RMP')}
+                {t("menu.RMP")}
                 <ShareIcon />
               </div>
-              <div className="column-item small">{t('menu.version')}1.1.1</div>
+
+              <div className="column-item small">{t("menu.version")}1.2.0</div>
               <div
                 className="column-item small author"
                 onClick={(e) => {
@@ -922,7 +949,7 @@ export const Menu = forwardRef(function (
                   window.open("https://space.bilibili.com/8217854", "_blank");
                 }}
               >
-                {t('menu.author')}
+                {t("menu.author")}
               </div>
             </div>
           </div>

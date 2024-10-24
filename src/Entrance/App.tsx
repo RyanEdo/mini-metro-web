@@ -84,6 +84,11 @@ function App() {
     setTranslateX,
     setTranslateY,
   };
+  const {backgroundColor} = data;
+  useEffect(() => {
+    if(backgroundColor)
+    document.getElementById('theme-color')!.setAttribute('content', backgroundColor);
+  }, [backgroundColor])
   return (
     <ErrorBoundary
       FallbackComponent={ErrorFallback}
