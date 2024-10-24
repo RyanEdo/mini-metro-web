@@ -11,6 +11,7 @@ import "./DeleteConfirmation.scss";
 import { AutoGrowthInput } from "../../Common/AutoGrowthInput";
 import shapes from "../../Resource/Shape/shape";
 import classNames from "classnames";
+import { useTranslation } from "react-i18next";
 export interface showConfirmationInterface {
   (
     {
@@ -38,6 +39,7 @@ export const DeleteConfirmation = forwardRef(function (
   const [station, setStation] = useState<StationProps>();
   const [stationIndex, setStationIndex] = useState<number | undefined>();
   const [callback, setCallback] = useState(() => () => {});
+  const {t} = useTranslation();
   //@ts-ignore
   window.setShow = setShow
   const showWithAnimate = () => {
@@ -68,12 +70,12 @@ export const DeleteConfirmation = forwardRef(function (
     []
   );
   const remove = line && station;
-  const deleteText = remove ? "移除" : "删除";
-  const title = `确实要${deleteText}吗?`;
+  const deleteText = remove ? t('delete.remove') : t('delete.delete');
+  const title = t('que-shi-yao-deletetext-ma', {deleteText});
   const { stationName, shape } = station || {};
   const { lineName, sign, color } = line || {};
   const index = stationIndex ? stationIndex + 1 : 0;
-  const subTitle = `不再作为${lineName}的第${index}站`;
+  const subTitle = t('delete.subtile', {lineName, index});
 
   return (
     <div
@@ -127,7 +129,7 @@ export const DeleteConfirmation = forwardRef(function (
           {deleteText}
         </div>
         <div className="back" onClick={disappearWithAnimate}>
-          取消
+          {t('delete.cancel')}
         </div>
       </div>
     </div>

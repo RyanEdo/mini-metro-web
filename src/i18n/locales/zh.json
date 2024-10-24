@@ -292,5 +292,12 @@
   "shang-yi-bu": "上一步",
   "wan-cheng": "完成",
   "xia-yi-bu": "下一步",
-  "di-current-bu-gong-total-bu": "第{0}步，共{1}步"
+  "di-current-bu-gong-total-bu": "第{0}步，共{1}步",
+  "delete": {
+    "remove": "移除",
+    "delete": "删除",
+    "subtile": "不再作为{{lineName}}的第{{index}}站",
+    "cancel": "取消"
+  },
+  "que-shi-yao-deletetext-ma": "确实要{{deleteText}}吗?"
 }

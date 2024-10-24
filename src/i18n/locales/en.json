@@ -292,5 +292,12 @@
   "di-current-bu-gong-total-bu": "Step {0} of {1} steps",
   "shang-yi-bu": "Previous step",
   "wan-cheng": "Finish",
-  "xia-yi-bu": "Next step"
+  "xia-yi-bu": "Next step",
+  "delete": {
+    "cancel": "Cancel",
+    "delete": "delete",
+    "remove": "Remove",
+    "subtile": "No longer the {{index}} station of {{lineName}}"
+  },
+  "que-shi-yao-deletetext-ma": "Do you really want to {{deleteText}}?"
 }
