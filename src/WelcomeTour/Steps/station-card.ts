@@ -1,5 +1,5 @@
 import { DriveStep, Driver } from "driver.js";
-
+import {t} from 'i18next';
 export const getSteps = (driver: Driver): DriveStep[] => [
   {
     element: ".station-descend-31",

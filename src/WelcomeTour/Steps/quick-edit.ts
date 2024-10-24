@@ -59,12 +59,12 @@ export const getSteps = (driver: Driver): DriveStep[] => [
   {
     element: ".station-descend-3",
     popover: {
-      title: {t('dian-ji-zhan-dian')},
-      description: "连接站点",
+      title: t('dian-ji-zhan-dian'),
+      description: t('lian-jie-zhan-dian'),
     },
   },
   {
     element: "#add-line-finish-btn",
-    popover: { title: "点击完成", description: "线路就创建好了" },
+    popover: { title: t('dian-ji-wan-cheng'), description: t('xian-lu-jiu-chuang-jian-hao-le') },
   },
 ];
