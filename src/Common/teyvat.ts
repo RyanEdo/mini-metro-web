@@ -662,5 +662,5 @@ export const teyvat: UserDataType = {
     return map;
   }, new Map()),
   title: t("teyvat"),
-  backgroundColor: "#fffeea",
+  backgroundColor: "#fffee0",
 };

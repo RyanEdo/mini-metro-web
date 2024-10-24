@@ -350,9 +350,9 @@ export const Menu = forwardRef(function (
             <div
               className={classNames({
                 tool: 1,
-                disabled: backgroundColor === "#fffeea",
+                disabled: backgroundColor === "#fffee0",
               })}
-              onClick={() => setColor("#fffeea")}
+              onClick={() => setColor("#fffee0")}
             >
               {t("menu.lightYellow")}
             </div>
