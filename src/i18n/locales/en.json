@@ -288,5 +288,9 @@
   "yi-da-kai-zhan-dian-ka-pian-1": "to open the site card",
   "zai-dian-ji-biao-qian-an-niu": "Click the label button again",
   "zai-zhe-li-xiang-xia-gun-dong-yi-xia": "Scroll down a bit here",
-  "zhan-dian-ming-hui-zai-di-tu-suo-fang-dao-xiao-chi-du-shi-zi-dong-yin-cang-guan-bi-zi-dong-yin-cang-yi-que-bao-ke-yi-yi-zhi-xian-shi-zhan-dian-ming-cheng": "Site names are automatically hidden when the map is zoomed to a smaller scale. \nTurn off auto-hide to ensure the site name is always visible"
+  "zhan-dian-ming-hui-zai-di-tu-suo-fang-dao-xiao-chi-du-shi-zi-dong-yin-cang-guan-bi-zi-dong-yin-cang-yi-que-bao-ke-yi-yi-zhi-xian-shi-zhan-dian-ming-cheng": "Site names are automatically hidden when the map is zoomed to a smaller scale. \nTurn off auto-hide to ensure the site name is always visible",
+  "di-current-bu-gong-total-bu": "Step {0} of {1} steps",
+  "shang-yi-bu": "Previous step",
+  "wan-cheng": "Finish",
+  "xia-yi-bu": "Next step"
 }

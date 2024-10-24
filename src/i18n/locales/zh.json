@@ -288,5 +288,9 @@
   "ke-yi-kan-dao-zhan-dian-ming-yi-jing-wei-yu-zhan-dian-you-xia-jiao-le": "可以看到站点名已经位于站点右下角了",
   "ke-yi-yong-zhe-zhong-fang-fa-xiu-gai-zhan-dian-ming-wei-zhi": "可以用这种方法修改站点名位置",
   "dian-ji-zhong-jian-de-wen-zi-hui-fu-dao-zi-dong-xuan-ze-wei-zhi": "点击中间的文字恢复到自动选择位置",
-  "hui-fu-dao-zi-dong-xuan-ze-wei-zhi": "恢复到自动选择位置"
+  "hui-fu-dao-zi-dong-xuan-ze-wei-zhi": "恢复到自动选择位置",
+  "shang-yi-bu": "上一步",
+  "wan-cheng": "完成",
+  "xia-yi-bu": "下一步",
+  "di-current-bu-gong-total-bu": "第{0}步，共{1}步"
 }

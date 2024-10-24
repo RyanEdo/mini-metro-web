@@ -1,4 +1,5 @@
 import { driver as Driver, Config } from "driver.js";
+import {t} from 'i18next';
 export const showTour = async (id: string, callback: Function) => {
   const driver = Driver();
   const { getSteps } = await import(/* webpackMode: "eager" */ `./Steps/${id}`);
@@ -7,10 +8,10 @@ export const showTour = async (id: string, callback: Function) => {
   const eventName =// touch ? "touchend" : 
   "click";
   const config: Config = {
-    prevBtnText: "上一步",
-    doneBtnText: "完成",
-    nextBtnText: "下一步",
-    progressText: "第{{current}}步，共{{total}}步",
+    prevBtnText: t('shang-yi-bu'),
+    doneBtnText: t('wan-cheng'),
+    nextBtnText: t('xia-yi-bu'),
+    progressText: "{{current}} / {{total}}",
     showProgress: true,
     allowClose: false,
     showButtons: ["close"],
