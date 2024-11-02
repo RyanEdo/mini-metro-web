@@ -4,7 +4,7 @@
 # Mini Metro Web 
 Mini Metro Map Building Tool: `Create mini metro-style subway maps`.
 
-Supports **unlimited** stations and lines, supports **multiple crossings** of the same station, set **background images**, set **branch lines**, and supports **exporting images**.
+Supports **unlimited** stations and lines, supports **multiple crossings** of the same station, set **background images**, set **sub lines**, and supports **exporting images**.
 
 https://mini-metro-web.gitlab.io/
 
