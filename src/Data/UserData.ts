@@ -365,21 +365,28 @@ export const dataProcessor = (
       return newLine;
     },
     addStationToLine: (stationId: number, stationIndex: number) => {
-      setData((state) => {
+      return new Promise(res=>{
+       setData((state) => {
         const line = lines.get(id);
         if (!line) debugger;
         const { stationIds, bendFirst } = line!;
+        console.log(structuredClone(stationIds));
         if (
           stationIds[stationIndex] !== stationId &&
           stationIds[stationIndex - 1] !== stationId
         ) {
           stationIds.splice(stationIndex, 0, stationId);
           bendFirst.splice(stationIndex, 0, true);
+          if(stationIds.some((x,index)=>x===stationIds[index-1]||x===stationIds[index+1])) debugger
           const station = stations.get(stationId);
           const { lineIds } = station!;
           station!.lineIds = [...new Set(lineIds.concat([id]))];
+          res(true);
+        } else {
+          res(false);  
         }
         return { ...state };
+      }); 
       });
     },
   };

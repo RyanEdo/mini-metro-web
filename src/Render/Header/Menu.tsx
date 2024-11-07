@@ -941,7 +941,7 @@ export const Menu = forwardRef(function (
                 <ShareIcon />
               </div>
 
-              <div className="column-item small">{t("menu.version")}1.2.0</div>
+              <div className="column-item small">{t("menu.version")}1.2.1</div>
               <div
                 className="column-item small author"
                 onClick={(e) => {
