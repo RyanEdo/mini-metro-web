@@ -289,13 +289,15 @@ function RenderLayer({
             tagDirection,
           } = displayStation!;
           const  descend = stations.size - index;
-          const add = () => {
+          const add = async () => {
             if (!moved) setCardShowing({ stationIds: [stationId] });
             if (functionMode === FunctionMode.selectingStation) {
               const { insertIndex, line } = insertInfo!;
               const { lineId } = line;
               const { addStationToLine } = dataProcessor(lineId, setData, data);
-              addStationToLine(stationId, insertIndex);
+              const added = await addStationToLine(stationId, insertIndex);
+              console.log(insertIndex);
+              if(added)
               setInsertInfo({
                 insertIndex: insertIndex ? insertIndex + 1 : 0,
                 line,

@@ -11,6 +11,7 @@ https://mini-metro-web.gitlab.io/
 [中文文档](https://github.com/RyanEdo/mini-metro-web/blob/master/README-cn.md)
 
 ## Changelog
+#### 1.2.1 `fix adding duplicate stations when double clicking at adding station mode`
 #### 1.2.0 `Support for English`
 #### 1.1.1 `Added more station shapes, support for modifying default shapes when adding new stations`
 #### 1.1.0 `Support for changing background color and background image`
